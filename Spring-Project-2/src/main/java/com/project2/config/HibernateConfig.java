@@ -22,7 +22,7 @@ public class HibernateConfig {
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan("com.project.beans");
+        sessionFactory.setPackagesToScan("com.project2.demo.entities");
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
     }
