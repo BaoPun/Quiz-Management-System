@@ -1,19 +1,22 @@
 package com.project2.demo.controllers;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-@RestController
+@Controller
 public class MainController {
 
 	public MainController() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	@RequestMapping(value = "/hello", method = RequestMethod.GET)
-	public String sayHello() {
-		return "Hello World!";
+	
+	@GetMapping("/greeting")
+	public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
+		model.addAttribute("name", name);
+		return "greeting";
 	}
 
 
