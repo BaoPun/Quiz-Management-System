@@ -1,15 +1,13 @@
-package com.project2.repositories;
+package com.project2.demo.DAO;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import com.project2.beans.Questions;
+import com.project2.demo.beans.Questions;
+import com.project2.demo.beans.User;
 
 public class QuestionRepoImpl implements QuestionRepo {
 
@@ -17,16 +15,15 @@ public class QuestionRepoImpl implements QuestionRepo {
 	private EntityManager entityManager;
 
 	@Override
-	public int addQuestion(Questions q) {
+	public Questions addQuestion(Questions q) {
 		entityManager.persist(q);
 		return q;
 	}
 
 
-////////////
 	@Override
 	public Questions getQuestion(int id) {
-		Questions q = (Question)entityManager.find(Question.class,id);
+		Questions q = (Questions)entityManager.find(Questions.class,id);
 		return q;
 	}
 
@@ -40,8 +37,7 @@ public class QuestionRepoImpl implements QuestionRepo {
 	@Override
 	public List<Questions> getAllQuestions() {
 		
-		List<Questions> results = entityManager.createQuery("From Questions", Question.class)
-                .getResultList();
+		List<Questions> results = entityManager.createQuery("From Questions", Questions.class).getResultList();
 		
 		return results;
 	}
@@ -56,15 +52,13 @@ public class QuestionRepoImpl implements QuestionRepo {
 /////look at it again
 	@Override
 	public boolean deleteQuestion(int id) {
-		if(entityManager.find(User.class, id)) {
-			entityManger.remove(id);
+		if(entityManager.find(User.class, id) != null) {
+			entityManager.remove(id);
 			return true;
 		}
-		else {
-			entityManger.remove(entityManger.merge(id));
-			}
+		entityManager.remove(entityManager.merge(id));
 		return false;
-		}
+	}
 
 
 }

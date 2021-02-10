@@ -1,4 +1,4 @@
-package com.project2.demo.repositories;
+package com.project2.demo.DAO;
 
 public interface AnswerRepo {
 

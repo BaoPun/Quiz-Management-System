@@ -1,6 +1,6 @@
-package com.project2.beans;
+package com.project2.demo.beans;
 
-import com.project2.beans.User;
+import com.project2.demo.beans.User;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
