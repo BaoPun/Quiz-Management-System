@@ -23,7 +23,7 @@ public class HibernateConf {
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan("com.revature.beans");
+        sessionFactory.setPackagesToScan("com.project2.demo");
         sessionFactory.setHibernateProperties(hibernateProperties());
 
         return sessionFactory;

@@ -20,6 +20,16 @@ public class User {
 	@Column(name="username")
 	private String username;
 	
+	public String getUsername() {
+		return username;
+	}
+	
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", passwordHash=" + passwordHash + ", role=" + role
+				+ ", teacher=" + teacher + "]";
+	}
+
 	@Column(name="passwordhash")
 	private String passwordHash;
 	

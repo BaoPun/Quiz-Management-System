@@ -1,17 +1,25 @@
 package com.project2.demo.controllers;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+import com.project2.demo.DAO.UserRepository;
+import com.project2.demo.beans.User;
+
+@RestController
+@RequestMapping("users")
 public class MainController {
 
 	public MainController() {
 		// TODO Auto-generated constructor stub
 	}
 	
+	@Autowired
+	private UserRepository userRepo;
 	
 	@GetMapping("/greeting")
 	public String greeting(@RequestParam(name="name", required=false, defaultValue="Bar") String name, Model model) {
@@ -19,9 +27,11 @@ public class MainController {
 		return "greeting";
 	}
 	
-	@GetMapping("/test")
-	public String gettest() {
-		return "thing";
+	@GetMapping(value="/thing", produces = "application/json")
+	public User gettest() {
+		User user = userRepo.getThing(4);
+		System.out.println(user);
+		return user;
 	}
 
 

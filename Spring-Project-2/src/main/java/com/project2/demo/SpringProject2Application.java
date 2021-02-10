@@ -8,6 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan("com.project2.demo")
 public class SpringProject2Application {
 
+
 	public static void main(String[] args) {
 		SpringApplication.run(SpringProject2Application.class, args);
 	}
