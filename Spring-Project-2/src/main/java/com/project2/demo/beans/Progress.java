@@ -25,15 +25,6 @@ public class Progress
 	@Column(name = "answerid")
 	private int answerId;
 
-<<<<<<< HEAD
-	@Id
-	private int id;
-	/*
-	 * CREATE TABLE progress(  id NUMBER PRIMARY KEY,
-                        userid NUMBER,
-                        answerid NUMBER);
-	 */
-=======
 	public Progress() {}
 	
 	public Progress(int id, int userId, int answerId) {
@@ -66,7 +57,6 @@ public class Progress
 	public void setAnswerId(int answerId) {
 		this.answerId = answerId;
 	}
->>>>>>> stash
 	
 	
 }
