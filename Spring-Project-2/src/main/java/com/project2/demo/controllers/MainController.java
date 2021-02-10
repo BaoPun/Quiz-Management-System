@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project2.demo.DAO.UserRepository;
 import com.project2.demo.beans.User;
+import com.project2.demo.beans.UserType;
 
 @RestController
 @RequestMapping("users")
@@ -30,6 +31,12 @@ public class MainController {
 	@GetMapping(value="/thing", produces = "application/json")
 	public User gettest() {
 		User user = userRepo.getThing(4);
+		User user2 = new User();
+		user2.setUsername("bar");
+		user2.setTeacher(user);
+		user2.setRole(UserType.STUDENT);
+		user2.setPasswordHash("");
+		userRepo.addThing(user2);
 		System.out.println(System.identityHashCode(user));
 		System.out.println(System.identityHashCode(user.getTeacher()));
 		System.out.println(System.identityHashCode(user.getTeacher().getTeacher()));
