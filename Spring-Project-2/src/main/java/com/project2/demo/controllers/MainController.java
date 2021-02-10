@@ -30,8 +30,11 @@ public class MainController {
 	@GetMapping(value="/thing", produces = "application/json")
 	public User gettest() {
 		User user = userRepo.getThing(4);
-		System.out.println(user);
-		return user;
+		System.out.println(System.identityHashCode(user));
+		System.out.println(System.identityHashCode(user.getTeacher()));
+		System.out.println(System.identityHashCode(user.getTeacher().getTeacher()));
+		System.out.println(System.identityHashCode(user.getTeacher().getTeacher().getTeacher()));
+		return null;
 	}
 
 
