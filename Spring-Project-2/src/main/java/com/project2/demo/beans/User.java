@@ -24,11 +24,6 @@ public class User {
 		return username;
 	}
 	
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", passwordHash=" + passwordHash + ", role=" + role
-				+ ", teacher=" + teacher + "]";
-	}
 
 	@Column(name="passwordhash")
 	private String passwordHash;
@@ -42,6 +37,14 @@ public class User {
 	public User() {
 		
 		
+	}
+	
+	
+	
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", passwordHash=" + passwordHash + ", role=" + role
+				+ ", teacher=" + teacher + "]";
 	}
 
 }
