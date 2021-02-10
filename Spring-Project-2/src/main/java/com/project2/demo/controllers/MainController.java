@@ -32,11 +32,13 @@ public class MainController {
 	public User gettest() {
 		User user = userRepo.getThing(4);
 		User user2 = new User();
-		user2.setUsername("bar");
+		user2.setUsername("baraz");
 		user2.setTeacher(user);
 		user2.setRole(UserType.STUDENT);
 		user2.setPasswordHash("");
 		userRepo.addThing(user2);
+		System.out.println(user2.getId());
+		System.out.println(userRepo.getQuiz(4));
 		System.out.println(System.identityHashCode(user));
 		System.out.println(System.identityHashCode(user.getTeacher()));
 		System.out.println(System.identityHashCode(user.getTeacher().getTeacher()));

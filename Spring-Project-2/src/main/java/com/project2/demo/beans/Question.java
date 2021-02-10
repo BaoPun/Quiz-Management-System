@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="questions")
-public class Questions {
+public class Question {
 
 	@Id
 	@Column(updatable=false)
@@ -23,11 +23,11 @@ public class Questions {
 	
 	private String description;
 
-	public Questions() {
+	public Question() {
 		super();
 	}
 
-	public Questions(int q_id, int quizid, String q_type, String q_desc) {
+	public Question(int q_id, int quizid, String q_type, String q_desc) {
 		super();
 		this.id = q_id;
 		this.quizid = quizid;
@@ -35,7 +35,7 @@ public class Questions {
 		this.description = q_desc;
 	}
 
-	public Questions(int quizid, String q_type, String q_desc) {
+	public Question(int quizid, String q_type, String q_desc) {
 		super();
 		this.quizid = quizid;
 		this.questionType = q_type;
