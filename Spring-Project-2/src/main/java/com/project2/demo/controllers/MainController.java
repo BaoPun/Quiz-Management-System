@@ -18,6 +18,11 @@ public class MainController {
 		model.addAttribute("name", name);
 		return "greeting";
 	}
+	
+	@GetMapping("/test")
+	public String gettest() {
+		return "thing";
+	}
 
 
 }

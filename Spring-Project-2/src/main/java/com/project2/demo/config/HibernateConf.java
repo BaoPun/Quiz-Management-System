@@ -1,4 +1,4 @@
-package com.revature.config;
+package com.project2.demo.config;
 
 import java.io.FileInputStream;
 import java.util.Properties;
