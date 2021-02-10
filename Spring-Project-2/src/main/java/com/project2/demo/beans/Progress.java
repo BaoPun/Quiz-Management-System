@@ -14,6 +14,8 @@ import javax.persistence.Table;
 public class Progress
 {
 
+	@Id
+	private int id;
 	/*
 	 * CREATE TABLE progress(  id NUMBER PRIMARY KEY,
                         userid NUMBER,

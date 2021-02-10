@@ -16,7 +16,7 @@ public class Quiz {
 	private int id;
 	
 	@Column(name="USERID")
-	private User userid;
+	private int userid;
 	
 	@Column(name="NAME")
 	private String name;
@@ -25,14 +25,14 @@ public class Quiz {
 		super();
 	}
 
-	public Quiz(int id, User userid, String name) {
+	public Quiz(int id, int userid, String name) {
 		super();
 		this.id = id;
 		this.userid = userid;
 		this.name = name;
 	}
 
-	public Quiz(User userid, String name) {
+	public Quiz(int userid, String name) {
 		super();
 		this.userid = userid;
 		this.name = name;
@@ -46,11 +46,11 @@ public class Quiz {
 		this.id = id;
 	}
 
-	public User getUserid() {
+	public int getUserid() {
 		return userid;
 	}
 
-	public void setUserid(User userid) {
+	public void setUserid(int userid) {
 		this.userid = userid;
 	}
 

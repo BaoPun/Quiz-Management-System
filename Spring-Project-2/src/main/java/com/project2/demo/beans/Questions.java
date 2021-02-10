@@ -14,15 +14,14 @@ public class Questions {
 
 	@Id
 	@Column(updatable=false)
-	@GeneratedValue(generator = "QUESTION_SEQ", strategy = GenerationType.SEQUENCE)
-	private int q_id;
+	@GeneratedValue
+	private int id;
 	
-	@ManyToOne
 	private int quizid;
 	
-	private String q_type;
+	private String questionType;
 	
-	private String q_desc;
+	private String description;
 
 	public Questions() {
 		super();
@@ -30,25 +29,25 @@ public class Questions {
 
 	public Questions(int q_id, int quizid, String q_type, String q_desc) {
 		super();
-		this.q_id = q_id;
+		this.id = q_id;
 		this.quizid = quizid;
-		this.q_type = q_type;
-		this.q_desc = q_desc;
+		this.questionType = q_type;
+		this.description = q_desc;
 	}
 
 	public Questions(int quizid, String q_type, String q_desc) {
 		super();
 		this.quizid = quizid;
-		this.q_type = q_type;
-		this.q_desc = q_desc;
+		this.questionType = q_type;
+		this.description = q_desc;
 	}
 
 	public int getQ_id() {
-		return q_id;
+		return id;
 	}
 
 	public void setQ_id(int q_id) {
-		this.q_id = q_id;
+		this.id = q_id;
 	}
 
 	public int getQuizid() {
@@ -60,24 +59,24 @@ public class Questions {
 	}
 
 	public String getQ_type() {
-		return q_type;
+		return questionType;
 	}
 
 	public void setQ_type(String q_type) {
-		this.q_type = q_type;
+		this.questionType = q_type;
 	}
 
 	public String getQ_desc() {
-		return q_desc;
+		return description;
 	}
 
 	public void setQ_desc(String q_desc) {
-		this.q_desc = q_desc;
+		this.description = q_desc;
 	}
 
 	@Override
 	public String toString() {
-		return "Questions [q_id=" + q_id + ", quizid=" + quizid + ", q_type=" + q_type + ", q_desc=" + q_desc + "]";
+		return "Questions [q_id=" + id + ", quizid=" + quizid + ", q_type=" + questionType + ", q_desc=" + description + "]";
 	}
 	
 	
