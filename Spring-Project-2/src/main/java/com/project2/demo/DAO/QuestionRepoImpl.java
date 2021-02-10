@@ -13,46 +13,20 @@ import com.project2.beans.Questions;
 
 public class QuestionRepoImpl implements QuestionRepo {
 
-	@Autowired
-	SessionFactory sf;
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	@Override
 	public int addQuestion(Questions q) {
-		Session sess = sf.openSession();
-		int id = 0;
-		
-		
-		try {
-			
-			sess.beginTransaction();
-			id = Integer.parseInt(sess.save(q).toString());
-			sess.getTransaction().commit();
-			
-		} catch (HibernateException e) {
-			e.printStackTrace();
-			sess.getTransaction().rollback();
-		} finally {
-			sess.close();
-		}
-		
-		return id;
+		entityManager.persist(q);
+		return q;
 	}
 
 
+////////////
 	@Override
 	public Questions getQuestion(int id) {
-		
-		Session sess = sf.openSession();
-		Questions q = null;
-		
-		try {
-			q = sess.get(Questions.class, id);
-		} catch (HibernateException e) {
-			e.printStackTrace();
-		} finally {
-			sess.close();
-		}
-		
+		Questions q = (Question)entityManager.find(Question.class,id);
 		return q;
 	}
 
@@ -66,64 +40,31 @@ public class QuestionRepoImpl implements QuestionRepo {
 	@Override
 	public List<Questions> getAllQuestions() {
 		
-		Session sess = sf.openSession();
-		List<Questions> questions= null;
+		List<Questions> results = entityManager.createQuery("From Questions", Question.class)
+                .getResultList();
 		
-		try {
-			
-			questions = sess.createQuery("FROM questions").list();
-		} catch (HibernateException e) {
-			e.printStackTrace();
-		} finally {
-			sess.close();
-		}
-		
-		return questions;
+		return results;
 	}
 
 
 	@Override
 	public Questions updateQuestion(Questions change) {
-		
-		Session sess = sf.openSession();
-		Questions q = null;
-		Transaction tx = null;
-		
-		try {
-			tx = sess.beginTransaction();
-			sess.update(change);
-			tx.commit();
-			q = change;
-		} catch (HibernateException e) {
-			e.printStackTrace();
-			tx.rollback();
-		} finally {
-			sess.close();
-		}
-		
-		return q;
+		entityManager.merge(change);
+		return change;
 	}
 
-
+/////look at it again
 	@Override
 	public boolean deleteQuestion(int id) {
-		Session sess = sf.openSession();
-		Transaction tx = null;
-		
-		try {
-			tx = sess.beginTransaction();
-			sess.delete(sess.get(Questions.class, id));
-			tx.commit();
+		if(entityManager.find(User.class, id)) {
+			entityManger.remove(id);
 			return true;
-		} catch (HibernateException e) {
-			e.printStackTrace();
-			tx.rollback();
-		} finally {
-			sess.close();
 		}
-		
+		else {
+			entityManger.remove(entityManger.merge(id));
+			}
 		return false;
-	}
+		}
 
 
 }
