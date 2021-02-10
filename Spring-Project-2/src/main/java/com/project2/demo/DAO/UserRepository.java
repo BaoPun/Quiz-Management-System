@@ -34,12 +34,27 @@ public class UserRepository {
 	public boolean deleteQuestion(int id);
 	 */
 
-	
+	// Create/Add Entities Below This Line
+	//////////////////////////////////////////////////////////////////////
 	public Question addQuestion(Question a) {
 		entityManager.persist(a);
 		return a;
 	}
 	
+	
+	public void addThing(User user) {
+		entityManager.persist(user);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	// Read/Get Entities Below This Line
+	/////////////////////////////////////////////////////////////////////////
 	public Question getQuestion(int id) {
 		return entityManager.find(Question.class,id);
 	}
@@ -54,17 +69,38 @@ public class UserRepository {
 		return tq.setParameter(1, name).getSingleResult();
 	}
 	
+	public Quiz getQuiz(int id) {
+		return entityManager.find(Quiz.class,id);
+	}
+	
 	public User getThing(int id) {
 		return entityManager.find(User.class, id);
 	}
 	
-	public void addThing(User user) {
-		entityManager.persist(user);
-	}
 	
+	
+	
+	
+	
+	
+	// Update Entites Below This Line
+	///////////////////////////////////////////////////////////////////////////
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// Delete Entities Below This Line
+	//////////////////////////////////////////////////////////////////////////////////////
 
-	public Quiz getQuiz(int id) {
-		return entityManager.find(Quiz.class,id);
-	}
+	
 
 }
