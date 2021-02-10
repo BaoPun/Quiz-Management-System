@@ -25,7 +25,7 @@ public class MainController {
 	@GetMapping("/greeting")
 	public String greeting(@RequestParam(name="name", required=false, defaultValue="Bar") String name, Model model) {
 		model.addAttribute("name", name);
-		return "greeting";
+		return name;
 	}
 	
 	@GetMapping(value="/thing", produces = "application/json")
