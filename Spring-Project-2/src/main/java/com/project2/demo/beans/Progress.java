@@ -15,7 +15,7 @@ import javax.persistence.Table;
 public class Progress
 {
 	@Id
-	@GeneratedValue(generator = "PROGRESS_ID_GENERATOR", strategy = GenerationType.SEQUENCE)
+	@GeneratedValue
 	@Column(name = "id")
 	private int id;
 	

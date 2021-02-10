@@ -8,6 +8,7 @@ class SpringProject2ApplicationTests {
 
 	@Test
 	void contextLoads() {
+		System.out.println();
 	}
 
 }
