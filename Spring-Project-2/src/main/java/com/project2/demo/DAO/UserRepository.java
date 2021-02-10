@@ -44,9 +44,10 @@ public class UserRepository {
 		return entityManager.find(Question.class,id);
 	}
 	
-//	public User getAllUsers() {
-//		TypedQuery<User> tq = entityManager.createQuery("from user where username)
-//	}
+	public List<User> getAllUsers() {
+		TypedQuery<User> tq = entityManager.createQuery("from User",User.class);
+		return tq.getResultList();
+	}
 	
 	public User getUserByName(String name) {
 		TypedQuery<User> tq = entityManager.createQuery("from User WHERE username=?1",User.class);
