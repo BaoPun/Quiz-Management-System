@@ -7,10 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,9 @@ public class User {
 
 
 	@Id
-	@GeneratedValue
+	@SequenceGenerator(name = "user_id_generator", allocationSize = 1)
+	@GeneratedValue(generator = "user_id_generator", strategy = GenerationType.SEQUENCE)
+	@Column(name = "userId", updatable = false)
 	private int id;
 	
 	@Column(name="username")
@@ -37,6 +41,7 @@ public class User {
 	
 	@ManyToOne(optional=false)
 	@JoinColumn(name="teacher")
+	@Autowired
 	private User teacher;
 	
 	@OneToMany(mappedBy="teacher")
@@ -46,14 +51,6 @@ public class User {
 	public User() {
 		
 		
-	}
-	
-	
-	
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", passwordHash=" + passwordHash + ", role=" + role
-				+ ", teacher=" + teacher + "]";
 	}
 
 	public int getId() {
@@ -137,6 +134,12 @@ public class User {
 		} else if (!username.equals(other.username))
 			return false;
 		return true;
+	}
+	
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", passwordHash=" + passwordHash + ", role=" + role
+				+ ", teacher=" + teacher + "]";
 	}
 
 

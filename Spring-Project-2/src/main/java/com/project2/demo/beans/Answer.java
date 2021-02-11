@@ -3,23 +3,31 @@ package com.project2.demo.beans;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="answers")
 public class Answer {
 
+	
 	@Id
-	@GeneratedValue
+	@SequenceGenerator(name = "answer_id_generator", allocationSize = 1)
+	@GeneratedValue(generator = "answer_id_generator", strategy = GenerationType.SEQUENCE)
+	@Column(name = "answerId", updatable = false)
 	private int id;
 	
-	@Column(name = "answertext")
+	@Column(length = 255, name = "answertext")
 	private String answerText;
 	
-	// Change type to Question later
-	@Column(name = "questionid")
-	private int questionId;
+	@ManyToOne							// a question contains multiple possible answers
+										// and a specific answer belongs to one question
+	@JoinColumn(name = "questionid")
+	private Question question;
 	
 	
 	@Column(name = "iscorrect")
@@ -32,101 +40,62 @@ public class Answer {
 	
 	
 
-	public Answer() {
-		super();
-		this.id = -1;
-		this.answerText = "";
-		this.questionId = -1;
-		this.isCorrect = -1;
-		this.ordering = -1;
-	}
+	public Answer() {}
 
 
-	public Answer(int id, String answerText, int questionId, int isCorrect, int ordering) {
+	public Answer(int id, String answerText, Question question, int isCorrect, int ordering) {
 		super();
 		this.id = id;
 		this.answerText = answerText;
-		this.questionId = questionId;
+		this.question = question;
 		this.isCorrect = isCorrect;
 		this.ordering = ordering;
 	}
 
-
-	/**
-	 * @return the id
-	 */
 	public int getId() {
 		return id;
 	}
 
 
-	/**
-	 * @param id the id to set
-	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 
-
-	/**
-	 * @return the answerText
-	 */
 	public String getAnswerText() {
 		return answerText;
 	}
 
 
-	/**
-	 * @param answerText the answerText to set
-	 */
 	public void setAnswerText(String answerText) {
 		this.answerText = answerText;
 	}
 
 
-	/**
-	 * @return the questionId
-	 */
-	public int getQuestionId() {
-		return questionId;
+	public Question getQuestion() {
+		return question;
 	}
 
 
-	/**
-	 * @param questionId the questionId to set
-	 */
-	public void setQuestionId(int questionId) {
-		this.questionId = questionId;
+	public void setQuestion(Question question) {
+		this.question = question;
 	}
 
 
-	/**
-	 * @return the isCorrect
-	 */
 	public int getIsCorrect() {
 		return isCorrect;
 	}
 
 
-	/**
-	 * @param isCorrect the isCorrect to set
-	 */
 	public void setIsCorrect(int isCorrect) {
 		this.isCorrect = isCorrect;
 	}
 
 
-	/**
-	 * @return the ordering
-	 */
 	public int getOrdering() {
 		return ordering;
 	}
 
 
-	/**
-	 * @param ordering the ordering to set
-	 */
 	public void setOrdering(int ordering) {
 		this.ordering = ordering;
 	}
@@ -134,12 +103,10 @@ public class Answer {
 
 	@Override
 	public String toString() {
-		return "Answer [id=" + id + ", answerText=" + answerText + ", questionId=" + questionId + ", isCorrect="
-				+ isCorrect + ", ordering=" + ordering + "]";
+		return "Answer [id=" + id + ", answerText=" + answerText + ", question=" + question + ", isCorrect=" + isCorrect
+				+ ", ordering=" + ordering + "]";
 	}
-	
-	
-	
+
 	
 	
 	

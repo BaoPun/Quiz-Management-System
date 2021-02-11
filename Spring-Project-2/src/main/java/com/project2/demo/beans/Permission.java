@@ -2,8 +2,14 @@ package com.project2.demo.beans;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -11,32 +17,37 @@ import javax.persistence.Table;
 public class Permission {
 
 	@Id
-	@GeneratedValue
-	@Column(name = "id")
+	@SequenceGenerator(name = "permission_id_generator", allocationSize = 1)
+	@GeneratedValue(generator = "permission_id_generator", strategy = GenerationType.SEQUENCE)
+	@Column(name = "permissionId", updatable = false)
 	private int id;
 	
-	private User u_id;
+	@ManyToOne							
+	@JoinColumn(name = "userId")
+	private User user;
 	
-	private Quiz q_id;
+	@ManyToOne
+	@JoinColumn(name = "quizId")
+	private Quiz quiz;
 	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "relationship")
 	private PermissionType relationship;
 
-	public Permission() {
-		super();
-	}
+	public Permission() {}
 
-	public Permission(User u_id, Quiz q_id, PermissionType relationship) {
+	public Permission(User user, Quiz quiz, PermissionType relationship) {
 		super();
-		this.u_id = u_id;
-		this.q_id = q_id;
+		this.user = user;
+		this.quiz = quiz;
 		this.relationship = relationship;
 	}
 
-	public Permission(int id, User u_id, Quiz q_id, PermissionType relationship) {
+	public Permission(int id, User user, Quiz quiz, PermissionType relationship) {
 		super();
 		this.id = id;
-		this.u_id = u_id;
-		this.q_id = q_id;
+		this.user = user;
+		this.quiz = quiz;
 		this.relationship = relationship;
 	}
 
@@ -48,20 +59,20 @@ public class Permission {
 		this.id = id;
 	}
 
-	public User getU_id() {
-		return u_id;
+	public User getUser() {
+		return user;
 	}
 
-	public void setU_id(User u_id) {
-		this.u_id = u_id;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
-	public Quiz getQ_id() {
-		return q_id;
+	public Quiz getQuiz() {
+		return quiz;
 	}
 
-	public void setQ_id(Quiz q_id) {
-		this.q_id = q_id;
+	public void setQuiz(Quiz quiz) {
+		this.quiz = quiz;
 	}
 
 	public PermissionType getRelationship() {
@@ -71,14 +82,6 @@ public class Permission {
 	public void setRelationship(PermissionType relationship) {
 		this.relationship = relationship;
 	}
-
-	@Override
-	public String toString() {
-		return "Permission [id=" + id + ", u_id=" + u_id + ", q_id=" + q_id + ", relationship=" + relationship + "]";
-	}
-	
-	
-	
 	
 	
 	

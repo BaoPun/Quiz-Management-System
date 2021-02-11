@@ -44,7 +44,7 @@ public class MainController {
 //		user2.setPasswordHash("");
 //		userRepo.addThing(user2);
 		System.out.println(user.getId());
-		System.out.println(userRepo.getQuiz(4));
+		//System.out.println(userRepo.getQuiz(4));
 		System.out.println(System.identityHashCode(user));
 		System.out.println(System.identityHashCode(user.getTeacher()));
 		System.out.println(System.identityHashCode(user.getTeacher().getTeacher()));

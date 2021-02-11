@@ -1,42 +1,38 @@
 package com.project2.demo.beans;
 
-import com.project2.demo.beans.User;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
 
 @Entity
 @Table(name="quizzes")
 public class Quiz {
-
+	
+	
 	@Id
-	@Column(name="ID",updatable=false)
+	@SequenceGenerator(name = "quiz_id_generator", allocationSize = 1)
+	@GeneratedValue(generator = "quiz_id_generator", strategy = GenerationType.SEQUENCE)
+	@Column(name = "quizId", updatable=false)
 	private int id;
 	
-	@Column(name="USERID")
-	private int userid;
-	
-	@Column(name="NAME")
+
+	@Column(name="name")
 	private String name;
+	
+	@ManyToOne						// One user can manage multiple different quizzes
+									// while a quiz can only be taken by one person
+	@JoinColumn(name = "userId")
+	private User user;
 
-	public Quiz() {
-		super();
-	}
+	public Quiz() {}
 
-	public Quiz(int id, int userid, String name) {
-		super();
-		this.id = id;
-		this.userid = userid;
-		this.name = name;
-	}
-
-	public Quiz(int userid, String name) {
-		super();
-		this.userid = userid;
-		this.name = name;
-	}
 
 	public int getId() {
 		return id;
@@ -46,12 +42,12 @@ public class Quiz {
 		this.id = id;
 	}
 
-	public int getUserid() {
-		return userid;
+	public User getUserid() {
+		return user;
 	}
 
-	public void setUserid(int userid) {
-		this.userid = userid;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public String getName() {
@@ -64,10 +60,8 @@ public class Quiz {
 
 	@Override
 	public String toString() {
-		return "Quiz [id=" + id + ", name=" + name + "]";
+		return "Quiz [id=" + id + ", name=" + name +  ", user=" + user + "]";
 	}
-	
-	
 	
 	
 }

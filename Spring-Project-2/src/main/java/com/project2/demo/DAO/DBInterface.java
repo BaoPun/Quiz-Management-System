@@ -17,7 +17,7 @@ public interface DBInterface {
 	public List<Progress> getAllProgress();
 	public Progress updateProgress(Progress change);
 	public boolean deleteProgress(int id);
-		
+	
 	//Quizzes Interfaces
 	public Quiz addQuiz(Quiz a);
 	public Quiz getQuiz(int id);
@@ -25,12 +25,11 @@ public interface DBInterface {
 	public Quiz updateQuiz(Quiz change);
 	public boolean deleteQuiz(int id);
 		
-		
 	//User Interfaces
 	public User addUser(User a);
 	public User getUser(int id);
 	public User getUserByName(String user);
-	public List<User> getAllUser();
+	public List<User> getAllUsers();
 	public User updateUser(User change);
 	public boolean deleteUser(int id);
 	
@@ -40,8 +39,8 @@ public interface DBInterface {
 	public List<Permission> getAllPermission();
 	public Permission updatePermission(Permission change);
 	public boolean deletePermission(int id);
-	
 		
+	
 	//Questions
 	public Question addQuestion(Question a);
 	public Question getQuestion(int id);
@@ -49,12 +48,12 @@ public interface DBInterface {
 	public Question updateQuestion(Question change);
 	public boolean deleteQuestion(int id);
 	
+	
 	//Answers
 	public Answer addAnswer(Answer a);
 	public Answer getAnswer(int id);
 	public Answer updateAnswer(Answer change);
 	public boolean deleteAnswer(int id);
 	public List<Answer> getAllAnswer();
-
 	
 }

@@ -23,7 +23,9 @@ import com.project2.demo.beans.User;
 public class UserRepository implements DBInterface {
 	@PersistenceContext
 	private EntityManager entityManager;
-
+	
+	// Question
+	/////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public Question addQuestion(Question a) {
 		entityManager.persist(a);
@@ -32,8 +34,7 @@ public class UserRepository implements DBInterface {
 
 	@Override
 	public Question getQuestion(int id) {
-		Question q=(Question) entityManager.find(Question.class, id);
-		return q;
+		return (Question) entityManager.find(Question.class, id);
 	}
 
 	@Override
@@ -58,7 +59,10 @@ public class UserRepository implements DBInterface {
 		return false;
 	
 	}
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	
+	// Answer
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public Answer addAnswer(Answer a) {
 		entityManager.persist(a);
@@ -93,7 +97,9 @@ public class UserRepository implements DBInterface {
 		return false;
 	
 	}
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	// Progress
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public Progress addProgress(Progress a) {
 		entityManager.persist(a);
@@ -128,7 +134,9 @@ public class UserRepository implements DBInterface {
 		return false;
 	
 	}
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	// Quiz
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public Quiz addQuiz(Quiz a) {
 		entityManager.persist(a);
@@ -163,7 +171,10 @@ public class UserRepository implements DBInterface {
 		return false;
 	
 	}
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	
+	// User
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public User addUser(User a) {
 		entityManager.persist(a);
@@ -175,10 +186,16 @@ public class UserRepository implements DBInterface {
 		User response = (User) entityManager.find(User.class, id);
 		return response;
 	}
+	
+	@Override
+	public User getUserByName(String name) {
+		TypedQuery<User> tq = entityManager.createQuery("from User WHERE username=?1",User.class);
+		return tq.setParameter(1, name).getSingleResult();
+	}
 
 	@Override
-	public List<User> getAllUser() {
-		return entityManager.createQuery("from Users").getResultList();
+	public List<User> getAllUsers() {
+		return (List<User>)entityManager.createQuery("from User").getResultList();
 	}
 
 	@Override
@@ -198,7 +215,9 @@ public class UserRepository implements DBInterface {
 		return false;
 	
 	}
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	// Permission
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public Permission addPermission(Permission a) {
 		entityManager.persist(a);
@@ -233,13 +252,6 @@ public class UserRepository implements DBInterface {
 		return false;
 	
 	}
-
-	@Override
-	public User getUserByName(String name) {
-		TypedQuery<User> tq = entityManager.createQuery("from User WHERE username=?1",User.class);
-		return tq.setParameter(1, name).getSingleResult();
-	}
-	
 	
 
 }

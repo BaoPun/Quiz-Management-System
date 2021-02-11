@@ -5,7 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -13,71 +15,104 @@ import javax.persistence.Table;
 public class Question {
 
 	@Id
-	@Column(updatable=false)
-	@GeneratedValue
+	@SequenceGenerator(name = "question_id_generator", allocationSize = 1)
+	@GeneratedValue(generator = "question_id_generator", strategy = GenerationType.SEQUENCE)
+	@Column(name = "questionId", updatable=false)
 	private int id;
 	
-	private int quizid;
+	@ManyToOne							// A single quiz contains multiple questions
+										// while a question belongs to only 1 quiz
+	@JoinColumn(name = "quizId")
+	private Quiz quiz;
 	
+	@Column(name = "questiontype")
 	private String questionType;
 	
+	@Column(name = "description")
 	private String description;
 
 	public Question() {
 		super();
 	}
 
-	public Question(int q_id, int quizid, String q_type, String q_desc) {
+	public Question(int q_id, Quiz quiz, String q_type, String q_desc) {
 		super();
 		this.id = q_id;
-		this.quizid = quizid;
+		this.quiz = quiz;
 		this.questionType = q_type;
 		this.description = q_desc;
 	}
 
-	public Question(int quizid, String q_type, String q_desc) {
+	public Question(Quiz quiz, String q_type, String q_desc) {
 		super();
-		this.quizid = quizid;
+		this.quiz = quiz;
 		this.questionType = q_type;
 		this.description = q_desc;
 	}
 
-	public int getQ_id() {
+	/**
+	 * @return the id
+	 */
+	public int getId() {
 		return id;
 	}
 
-	public void setQ_id(int q_id) {
-		this.id = q_id;
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public int getQuizid() {
-		return quizid;
+	/**
+	 * @return the quiz
+	 */
+	public Quiz getQuiz() {
+		return quiz;
 	}
 
-	public void setQuizid(int quizid) {
-		this.quizid = quizid;
+	/**
+	 * @param quiz the quiz to set
+	 */
+	public void setQuiz(Quiz quiz) {
+		this.quiz = quiz;
 	}
 
-	public String getQ_type() {
+	/**
+	 * @return the questionType
+	 */
+	public String getQuestionType() {
 		return questionType;
 	}
 
-	public void setQ_type(String q_type) {
-		this.questionType = q_type;
+	/**
+	 * @param questionType the questionType to set
+	 */
+	public void setQuestionType(String questionType) {
+		this.questionType = questionType;
 	}
 
-	public String getQ_desc() {
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
 		return description;
 	}
 
-	public void setQ_desc(String q_desc) {
-		this.description = q_desc;
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@Override
 	public String toString() {
-		return "Questions [q_id=" + id + ", quizid=" + quizid + ", q_type=" + questionType + ", q_desc=" + description + "]";
+		return "Question [id=" + id + ", quiz=" + quiz + ", questionType=" + questionType + ", description="
+				+ description + "]";
 	}
+
+	
 	
 	
 	

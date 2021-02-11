@@ -3,32 +3,43 @@ package com.project2.demo.beans;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 @Entity
 @Table(name="progress")
-public class Progress
-{
+public class Progress {
+	
+	
 	@Id
-	@GeneratedValue
-	@Column(name = "id")
+	@SequenceGenerator(name = "progress_id_generator", allocationSize = 1)
+	@GeneratedValue(generator = "progress_id_generator", strategy = GenerationType.SEQUENCE)
+	@Column(name = "progressId", updatable = false)
 	private int id;
 	
-	@Column(name = "userid")
-	private int userId;
+	@ManyToOne
+	@JoinColumn(name = "userId")
+	private User user;
 	
-	@Column(name = "answerid")
-	private int answerId;
+	
+	@ManyToOne
+	@JoinColumn(name = "answerId")
+	private Answer answer;
 
 	public Progress() {}
 	
-	public Progress(int id, int userId, int answerId) {
+	public Progress(int id, User user, Answer answer) {
 		super();
 		this.id = id;
-		this.userId = userId;
-		this.answerId = answerId;
+		this.user = user;
+		this.answer = answer;
 	}
 
 	public int getId() {
@@ -39,21 +50,28 @@ public class Progress
 		this.id = id;
 	}
 
-	public int getUserId() {
-		return userId;
+	public User getUser() {
+		return user;
 	}
 
-	public void setUserId(int userId) {
-		this.userId = userId;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
-	public int getAnswerId() {
-		return answerId;
+	public Answer getAnswer() {
+		return answer;
 	}
 
-	public void setAnswerId(int answerId) {
-		this.answerId = answerId;
+	public void setAnswer(Answer answer) {
+		this.answer = answer;
 	}
+
+	@Override
+	public String toString() {
+		return "Progress [id=" + id + ", user=" + user + ", answer=" + answer + "]";
+	}
+	
+	
 	
 	
 }
