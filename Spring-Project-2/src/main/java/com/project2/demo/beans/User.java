@@ -52,6 +52,17 @@ public class User {
 		
 		
 	}
+	
+	
+
+	public User(int id, String username, String passwordHash, UserType role) {
+		this.id = id;
+		this.username = username;
+		this.passwordHash = passwordHash;
+		this.role = role;
+	}
+
+
 
 	public int getId() {
 		return id;

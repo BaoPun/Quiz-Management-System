@@ -15,6 +15,7 @@ import com.project2.demo.beans.Progress;
 import com.project2.demo.beans.Question;
 import com.project2.demo.beans.Quiz;
 import com.project2.demo.beans.User;
+import com.project2.demo.util.Password;
 
 
 
@@ -176,9 +177,12 @@ public class UserRepository implements DBInterface {
 	// User
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@Override
-	public User addUser(User a) {
-		entityManager.persist(a);
-		return a;
+	public boolean addUser(User a) {
+		entityManager.createNativeQuery("INSERT INTO Users VALUES (?1, ?2, ?3, ?4, ?5)").setParameter(1, a.getId())
+		.setParameter(2, a.getUsername()).setParameter(3, Password.hash(a.getPasswordHash()))
+		.setParameter(4, 4).setParameter(5, a.getRole().STUDENT.toString()).executeUpdate();
+		
+		return true;
 	}
 
 	@Override

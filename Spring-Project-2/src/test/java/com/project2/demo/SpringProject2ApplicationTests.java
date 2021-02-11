@@ -24,17 +24,6 @@ class SpringProject2ApplicationTests {
 	}
 	
 	
-	@Test
-	void testGetUserByName() {
-		User userTest = userRepoTests.getUserByName("alice");
-		Assertions.assertNotNull(userTest);
-	}
-	
-	@Test
-	void testGetAllUsers() {
-		List<User> allUsersTest = userRepoTests.getAllUsers();
-		Assertions.assertTrue(allUsersTest.size() > 0);
-	}
 	
 	@Test
 	void testGetQuestion() {

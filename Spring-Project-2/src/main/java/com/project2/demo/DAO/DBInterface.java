@@ -26,7 +26,7 @@ public interface DBInterface {
 	public boolean deleteQuiz(int id);
 		
 	//User Interfaces
-	public User addUser(User a);
+	public boolean addUser(User a);
 	public User getUser(int id);
 	public User getUserByName(String user);
 	public List<User> getAllUsers();
