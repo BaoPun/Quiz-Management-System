@@ -14,9 +14,8 @@
 <div class="mainContainer">
 
 	<div class="studentList">
-		<div class="list-group">
-			<a href="#" class="list-group-item list-group-item-action active">Student A</a>
-			<a href="#" class="list-group-item list-group-item-action">Student B</a>
+		<div class="list-group" th:each="student: ${students}">
+			<a th:text="${student}" href="#" class="list-group-item list-group-item-action"></a>
 		</div>
 	</div>
 	

@@ -1,5 +1,8 @@
 package com.project2.demo.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +33,11 @@ public class SecureController {
 
 	@GetMapping("/teacher")
 	public String teacher_page(Model model) {
+		List<String> studentList=new ArrayList<String>();
+		studentList.add("alice");
+		studentList.add("bob");
+		studentList.add("charlie");
+		model.addAttribute("students", studentList);
 		return "s/teacher";
 	}
 }
