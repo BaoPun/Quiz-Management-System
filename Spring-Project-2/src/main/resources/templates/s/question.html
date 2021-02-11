@@ -1,10 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+    .left {
+        position: absolute;
+        left: 0px;
+    }
+    .right {
+        position: absolute;
+        right: 0px;
+    }
+    .center {
+        display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column
+    }
+</style>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Quiz [TITLEHERE]</title>
 </head>
 <body>
-
+Quiz [TITLEHERE]
+<div class="center" id="questiondiv">
+    <h2>QUESTION TEXT</h2><br>
+    <div class="center" id="answerdiv">
+    <button>ANSWER 1</button><br>
+    <button>ANSWER 2</button><br>
+    <button>ANSWER 2</button><br>
+    <button>ANSWER 3</button><br>
+</div>
+</div>
+<div>
+<button class="left">PREVIOUS</button><br>
+<button class="right">NEXT</button>
+</div>
 </body>
 </html>
