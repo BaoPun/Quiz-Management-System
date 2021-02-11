@@ -1,10 +1,54 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+	<div th:replace="/s/fragments.html :: headerfiles"></div>
+	<meta charset="ISO-8859-1">
+	<title>Teacher Administration Page</title>
+	<script src="/js/teacher.js"></script>
+	<link rel="stylesheet" href="/css/teacher.css">
 </head>
 <body>
+
+<div th:insert="/s/fragments.html :: navbar"></div>
+
+<div class="mainContainer">
+
+	<div class="studentList">
+		<div class="list-group">
+			<a href="#" class="list-group-item list-group-item-action active">Student A</a>
+			<a href="#" class="list-group-item list-group-item-action">Student B</a>
+		</div>
+	</div>
+	
+	<div class="quizList">
+		<div class="list-group">
+			<a href="#" class="list-group-item list-group-item-action active">Quiz A</a>
+			<a href="#" class="list-group-item list-group-item-action">Quiz B</a>
+		</div>
+	</div>
+	
+	<div class="quizResults">
+		<table class="quizTable">
+			<thead>
+				<tr>
+					<th scope="col">Attempt #</th>
+					<th scope="col">Score</th>
+					<th scope="col">Time spent</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>1</td>
+					<td>50%</td>
+					<td>3:00.00</td>
+				</tr>
+			</tbody>
+		
+		</table>
+	</div>
+
+
+</div>
 
 </body>
 </html>

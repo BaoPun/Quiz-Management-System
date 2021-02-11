@@ -1,0 +1,17 @@
+@charset "ISO-8859-1";
+
+.mainContainer {
+	margin: 20px;
+	width: 800px;
+	display: grid;
+	grid-template-columns: 200px 100px auto;
+	gap: 20px 20px;
+}
+
+.studentList {
+	justify-self: end;
+}
+
+.quizTable {
+	width: 100%;
+}
