@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,6 +24,23 @@ public class SecondaryController {
 	
 	@Autowired
 	private UserRepository userRepo;
+	
+	@RequestMapping(value="/login/{username}/{password}", method = RequestMethod.GET, produces="application/json")
+    public User login_page(@PathVariable("username") String username, @PathVariable("password") String password) {
+
+        for (User u : userRepo.getAllUsers()) {
+            if (u.getUsername().equals(username)) {
+                if (u.getPasswordHash().equals(password)) {
+                    return u;
+                } else {
+                    System.out.println("Wrong password");
+                }
+            }
+
+        }
+
+        return null;
+    }
 	
 	@GetMapping(value="/s/getQuizzes", produces="application/json")
 	public List<Quiz> getQuizzes(@RequestParam String student) {
