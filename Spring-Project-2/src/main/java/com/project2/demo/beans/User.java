@@ -30,30 +30,39 @@ public class User {
 	
 	@Column(name="username")
 	private String username;
-	
 
 	@Column(name="passwordhash")
 	private String passwordHash;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(length=10,name="role")
+	@Column(name="role")
 	private UserType role;
 	
-	@ManyToOne(optional=false)
-	@JoinColumn(name="teacher")
-	@Autowired
-	private User teacher;
+	@Column(name="teacher")
+	private int teacherId;
 	
+	/*
 	@OneToMany(mappedBy="teacher")
-	@Autowired
 	private Set<User> students;
+	*/
 	
-	public User() {
-		
-		
+	public User() {}
+
+	public User(String username, String passwordHash, UserType role) {
+		this.username = username;
+		this.passwordHash = passwordHash;
+		this.role = role;
 	}
-	
-	
+
+
+	public User(String username, String passwordHash, UserType role, int teacherId) {
+		this.username = username;
+		this.passwordHash = passwordHash;
+		this.role = role;
+		this.teacherId = teacherId;
+	}
+
+
 
 	public User(int id, String username, String passwordHash, UserType role) {
 		this.id = id;
@@ -96,13 +105,14 @@ public class User {
 		this.role = role;
 	}
 
-	public User getTeacher() {
-		return teacher;
+	public int getTeacherId() {
+		return teacherId;
 	}
 
-	public void setTeacher(User teacher) {
-		this.teacher = teacher;
+	public void setTeacherId(int teacherId) {
+		this.teacherId = teacherId;
 	}
+	
 
 	@Override
 	public int hashCode() {
@@ -111,7 +121,7 @@ public class User {
 		result = prime * result + id;
 		result = prime * result + ((passwordHash == null) ? 0 : passwordHash.hashCode());
 		result = prime * result + ((role == null) ? 0 : role.hashCode());
-		result = prime * result + ((teacher == null) ? 0 : teacher.hashCode());
+		//result = prime * result + ((teacherId == null) ? 0 : teacher.hashCode());
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
@@ -134,12 +144,12 @@ public class User {
 			return false;
 		if (role != other.role)
 			return false;
-		if (teacher == null) {
+		/*if (teacher == null) {
 			if (other.teacher != null)
 				return false;
 		} else if (!teacher.equals(other.teacher))
 			return false;
-		if (username == null) {
+		*/if (username == null) {
 			if (other.username != null)
 				return false;
 		} else if (!username.equals(other.username))
@@ -150,10 +160,7 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", passwordHash=" + passwordHash + ", role=" + role
-				+ ", teacher=" + teacher + "]";
+				+ ", teacherId=" + teacherId + "]";
 	}
-
-
-	
 	
 }

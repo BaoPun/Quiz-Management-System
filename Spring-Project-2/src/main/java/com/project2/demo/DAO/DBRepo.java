@@ -9,7 +9,7 @@ import com.project2.demo.beans.Question;
 import com.project2.demo.beans.Quiz;
 import com.project2.demo.beans.User;
 
-public interface DBInterface {
+public interface DBRepo {
 
 	// Progress
 	public Progress addProgress(Progress a);
@@ -26,12 +26,13 @@ public interface DBInterface {
 	public boolean deleteQuiz(int id);
 		
 	//User Interfaces
-	public boolean addUser(User a);
+	public int addUser(User a);
 	public User getUser(int id);
 	public User getUserByName(String user);
 	public List<User> getAllUsers();
-	public User updateUser(User change);
+	public boolean updateUser(User change);
 	public boolean deleteUser(int id);
+	public List<User> getAllStudents(int id);
 	
 	//Permissions
 	public Permission addPermission(Permission a);

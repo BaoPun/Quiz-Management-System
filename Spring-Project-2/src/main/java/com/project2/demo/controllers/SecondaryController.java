@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project2.demo.DAO.UserRepository;
+import com.project2.demo.DAO.DBRepoImpl;
 import com.project2.demo.beans.User;
 
 @RestController
@@ -17,7 +17,7 @@ public class SecondaryController {
 	}
 	
 	@Autowired
-	private UserRepository userRepo;
+	private DBRepoImpl userRepo;
 	
 	@GetMapping(value="/thing", produces = "application/json")
 	public User gettest() {
@@ -36,9 +36,9 @@ public class SecondaryController {
 		System.out.println(user.getId());
 		//System.out.println(userRepo.getQuiz(4));
 		System.out.println(System.identityHashCode(user));
-		System.out.println(System.identityHashCode(user.getTeacher()));
-		System.out.println(System.identityHashCode(user.getTeacher().getTeacher()));
-		System.out.println(System.identityHashCode(user.getTeacher().getTeacher().getTeacher()));
+		//System.out.println(System.identityHashCode(user.getTeacher()));
+		//System.out.println(System.identityHashCode(user.getTeacher().getTeacher()));
+		//System.out.println(System.identityHashCode(user.getTeacher().getTeacher().getTeacher()));
 		return null;
 	}
 
