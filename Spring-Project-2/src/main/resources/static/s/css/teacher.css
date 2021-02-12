@@ -12,9 +12,11 @@
 	justify-self: end;
 }
 
-.student-list-item {
+.list-item {
 	margin-bottom: 20px;
 }
+
+
 
 .quiz-table {
 	width: 100%;

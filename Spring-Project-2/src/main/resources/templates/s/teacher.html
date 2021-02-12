@@ -4,8 +4,8 @@
 	<div th:replace="/s/fragments.html :: headerfiles"></div>
 	<meta charset="ISO-8859-1">
 	<title>Teacher Administration Page</title>
-	<script src="/js/teacher.js"></script>
-	<link rel="stylesheet" href="/css/teacher.css">
+	<script src="/s/js/teacher.js"></script>
+	<link rel="stylesheet" href="/s/css/teacher.css">
 </head>
 <body>
 
@@ -15,16 +15,14 @@
 
 	<div class="student-list">
 		<div class="list-group" th:each="student: ${students}">
-		<div class="student-list-item" th:attr="student=${student}" >
+		<div class="list-item student-list-item" th:attr="student=${student}" >
 			<a th:text="${student}" href="#" class="list-group-item list-group-item-action"></a>
 		</div>
 		</div>
 	</div>
 	
 	<div class="quiz-list">
-		<div class="list-group">
-			<a href="#" class="list-group-item list-group-item-action active">Quiz A</a>
-			<a href="#" class="list-group-item list-group-item-action">Quiz B</a>
+		<div class="list-group" id="quizListGroup">
 		</div>
 	</div>
 	

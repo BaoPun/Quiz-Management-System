@@ -49,7 +49,12 @@ public class SecondaryController {
 		foo.setId(3);
 		foo.setName("Quiz A");
 		foo.setUser(null);
+		Quiz foo2 = new Quiz();
+		foo2.setId(3);
+		foo2.setName("Quiz B");
+		foo2.setUser(null);
 		retval.add(foo);
+		retval.add(foo2);
 		return retval;
 	}
 	
