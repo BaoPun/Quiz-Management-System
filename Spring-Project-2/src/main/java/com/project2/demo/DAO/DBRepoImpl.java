@@ -134,6 +134,80 @@ public class DBRepoImpl implements DBRepo {
 		
 		return false;
 	}
+	
+	// Quiz
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	@Override
+	public int addQuiz(Quiz a) {
+
+		Session session = sf.openSession();
+		int id = sf.createEntityManager().createNativeQuery("SELECT quiz_id_generator.nextval FROM DUAL").getFirstResult();
+		a.setId(id);
+		
+		//DML statements use transactions
+		try {
+			session.beginTransaction();
+			id = Integer.parseInt(session.save(a).toString());
+			session.getTransaction().commit();
+		} 
+		catch (HibernateException e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+		} 
+		finally {
+			session.close();
+		}
+		
+		return id;
+	}
+
+	@Override
+	public Quiz getQuiz(int id) {
+		Quiz response = (Quiz) sf.createEntityManager().find(Quiz.class, id);
+		return response;
+	}
+
+	@Override
+	public List<Quiz> getAllQuizzes() {
+		return sf.createEntityManager().createQuery("from Quizzes").getResultList();
+	}
+
+	@Override
+	public boolean updateQuiz(Quiz change) {
+		try {
+			sf.createEntityManager().merge(change);
+			return true;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
+	public boolean deleteQuiz(int id) {
+		// This goes in every single method
+		Session session = sf.openSession();
+		Transaction transaction = null;
+		
+		try {
+			transaction = session.beginTransaction();	
+			session.delete(session.get(Quiz.class, id));
+			transaction.commit();
+			return true;
+		}
+		catch(HibernateException e) {
+			e.printStackTrace();
+			transaction.rollback();
+		}
+		finally {
+			session.close();
+		}
+		
+		return false;
+	
+	}
+	
 		
 	
 	// Question
@@ -247,42 +321,6 @@ public class DBRepoImpl implements DBRepo {
 	
 	}
 	
-	// Quiz
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	@Override
-	public Quiz addQuiz(Quiz a) {
-		sf.createEntityManager().persist(a);
-		return a;
-	}
-
-	@Override
-	public Quiz getQuiz(int id) {
-		Quiz response = (Quiz) sf.createEntityManager().find(Quiz.class, id);
-		return response;
-	}
-
-	@Override
-	public List<Quiz> getAllQuiz() {
-		return sf.createEntityManager().createQuery("from Quizzes").getResultList();
-	}
-
-	@Override
-	public Quiz updateQuiz(Quiz change) {
-		sf.createEntityManager().merge(change);
-		return change;
-	}
-
-	@Override
-	public boolean deleteQuiz(int id) {
-		Quiz response = (Quiz) sf.createEntityManager().find(Quiz.class, id);
-		if (sf.createEntityManager().contains(response)) {
-			sf.createEntityManager().remove(response);
-			return true;
-		} 
-
-		return false;
-	
-	}
 	
 	
 	

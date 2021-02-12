@@ -10,21 +10,7 @@ import com.project2.demo.beans.Quiz;
 import com.project2.demo.beans.User;
 
 public interface DBRepo {
-
-	// Progress
-	public Progress addProgress(Progress a);
-	public Progress getProgress(int id);
-	public List<Progress> getAllProgress();
-	public Progress updateProgress(Progress change);
-	public boolean deleteProgress(int id);
 	
-	//Quizzes Interfaces
-	public Quiz addQuiz(Quiz a);
-	public Quiz getQuiz(int id);
-	public List<Quiz> getAllQuiz();
-	public Quiz updateQuiz(Quiz change);
-	public boolean deleteQuiz(int id);
-		
 	//User Interfaces
 	public int addUser(User a);
 	public User getUser(int id);
@@ -33,6 +19,14 @@ public interface DBRepo {
 	public boolean updateUser(User change);
 	public boolean deleteUser(int id);
 	public List<User> getAllStudents(int id);
+	
+	//Quizzes Interfaces
+	public int addQuiz(Quiz a);
+	public Quiz getQuiz(int id);
+	public List<Quiz> getAllQuizzes();
+	public boolean updateQuiz(Quiz change);
+	public boolean deleteQuiz(int id);
+
 	
 	//Permissions
 	public Permission addPermission(Permission a);
@@ -56,5 +50,12 @@ public interface DBRepo {
 	public Answer updateAnswer(Answer change);
 	public boolean deleteAnswer(int id);
 	public List<Answer> getAllAnswer();
+	
+	// Progress
+	public Progress addProgress(Progress a);
+	public Progress getProgress(int id);
+	public List<Progress> getAllProgress();
+	public Progress updateProgress(Progress change);
+	public boolean deleteProgress(int id);
 	
 }
