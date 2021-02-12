@@ -11,23 +11,25 @@
 
 <div th:insert="/s/fragments.html :: navbar"></div>
 
-<div class="mainContainer">
+<div class="main-container">
 
-	<div class="studentList">
+	<div class="student-list">
 		<div class="list-group" th:each="student: ${students}">
+		<div class="student-list-item" th:attr="student=${student}" >
 			<a th:text="${student}" href="#" class="list-group-item list-group-item-action"></a>
+		</div>
 		</div>
 	</div>
 	
-	<div class="quizList">
+	<div class="quiz-list">
 		<div class="list-group">
 			<a href="#" class="list-group-item list-group-item-action active">Quiz A</a>
 			<a href="#" class="list-group-item list-group-item-action">Quiz B</a>
 		</div>
 	</div>
 	
-	<div class="quizResults">
-		<table class="quizTable">
+	<div class="quiz-results">
+		<table class="quiz-table">
 			<thead>
 				<tr>
 					<th scope="col">Attempt #</th>

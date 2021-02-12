@@ -1,12 +1,15 @@
 package com.project2.demo.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project2.demo.DAO.UserRepository;
+import com.project2.demo.beans.Quiz;
 import com.project2.demo.beans.User;
 
 @RestController
@@ -18,6 +21,17 @@ public class SecondaryController {
 	
 	@Autowired
 	private UserRepository userRepo;
+	
+	@GetMapping(value="/s/getQuizzes", produces="application/json")
+	public List<Quiz> getQuizzes(@RequestParam String student) {
+		List<Quiz> retval = new ArrayList<Quiz>();
+		Quiz foo = new Quiz();
+		foo.setId(3);
+		foo.setName("Quiz A");
+		foo.setUser(null);
+		retval.add(foo);
+		return retval;
+	}
 	
 	@GetMapping(value="/thing", produces = "application/json")
 	public User gettest() {

@@ -30,6 +30,15 @@ public class SecureController {
 	public String quiz_selector_page(Model model) {
 		return "s/quiz_selector";
 	}
+	
+	public class Foo {
+		public String text;
+		public String otherText;
+		public Foo(String text,String otherText) {
+			this.text=text;
+			this.otherText=otherText;
+		}
+	}
 
 	@GetMapping("/teacher")
 	public String teacher_page(Model model) {

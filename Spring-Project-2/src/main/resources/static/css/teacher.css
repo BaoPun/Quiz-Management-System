@@ -1,6 +1,6 @@
 @charset "ISO-8859-1";
 
-.mainContainer {
+.main-container {
 	margin: 20px;
 	width: 800px;
 	display: grid;
@@ -8,10 +8,14 @@
 	gap: 20px 20px;
 }
 
-.studentList {
+.student-list {
 	justify-self: end;
 }
 
-.quizTable {
+.student-list-item {
+	margin-bottom: 20px;
+}
+
+.quiz-table {
 	width: 100%;
 }
