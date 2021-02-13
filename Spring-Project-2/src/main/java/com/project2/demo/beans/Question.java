@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="questions")
-public class Question {
+public class Question implements Comparable<Question> {
 
 	@Id
 	@SequenceGenerator(name = "question_id_generator", allocationSize = 1)
@@ -30,6 +30,9 @@ public class Question {
 	
 	@Column(name = "description")
 	private String description;
+	
+	@Column(name="ordering")
+	private int ordering;
 
 	public Question() {
 		super();
@@ -110,6 +113,23 @@ public class Question {
 	public String toString() {
 		return "Question [id=" + id + ", quiz=" + quiz + ", questionType=" + questionType + ", description="
 				+ description + "]";
+	}
+
+	@Override
+	public int compareTo(Question o) {
+		if (this.id < o.id) {
+			return -1;
+		} else if (this.id > o.id) {
+			return 1;
+		} else {
+			if (this.ordering < o.ordering) {
+				return -1;
+			} else if (this.ordering > o.ordering) {
+				return 1;
+			} else {
+				return 0;
+			}
+		}
 	}
 
 	

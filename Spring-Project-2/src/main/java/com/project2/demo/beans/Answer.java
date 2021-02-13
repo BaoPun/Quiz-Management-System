@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="answers")
-public class Answer {
+public class Answer implements Comparable<Answer> {
 
 	
 	@Id
@@ -105,6 +105,24 @@ public class Answer {
 	public String toString() {
 		return "Answer [id=" + id + ", answerText=" + answerText + ", question=" + question + ", isCorrect=" + isCorrect
 				+ ", ordering=" + ordering + "]";
+	}
+
+
+	@Override
+	public int compareTo(Answer o) {
+		if (this.id < o.id) {
+			return -1;
+		} else if (this.id > o.id) {
+			return 1;
+		} else {
+			if (this.ordering < o.ordering) {
+				return -1;
+			} else if (this.ordering > o.ordering) {
+				return 1;
+			} else {
+				return 0;
+			}
+		}
 	}
 
 	
