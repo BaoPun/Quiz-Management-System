@@ -39,15 +39,21 @@ public class User {
 	@Column(length=10,name="role")
 	private UserType role;
 	
-	@ManyToOne(optional=false)
+	@ManyToOne(optional=true)
 	@JoinColumn(name="teacher")
-	@Autowired
 	private User teacher;
 	
 	@OneToMany(mappedBy="teacher")
-	@Autowired
 	private Set<User> students;
 	
+	public Set<User> getStudents() {
+		return students;
+	}
+
+	public void setStudents(Set<User> students) {
+		this.students = students;
+	}
+
 	public User() {
 		
 		
@@ -100,7 +106,6 @@ public class User {
 		result = prime * result + id;
 		result = prime * result + ((passwordHash == null) ? 0 : passwordHash.hashCode());
 		result = prime * result + ((role == null) ? 0 : role.hashCode());
-		result = prime * result + ((teacher == null) ? 0 : teacher.hashCode());
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
@@ -123,11 +128,6 @@ public class User {
 			return false;
 		if (role != other.role)
 			return false;
-		if (teacher == null) {
-			if (other.teacher != null)
-				return false;
-		} else if (!teacher.equals(other.teacher))
-			return false;
 		if (username == null) {
 			if (other.username != null)
 				return false;
@@ -135,11 +135,11 @@ public class User {
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", passwordHash=" + passwordHash + ", role=" + role
-				+ ", teacher=" + teacher + "]";
+				+ ", teacher=" + (teacher==null?null:teacher.getId()) + "]";
 	}
 
 
