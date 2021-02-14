@@ -10,8 +10,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 @Entity
-@Table(name="answers")
+@Table(name="Answers")
 public class Answer {
 
 	
@@ -26,7 +28,7 @@ public class Answer {
 	
 	@ManyToOne							// a question contains multiple possible answers
 										// and a specific answer belongs to one question
-	@JoinColumn(name = "questionid")
+	@JoinColumn(name = "questionId")
 	private Question question;
 	
 	
@@ -43,14 +45,23 @@ public class Answer {
 	public Answer() {}
 
 
-	public Answer(int id, String answerText, Question question, int isCorrect, int ordering) {
-		super();
+	public Answer(int id, Question question, String answerText, int isCorrect, int ordering) {
 		this.id = id;
-		this.answerText = answerText;
 		this.question = question;
+		this.answerText = answerText;
 		this.isCorrect = isCorrect;
 		this.ordering = ordering;
 	}
+	
+	
+
+	public Answer(Question question, String answerText, int isCorrect, int ordering) {
+		this.question = question;
+		this.answerText = answerText;
+		this.isCorrect = isCorrect;
+		this.ordering = ordering;
+	}
+
 
 	public int getId() {
 		return id;
@@ -107,8 +118,6 @@ public class Answer {
 				+ ", ordering=" + ordering + "]";
 	}
 
-	
-	
 	
 	
 }

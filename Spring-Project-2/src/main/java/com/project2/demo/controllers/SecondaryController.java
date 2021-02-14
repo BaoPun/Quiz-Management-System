@@ -21,7 +21,7 @@ public class SecondaryController {
 	
 	@GetMapping(value="/thing", produces = "application/json")
 	public User gettest() {
-		User user = userRepo.getUserByName("bim");
+		User user = userRepo.getUser("bim");
 		List<User> users = userRepo.getAllUsers();
 		
 		for (User u : users) {

@@ -13,9 +13,9 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.project2.demo.DAO.DBRepoImpl;
 import com.project2.demo.beans.User;
 import com.project2.demo.beans.UserType;
+import com.project2.demo.services.DBService;
 import com.project2.demo.util.Password;
 
 @SpringBootTest
@@ -25,7 +25,7 @@ import com.project2.demo.util.Password;
 class UserTests {
 	
 	@Autowired
-	private DBRepoImpl userRepoTests;
+	private DBService userServiceTests;
 	
 	private int newlyCreatedId;
 	
@@ -35,34 +35,35 @@ class UserTests {
 	void testAddStudent() {
 		
 		// Add a sample User student whose teacher has an id of 8
-		newlyCreatedId = userRepoTests.addUser(new User("Karen", Password.hash("test123"), UserType.STUDENT, 8));
+		newlyCreatedId = userServiceTests.addUser(new User("Karen", Password.hash("test123"), UserType.STUDENT, 8));
 		
 		// Then see if we can find that user
-		User foundTestUser = userRepoTests.getUser(newlyCreatedId);
-		System.out.println(foundTestUser);
+		User foundTestUser = userServiceTests.getUser(newlyCreatedId);
 		Assertions.assertNotNull(foundTestUser);
 	}
 	
 	// Test out the retrieval of a User given their id
 	@Test
 	void testGetUser() {
-		User userTest = userRepoTests.getUser(newlyCreatedId);
+		User userTest = userServiceTests.getUser(newlyCreatedId);
+		System.out.println("Found user from testGetUser: " + userTest);
 		Assertions.assertNotNull(userTest);
 	}
 
 	// Same as above, but with their name
 	@Test
 	void testGetUserByName() {
-		User userTest = userRepoTests.getUserByName("Karen");
+		User userTest = userServiceTests.getUser("Karen");
 		if(userTest == null)
-			userTest = userRepoTests.getUserByName("AYAYA Clap");
+			userTest = userServiceTests.getUser("AYAYA Clap");
+		System.out.println("Found user from testGetUser: " + userTest);
 		Assertions.assertNotNull(userTest);
 	}
 	
 	// Retrieve every single User
 	@Test
 	void testGetAllUsers() {
-		List<User> allUsersTest = userRepoTests.getAllUsers();
+		List<User> allUsersTest = userServiceTests.getAllUsers();
 		Assertions.assertTrue(allUsersTest.size() > 0);
 	}
 	
@@ -71,9 +72,11 @@ class UserTests {
 	void testGetAllStudents() {
 		
 		// Retrieve all students whose teacher has an id of 8
-		List<User> students = userRepoTests.getAllStudents(8);
+		List<User> students = userServiceTests.getAllStudents(8);
+		System.out.println("BEGIN");
 		for(int i = 0; i < students.size(); i++)
 			System.out.println(students.get(i));
+		System.out.println("END");
 		
 		Assertions.assertTrue(students.size() > 0);
 	}
@@ -83,13 +86,15 @@ class UserTests {
 	void testUpdateUser() {
 		
 		// Retrieve the student created via id
-		User userChangeTest = userRepoTests.getUser(newlyCreatedId);
+		User userChangeTest = userServiceTests.getUser(newlyCreatedId);
 		
 		// Alter their information: change their username
 		userChangeTest.setUsername("AYAYA Clap");
 		
+		userServiceTests.updateUser(userChangeTest);
+		
 		// And then see if the update was successful
-		Assertions.assertTrue(userRepoTests.updateUser(userChangeTest));
+		Assertions.assertTrue(userServiceTests.getUser("AYAYA Clap").getUsername().equals("AYAYA Clap"));
 	}
 	
 	// After every test passes, delete the User with the example id.
@@ -97,6 +102,6 @@ class UserTests {
 	void deleteAllTests() {
 		
 		// Delete the sample User from testAddUser
-		Assertions.assertTrue(userRepoTests.deleteUser(newlyCreatedId));
+		Assertions.assertTrue(userServiceTests.deleteUser(newlyCreatedId));
 	}
 }

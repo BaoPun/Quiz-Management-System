@@ -18,7 +18,7 @@ import javax.persistence.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
-@Table(name="users")
+@Table(name="Users")
 public class User {
 
 
@@ -159,7 +159,7 @@ public class User {
 	
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", passwordHash=" + passwordHash + ", role=" + role
+		return "User [id=" + id + ", username=" + username + /*", passwordHash=" + passwordHash + */", role=" + role
 				+ ", teacherId=" + teacherId + "]";
 	}
 	

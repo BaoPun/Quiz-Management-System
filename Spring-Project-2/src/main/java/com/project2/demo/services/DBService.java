@@ -1,4 +1,4 @@
-package com.project2.demo.DAO;
+package com.project2.demo.services;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import com.project2.demo.beans.Question;
 import com.project2.demo.beans.Quiz;
 import com.project2.demo.beans.User;
 
-public interface DBRepo{
+public interface DBService {
 	
 	//Users
 	int addUser(User a);
@@ -35,6 +35,7 @@ public interface DBRepo{
 	boolean updateQuestion(Question change);
 	boolean deleteQuestion(int id);
 	
+	
 	//Answers
 	int addAnswer(Answer a);
 	Answer getAnswer(int id);
@@ -43,18 +44,20 @@ public interface DBRepo{
 	boolean deleteAnswer(int id);
 	
 	
+	/*
 	//Permissions
 	int addPermission(Permission a);
 	Permission getPermission(int id);
 	List<Permission> getAllPermission();
-	boolean updatePermission(Permission change);
+	Permission updatePermission(Permission change);
 	boolean deletePermission(int id);
 	
 	// Progress
 	int addProgress(Progress a);
 	Progress getProgress(int id);
 	List<Progress> getAllProgress();
-	boolean updateProgress(Progress change);
+	Progress updateProgress(Progress change);
 	boolean deleteProgress(int id);
-	
+	*/
+		
 }

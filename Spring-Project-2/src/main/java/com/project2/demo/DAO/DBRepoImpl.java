@@ -18,6 +18,7 @@ import com.project2.demo.beans.Progress;
 import com.project2.demo.beans.Question;
 import com.project2.demo.beans.Quiz;
 import com.project2.demo.beans.User;
+import com.project2.demo.beans.UserType;
 
 
 @Component
@@ -61,7 +62,7 @@ public class DBRepoImpl implements DBRepo {
 	}
 	
 	@Override
-	public User getUserByName(String name) {
+	public User getUser(String name) {
 		try {
 			TypedQuery<User> tq = sf.createEntityManager().createQuery("from User WHERE lower(username)=?1",User.class);
 			return tq.setParameter(1, name.toLowerCase()).getSingleResult();
@@ -86,8 +87,9 @@ public class DBRepoImpl implements DBRepo {
 		try {
 			// "User" portion MUST match the Java object, NOT the table.
 			// :id is simply a ? variant
-			listOfStudents = session.createQuery("FROM User WHERE teacherId = :id")
-					.setParameter("id", id).getResultList();	
+			listOfStudents = session.createQuery("FROM User WHERE teacherId = :id AND role = :role")
+					.setParameter("id", id)
+					.setParameter("role", UserType.STUDENT).getResultList();	
 		}
 		catch(HibernateException e) {
 			e.printStackTrace();
@@ -101,13 +103,22 @@ public class DBRepoImpl implements DBRepo {
 
 	@Override
 	public boolean updateUser(User change) {
+		
+		Session session = sf.openSession();
+		Transaction transaction = null;
 		try {
-			sf.createEntityManager().merge(change);
+			transaction = session.beginTransaction();
+			session.update(change);
+			transaction.commit();
 			return true;
 		}
 		catch(Exception e) {
 			e.printStackTrace();
+			transaction.rollback();
 			return false;
+		}
+		finally {
+			session.close();
 		}
 	}
 
@@ -141,6 +152,8 @@ public class DBRepoImpl implements DBRepo {
 	public int addQuiz(Quiz a) {
 
 		Session session = sf.openSession();
+		
+		// First, obtain the next unique id from the quiz id sequence generator
 		int id = sf.createEntityManager().createNativeQuery("SELECT quiz_id_generator.nextval FROM DUAL").getFirstResult();
 		a.setId(id);
 		
@@ -163,24 +176,44 @@ public class DBRepoImpl implements DBRepo {
 
 	@Override
 	public Quiz getQuiz(int id) {
-		Quiz response = (Quiz) sf.createEntityManager().find(Quiz.class, id);
-		return response;
+		return (Quiz) sf.createEntityManager().find(Quiz.class, id);
+	}
+	
+	@Override
+	public Quiz getQuiz(String name) {
+		try {
+			TypedQuery<Quiz> tq = sf.createEntityManager().createQuery("from Quiz WHERE lower(name)=?1",Quiz.class);
+			return tq.setParameter(1, name.toLowerCase()).getSingleResult();
+		}
+		catch(Exception e) {
+			return null;
+		}
 	}
 
 	@Override
 	public List<Quiz> getAllQuizzes() {
-		return sf.createEntityManager().createQuery("from Quizzes").getResultList();
+		// With CreateQuery, Quiz is the Java object, not the table
+		return sf.createEntityManager().createQuery("from Quiz").getResultList();
 	}
 
 	@Override
 	public boolean updateQuiz(Quiz change) {
+		
+		Session session = sf.openSession();
+		Transaction transaction = null;
 		try {
-			sf.createEntityManager().merge(change);
+			transaction = session.beginTransaction();
+			session.update(change);
+			transaction.commit();
 			return true;
 		}
 		catch(Exception e) {
 			e.printStackTrace();
+			transaction.rollback();
 			return false;
+		}
+		finally {
+			session.close();
 		}
 	}
 
@@ -213,9 +246,28 @@ public class DBRepoImpl implements DBRepo {
 	// Question
 	/////////////////////////////////////////////////////////////////////////////////////////
 	@Override
-	public Question addQuestion(Question a) {
-		sf.createEntityManager().persist(a);
-		return a;
+	public int addQuestion(Question a) {
+		Session session = sf.openSession();
+		
+		// First, obtain the next unique id from the quiz id sequence generator
+		int id = sf.createEntityManager().createNativeQuery("SELECT question_id_generator.nextval FROM DUAL").getFirstResult();
+		a.setId(id);
+		
+		//DML statements use transactions
+		try {
+			session.beginTransaction();
+			id = Integer.parseInt(session.save(a).toString());
+			session.getTransaction().commit();
+		} 
+		catch (HibernateException e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+		} 
+		finally {
+			session.close();
+		}
+		
+		return id;
 	}
 
 	@Override
@@ -225,61 +277,149 @@ public class DBRepoImpl implements DBRepo {
 
 	@Override
 	public List<Question> getAllQuestions() {
-		return sf.createEntityManager().createQuery("from Questions").getResultList();
+		return sf.createEntityManager().createQuery("from Question").getResultList();
 	}
 
 	@Override
-	public Question updateQuestion(Question change) {
-		sf.createEntityManager().merge(change);
-		return change;
+	public boolean updateQuestion(Question change) {
+		Session session = sf.openSession();
+		Transaction transaction = null;
+		try {
+			transaction = session.beginTransaction();
+			session.update(change);
+			transaction.commit();
+			return true;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			transaction.rollback();
+			return false;
+		}
+		finally {
+			session.close();
+		}
 	}
 
 	@Override
 	public boolean deleteQuestion(int id) {
-		Question response = (Question) sf.createEntityManager().find(Question.class, id);
-		if (sf.createEntityManager().contains(response)) {
-			sf.createEntityManager().remove(response);
+		// This goes in every single method
+		Session session = sf.openSession();
+		Transaction transaction = null;
+		
+		try {
+			transaction = session.beginTransaction();	
+			session.delete(session.get(Question.class, id));
+			transaction.commit();
 			return true;
-		} 
-
+		}
+		catch(HibernateException e) {
+			e.printStackTrace();
+			transaction.rollback();
+		}
+		finally {
+			session.close();
+		}
+		
 		return false;
-	
 	}
 	
 	
 	// Answer
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@Override
-	public Answer addAnswer(Answer a) {
-		sf.createEntityManager().persist(a);
-		return a;
+	public int addAnswer(Answer a) {
+		Session session = sf.openSession();
+		
+		// First, obtain the next unique id from the quiz id sequence generator
+		int id = sf.createEntityManager().createNativeQuery("SELECT answer_id_generator.nextval FROM DUAL").getFirstResult();
+		a.setId(id);
+		
+		//DML statements use transactions
+		try {
+			session.beginTransaction();
+			id = Integer.parseInt(session.save(a).toString());
+			session.getTransaction().commit();
+		} 
+		catch (HibernateException e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+		} 
+		finally {
+			session.close();
+		}
+		
+		return id;
 	}
 
 	@Override
 	public Answer getAnswer(int id) {
-		Answer a=(Answer) sf.createEntityManager().find(Answer.class, id);
-		return a;
+		return (Answer) sf.createEntityManager().find(Answer.class, id);
 	}
 
 	@Override
-	public List<Answer> getAllAnswer() {
-		return sf.createEntityManager().createQuery("from Answers").getResultList();
+	public List<Answer> getAllAnswers(int id) {
+		// This goes in every single method
+		Session session = sf.openSession();
+		List<Answer> listOfAnswers = null;
+		
+		try {
+			// "User" portion MUST match the Java object, NOT the table.
+			// :id is simply a ? variant
+			listOfAnswers = session.createQuery("FROM Answer WHERE questionId = ?1")
+					.setParameter(1, id).getResultList();
+		}
+		catch(HibernateException e) {
+			e.printStackTrace();
+		}
+		finally {
+			session.close();
+		}
+		return listOfAnswers;
+
+		
+		
 	}
 
 	@Override
-	public Answer updateAnswer(Answer change) {
-		sf.createEntityManager().merge(change);
-		return change;
+	public boolean updateAnswer(Answer change) {
+		Session session = sf.openSession();
+		Transaction transaction = null;
+		try {
+			transaction = session.beginTransaction();
+			session.update(change);
+			transaction.commit();
+			return true;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			transaction.rollback();
+			return false;
+		}
+		finally {
+			session.close();
+		}
 	}
 
 	@Override
 	public boolean deleteAnswer(int id) {
-		Answer response = (Answer) sf.createEntityManager().find(Answer.class, id);
-		if (sf.createEntityManager().contains(response)) {
-			sf.createEntityManager().remove(response);
+		// This goes in every single method
+		Session session = sf.openSession();
+		Transaction transaction = null;
+		
+		try {
+			transaction = session.beginTransaction();	
+			session.delete(session.get(Answer.class, id));
+			transaction.commit();
 			return true;
-		} 
-
+		}
+		catch(HibernateException e) {
+			e.printStackTrace();
+			transaction.rollback();
+		}
+		finally {
+			session.close();
+		}
+		
 		return false;
 	
 	}
@@ -287,9 +427,28 @@ public class DBRepoImpl implements DBRepo {
 	// Progress
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@Override
-	public Progress addProgress(Progress a) {
-		sf.createEntityManager().persist(a);
-		return a;
+	public int addProgress(Progress a) {
+		Session session = sf.openSession();
+		
+		// First, obtain the next unique id from the quiz id sequence generator
+		int id = sf.createEntityManager().createNativeQuery("SELECT progress_id_generator.nextval FROM DUAL").getFirstResult();
+		a.setId(id);
+		
+		//DML statements use transactions
+		try {
+			session.beginTransaction();
+			id = Integer.parseInt(session.save(a).toString());
+			session.getTransaction().commit();
+		} 
+		catch (HibernateException e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+		} 
+		finally {
+			session.close();
+		}
+		
+		return id;
 	}
 
 	@Override
@@ -304,19 +463,45 @@ public class DBRepoImpl implements DBRepo {
 	}
 
 	@Override
-	public Progress updateProgress(Progress change) {
-		sf.createEntityManager().merge(change);
-		return change;
+	public boolean updateProgress(Progress change) {
+		Session session = sf.openSession();
+		Transaction transaction = null;
+		try {
+			transaction = session.beginTransaction();
+			session.update(change);
+			transaction.commit();
+			return true;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			transaction.rollback();
+			return false;
+		}
+		finally {
+			session.close();
+		}
 	}
 
 	@Override
 	public boolean deleteProgress(int id) {
-		Progress response = (Progress) sf.createEntityManager().find(Progress.class, id);
-		if (sf.createEntityManager().contains(response)) {
-			sf.createEntityManager().remove(response);
+		// This goes in every single method
+		Session session = sf.openSession();
+		Transaction transaction = null;
+		
+		try {
+			transaction = session.beginTransaction();	
+			session.delete(session.get(Progress.class, id));
+			transaction.commit();
 			return true;
-		} 
-
+		}
+		catch(HibernateException e) {
+			e.printStackTrace();
+			transaction.rollback();
+		}
+		finally {
+			session.close();
+		}
+		
 		return false;
 	
 	}
@@ -327,9 +512,28 @@ public class DBRepoImpl implements DBRepo {
 	// Permission
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@Override
-	public Permission addPermission(Permission a) {
-		sf.createEntityManager().persist(a);
-		return a;
+	public int addPermission(Permission a) {
+		Session session = sf.openSession();
+		
+		// First, obtain the next unique id from the quiz id sequence generator
+		int id = sf.createEntityManager().createNativeQuery("SELECT permission_id_generator.nextval FROM DUAL").getFirstResult();
+		a.setId(id);
+		
+		//DML statements use transactions
+		try {
+			session.beginTransaction();
+			id = Integer.parseInt(session.save(a).toString());
+			session.getTransaction().commit();
+		} 
+		catch (HibernateException e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+		} 
+		finally {
+			session.close();
+		}
+		
+		return id;
 	}
 
 	@Override
@@ -344,21 +548,46 @@ public class DBRepoImpl implements DBRepo {
 	}
 
 	@Override
-	public Permission updatePermission(Permission change) {
-		sf.createEntityManager().merge(change);
-		return change;
+	public boolean updatePermission(Permission change) {
+		Session session = sf.openSession();
+		Transaction transaction = null;
+		try {
+			transaction = session.beginTransaction();
+			session.update(change);
+			transaction.commit();
+			return true;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			transaction.rollback();
+			return false;
+		}
+		finally {
+			session.close();
+		}
 	}
 
 	@Override
 	public boolean deletePermission(int id) {
-		Permission response = (Permission) sf.createEntityManager().find(Permission.class, id);
-		if (sf.createEntityManager().contains(response)) {
-			sf.createEntityManager().remove(response);
+		// This goes in every single method
+		Session session = sf.openSession();
+		Transaction transaction = null;
+		
+		try {
+			transaction = session.beginTransaction();	
+			session.delete(session.get(Permission.class, id));
+			transaction.commit();
 			return true;
-		} 
-
+		}
+		catch(HibernateException e) {
+			e.printStackTrace();
+			transaction.rollback();
+		}
+		finally {
+			session.close();
+		}
+		
 		return false;
-	
 	}
 	
 
