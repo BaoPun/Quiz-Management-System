@@ -121,6 +121,27 @@ public class DBServiceImpl implements DBService {
 		return dbRepo.deleteAnswer(id);
 	}
 	
+	// Progress
+	public int addProgress(Progress a) {
+		return dbRepo.addProgress(a);
+	}
+	
+	public Progress getProgress(int id) {
+		return dbRepo.getProgress(id);
+	}
+	
+	public List<Progress> getAllProgress(int id) {
+		return dbRepo.getAllProgress(id);
+	}
+	
+	public boolean updateProgress(Progress change) {
+		return dbRepo.updateProgress(change);
+	}
+	
+	public boolean deleteProgress(int id) {
+		return dbRepo.deleteProgress(id);
+	}
+	
 	
 	
 	/*
@@ -146,25 +167,6 @@ public class DBServiceImpl implements DBService {
 	}
 	
 	
-	// Progress
-	public int addProgress(Progress a) {
-		
-	}
 	
-	public Progress getProgress(int id) {
-		
-	}
-	
-	public List<Progress> getAllProgress() {
-		
-	}
-	
-	public Progress updateProgress(Progress change) {
-		
-	}
-	
-	public boolean deleteProgress(int id) {
-		
-	}
 	*/
 }

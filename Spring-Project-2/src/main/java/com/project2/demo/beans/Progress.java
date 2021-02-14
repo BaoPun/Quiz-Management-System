@@ -40,6 +40,13 @@ public class Progress {
 		this.user = user;
 		this.answer = answer;
 	}
+	
+
+	public Progress(User user, Answer answer) {
+		super();
+		this.user = user;
+		this.answer = answer;
+	}
 
 	public int getId() {
 		return id;

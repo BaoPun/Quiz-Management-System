@@ -375,8 +375,6 @@ public class DBRepoImpl implements DBRepo {
 			session.close();
 		}
 		return listOfAnswers;
-
-		
 		
 	}
 
@@ -453,12 +451,31 @@ public class DBRepoImpl implements DBRepo {
 
 	@Override
 	public Progress getProgress(int id) {
-		return (Progress) sf.createEntityManager().find(Progress.class, id);
+		Progress response = (Progress) sf.createEntityManager().find(Progress.class, id);
+		return response;
 	}
 
 	@Override
-	public List<Progress> getAllProgress() {
-		return sf.createEntityManager().createQuery("from Progress").getResultList();
+	public List<Progress> getAllProgress(int id) {
+		// This goes in every single method
+		Session session = sf.openSession();
+		List<Progress> listOfProgress = null;
+		
+		try {
+			// "User" portion MUST match the Java object, NOT the table.
+			// :id is simply a ? variant
+			listOfProgress = session.createQuery("FROM Progress WHERE userId = ?1")
+					.setParameter(1, id).getResultList();
+		}
+		catch(HibernateException e) {
+			e.printStackTrace();
+		}
+		finally {
+			session.close();
+		}
+		return listOfProgress;
+
+				
 	}
 
 	@Override

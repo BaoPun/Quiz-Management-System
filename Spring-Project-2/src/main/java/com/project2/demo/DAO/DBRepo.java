@@ -53,7 +53,7 @@ public interface DBRepo{
 	// Progress
 	int addProgress(Progress a);
 	Progress getProgress(int id);
-	List<Progress> getAllProgress();
+	List<Progress> getAllProgress(int id);
 	boolean updateProgress(Progress change);
 	boolean deleteProgress(int id);
 	

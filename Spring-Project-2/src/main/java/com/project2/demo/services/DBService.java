@@ -43,6 +43,13 @@ public interface DBService {
 	boolean updateAnswer(Answer change);
 	boolean deleteAnswer(int id);
 	
+	// Progress
+	int addProgress(Progress a);
+	Progress getProgress(int id);
+	List<Progress> getAllProgress(int id);
+	boolean updateProgress(Progress change);
+	boolean deleteProgress(int id);
+	
 	
 	/*
 	//Permissions
@@ -52,12 +59,7 @@ public interface DBService {
 	Permission updatePermission(Permission change);
 	boolean deletePermission(int id);
 	
-	// Progress
-	int addProgress(Progress a);
-	Progress getProgress(int id);
-	List<Progress> getAllProgress();
-	Progress updateProgress(Progress change);
-	boolean deleteProgress(int id);
+	
 	*/
 		
 }
