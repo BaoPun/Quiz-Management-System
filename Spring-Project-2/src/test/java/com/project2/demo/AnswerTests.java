@@ -56,6 +56,19 @@ class AnswerTests {
 		Assertions.assertTrue(testAllAnswers.size() > 0);
 	}
 	
+	@Test
+	void testUpdateAnswer() {
+		
+		// Get the current answer
+		Answer newAnswer = answerServiceTests.getAnswer(newlyCreatedId);
+		
+		// And update it with a new answer
+		newAnswer.setAnswerText("20");
+		
+		// Afterwards, update it
+		Assertions.assertTrue(answerServiceTests.updateAnswer(newAnswer));
+	}
+	
 	@AfterAll
 	void deleteAllTests() {
 		Assertions.assertTrue(answerServiceTests.deleteAnswer(newlyCreatedId));

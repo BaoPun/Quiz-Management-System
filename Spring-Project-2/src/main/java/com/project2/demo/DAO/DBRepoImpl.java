@@ -453,8 +453,7 @@ public class DBRepoImpl implements DBRepo {
 
 	@Override
 	public Progress getProgress(int id) {
-		Progress response = (Progress) sf.createEntityManager().find(Progress.class, id);
-		return response;
+		return (Progress) sf.createEntityManager().find(Progress.class, id);
 	}
 
 	@Override
