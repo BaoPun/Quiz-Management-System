@@ -18,7 +18,7 @@ import javax.persistence.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
-@Table(name="users")
+@Table(name="Users")
 public class User {
 
 
@@ -30,34 +30,49 @@ public class User {
 	
 	@Column(name="username")
 	private String username;
-	
 
 	@Column(name="passwordhash")
 	private String passwordHash;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(length=10,name="role")
+	@Column(name="role")
 	private UserType role;
 	
-	@ManyToOne(optional=true)
-	@JoinColumn(name="teacher")
+	@ManyToOne(optional = true)
+	@JoinColumn(name="teacher", nullable = true)
 	private User teacher;
 	
+	/*
 	@OneToMany(mappedBy="teacher")
 	private Set<User> students;
+	*/
 	
-	public Set<User> getStudents() {
-		return students;
+	public User() {}
+
+	public User(String username, String passwordHash, UserType role) {
+		this.username = username;
+		this.passwordHash = passwordHash;
+		this.role = role;
 	}
 
-	public void setStudents(Set<User> students) {
-		this.students = students;
+
+	public User(String username, String passwordHash, UserType role, User teacher) {
+		this.username = username;
+		this.passwordHash = passwordHash;
+		this.role = role;
+		this.teacher = teacher;
 	}
 
-	public User() {
-		
-		
-	}
+
+
+	public User(int id, String username, String passwordHash, UserType role) {
+		this.id = id;
+		this.username = username;
+		this.passwordHash = passwordHash;
+		this.role = role;
+  }
+
+
 
 	public int getId() {
 		return id;
@@ -95,9 +110,10 @@ public class User {
 		return teacher;
 	}
 
-	public void setTeacher(User teacher) {
+	public void setTeacherId(User teacher) {
 		this.teacher = teacher;
 	}
+	
 
 	@Override
 	public int hashCode() {
@@ -106,6 +122,7 @@ public class User {
 		result = prime * result + id;
 		result = prime * result + ((passwordHash == null) ? 0 : passwordHash.hashCode());
 		result = prime * result + ((role == null) ? 0 : role.hashCode());
+    result = prime * result + ((teacher == null) ? 0 : teacher.hashCode());
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
@@ -138,11 +155,8 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", passwordHash=" + passwordHash + ", role=" + role
+		return "User [id=" + id + ", username=" + username + /*", passwordHash=" + passwordHash + */", role=" + role
 				+ ", teacher=" + (teacher==null?null:teacher.getId()) + "]";
 	}
-
-
-	
 	
 }

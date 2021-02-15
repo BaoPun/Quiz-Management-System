@@ -14,6 +14,7 @@ import javax.persistence.Table;
 @Table(name="questions")
 public class Question implements Comparable<Question> {
 
+
 	@Id
 	@SequenceGenerator(name = "question_id_generator", allocationSize = 1)
 	@GeneratedValue(generator = "question_id_generator", strategy = GenerationType.SEQUENCE)
@@ -26,7 +27,7 @@ public class Question implements Comparable<Question> {
 	private Quiz quiz;
 	
 	@Column(name = "questiontype")
-	private String questionType;
+	private String type;
 	
 	@Column(name = "description")
 	private String description;
@@ -38,19 +39,17 @@ public class Question implements Comparable<Question> {
 		super();
 	}
 
-	public Question(int q_id, Quiz quiz, String q_type, String q_desc) {
-		super();
-		this.id = q_id;
+	public Question(int id, Quiz quiz, String type, String description) {
+		this.id = id;
 		this.quiz = quiz;
-		this.questionType = q_type;
-		this.description = q_desc;
+		this.type = type;
+		this.description = description;
 	}
 
-	public Question(Quiz quiz, String q_type, String q_desc) {
-		super();
+	public Question(Quiz quiz, String type, String description) {
 		this.quiz = quiz;
-		this.questionType = q_type;
-		this.description = q_desc;
+		this.type = type;
+		this.description = description;
 	}
 
 	/**
@@ -85,14 +84,14 @@ public class Question implements Comparable<Question> {
 	 * @return the questionType
 	 */
 	public String getQuestionType() {
-		return questionType;
+		return type;
 	}
 
 	/**
 	 * @param questionType the questionType to set
 	 */
-	public void setQuestionType(String questionType) {
-		this.questionType = questionType;
+	public void setQuestionType(String type) {
+		this.type = type;
 	}
 
 	/**
@@ -111,8 +110,7 @@ public class Question implements Comparable<Question> {
 
 	@Override
 	public String toString() {
-		return "Question [id=" + id + ", quiz=" + quiz + ", questionType=" + questionType + ", description="
-				+ description + "]";
+		return "Question [id=" + id + ", quiz=" + quiz + ", type=" + type + ", description=" + description + "]";
 	}
 
 	@Override

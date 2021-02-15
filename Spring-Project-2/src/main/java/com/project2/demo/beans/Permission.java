@@ -37,14 +37,12 @@ public class Permission {
 	public Permission() {}
 
 	public Permission(User user, Quiz quiz, PermissionType relationship) {
-		super();
 		this.user = user;
 		this.quiz = quiz;
 		this.relationship = relationship;
 	}
 
 	public Permission(int id, User user, Quiz quiz, PermissionType relationship) {
-		super();
 		this.id = id;
 		this.user = user;
 		this.quiz = quiz;

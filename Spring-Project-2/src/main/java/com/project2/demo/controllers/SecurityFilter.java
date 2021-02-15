@@ -24,7 +24,6 @@ public class SecurityFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		String sessionID = req.getSession().getId();
 		
-		System.out.println(sessionID);
 		chain.doFilter(request, response);
 	}
 
