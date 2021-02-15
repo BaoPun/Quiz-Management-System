@@ -29,7 +29,7 @@ public class SecondaryController {
 	}
 	
 	@Autowired
-	private UserRepository userRepo;
+	private Engine engine;
 	
 	public class LoginInfo {
 		private String username;
@@ -38,19 +38,19 @@ public class SecondaryController {
 	
 	@PostMapping(path="/login", consumes= {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
     public ResponseEntity<String> login_page(HttpSession session, @RequestParam MultiValueMap<String,String> paramMap) {
-		Engine engine = Engine.getGlobalEngine();
-		
-		System.out.println(session.getId());
-		System.out.println(paramMap.getFirst("username"));
-		System.out.println(paramMap.getFirst("password"));
+
+		String username=paramMap.getFirst("username");
+		String password=paramMap.getFirst("password");
 		HttpHeaders headers=new HttpHeaders();
-		headers.setLocation(URI.create("/bar"));
-		return new ResponseEntity<String>(headers,HttpStatus.FOUND);
-//		if (engine.login(session.getId(),username,password)) {
-//			return new ResponseEntity<String>(HttpStatus.OK);
-//		} else {
-//			return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
-//		}
+		
+//		return new ResponseEntity<String>(headers,HttpStatus.FOUND);
+		if (engine.login(session.getId(),username,password)) {
+			headers.setLocation(URI.create("/bar"));
+			return new ResponseEntity<String>(headers,HttpStatus.FOUND);
+		} else {
+			headers.setLocation(URI.create("/baz"));
+			return new ResponseEntity<String>(headers,HttpStatus.FOUND);
+		}
     }
 	
 	@GetMapping(value="/s/getQuizzes", produces="application/json")
@@ -69,27 +69,27 @@ public class SecondaryController {
 		return retval;
 	}
 	
-	@GetMapping(value="/thing", produces = "application/json")
-	public User gettest() {
-		User user = userRepo.getUserByName("bim");
-		List<User> users = userRepo.getAllUsers();
-		
-		for (User u : users) {
-			System.out.println(u.getUsername());
-		}
-//		User user2 = new User();
-//		user2.setUsername("baraz");
-//		user2.setTeacher(user);
-//		user2.setRole(UserType.STUDENT);
-//		user2.setPasswordHash("");
-//		userRepo.addThing(user2);
-		System.out.println(user.getId());
-		//System.out.println(userRepo.getQuiz(4));
-		System.out.println(System.identityHashCode(user));
-		System.out.println(System.identityHashCode(user.getTeacher()));
-		System.out.println(System.identityHashCode(user.getTeacher().getTeacher()));
-		System.out.println(System.identityHashCode(user.getTeacher().getTeacher().getTeacher()));
-		return null;
-	}
+//	@GetMapping(value="/thing", produces = "application/json")
+//	public User gettest() {
+//		User user = userRepo.getUserByName("bim");
+//		List<User> users = userRepo.getAllUsers();
+//		
+//		for (User u : users) {
+//			System.out.println(u.getUsername());
+//		}
+////		User user2 = new User();
+////		user2.setUsername("baraz");
+////		user2.setTeacher(user);
+////		user2.setRole(UserType.STUDENT);
+////		user2.setPasswordHash("");
+////		userRepo.addThing(user2);
+//		System.out.println(user.getId());
+//		//System.out.println(userRepo.getQuiz(4));
+//		System.out.println(System.identityHashCode(user));
+//		System.out.println(System.identityHashCode(user.getTeacher()));
+//		System.out.println(System.identityHashCode(user.getTeacher().getTeacher()));
+//		System.out.println(System.identityHashCode(user.getTeacher().getTeacher().getTeacher()));
+//		return null;
+//	}
 
 }
