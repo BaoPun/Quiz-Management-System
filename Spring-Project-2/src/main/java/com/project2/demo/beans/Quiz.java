@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name="quizzes")
+@Table(name="Quizzes")
 public class Quiz {
 	
 	
@@ -32,7 +32,20 @@ public class Quiz {
 	private User user;
 
 	public Quiz() {}
+	
+	
+	public Quiz(String name, User user) {
+		this.id = -1;
+		this.name = name;
+		this.user = user;
+	}
 
+
+	public Quiz(int id, String name, User user) {
+		this.id = id;
+		this.name = name;
+		this.user = user;
+	}
 
 	public int getId() {
 		return id;

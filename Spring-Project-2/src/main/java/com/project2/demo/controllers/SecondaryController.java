@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project2.demo.beans.User;
+import com.project2.demo.services.DBService;
 import com.project2.demo.DAO.UserRepository;
 import com.project2.demo.beans.Quiz;
 import com.project2.demo.beans.User;
@@ -25,13 +27,16 @@ import com.project2.demo.entities.Engine;
 @RestController
 public class SecondaryController {
 
+	@Autowired
+	private DBService services;
+  
+  @Autowired
+	private UserRepository userRepo;
+	
 	public SecondaryController() {
 	}
 	
-	@Autowired
-	private UserRepository userRepo;
-	
-	public class LoginInfo {
+  public class LoginInfo {
 		private String username;
 		private String password;
 	}
@@ -68,11 +73,11 @@ public class SecondaryController {
 		retval.add(foo2);
 		return retval;
 	}
-	
+  
 	@GetMapping(value="/thing", produces = "application/json")
 	public User gettest() {
-		User user = userRepo.getUserByName("bim");
-		List<User> users = userRepo.getAllUsers();
+		User user = services.getUser("bim");
+		List<User> users = services.getAllUsers();
 		
 		for (User u : users) {
 			System.out.println(u.getUsername());
@@ -82,13 +87,13 @@ public class SecondaryController {
 //		user2.setTeacher(user);
 //		user2.setRole(UserType.STUDENT);
 //		user2.setPasswordHash("");
-//		userRepo.addThing(user2);
+//		services.addThing(user2);
 		System.out.println(user.getId());
-		//System.out.println(userRepo.getQuiz(4));
+		//System.out.println(services.getQuiz(4));
 		System.out.println(System.identityHashCode(user));
-		System.out.println(System.identityHashCode(user.getTeacher()));
-		System.out.println(System.identityHashCode(user.getTeacher().getTeacher()));
-		System.out.println(System.identityHashCode(user.getTeacher().getTeacher().getTeacher()));
+		//System.out.println(System.identityHashCode(user.getTeacher()));
+		//System.out.println(System.identityHashCode(user.getTeacher().getTeacher()));
+		//System.out.println(System.identityHashCode(user.getTeacher().getTeacher().getTeacher()));
 		return null;
 	}
 
