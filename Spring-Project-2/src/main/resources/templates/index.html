@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="/css/styles_login.css">
+	<title>Login Page</title>
+</head>
+<body>
+
+	<div class="login">
+		<h1>Login</h1>
+		  <form class="form-signin" method="post" action="/login">
+			<input id="username" type="text" class="form-control"  placeholder="Username" name="username" required autofocus />
+			<input id="password" type="password" class="form-control" placeholder="Password" name="password" required />
+			<button id="loginButton" type="submit" class="btn btn-primary btn-block btn-large">Let me in.</button>
+		  </form>
+	  </div>
+	  
+	  
+</body>
+<script>
+	function getLogin(){
+		let username1= document.getElementById("username").value;
+		let password1=document.getElementById("password").value;
+		let xhttp=new XMLHttpRequest();
+		
+		xhttp.onreadystatechange=function(){
+			if(this.readyState==4) {
+				if (this.status==200) {
+					alert("Yay");
+				} else {
+					alert("Boo");
+				}
+			}
+		}
+		
+		xhttp.open("POST","http://localhost:8080/login");
+		xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		xhttp.send("username="+username1+"&password="+password1);
+	}
+</script>
+</html>

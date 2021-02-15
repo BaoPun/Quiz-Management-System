@@ -32,9 +32,9 @@ public class MainController {
 		return "greeting";
 	}
 	
-	@GetMapping("/login")
+	@GetMapping("/")
 	public String login_page(Model model) {
-		return "login";
+		return "index";
 	}
 
 

@@ -1,6 +1,10 @@
 package com.project2.demo.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,9 +39,23 @@ public class SecureController {
 	public String quiz_selector_page(Model model) {
 		return "s/quiz_selector";
 	}
+	
+	public class Foo {
+		public String text;
+		public String otherText;
+		public Foo(String text,String otherText) {
+			this.text=text;
+			this.otherText=otherText;
+		}
+	}
 
 	@GetMapping("/teacher")
 	public String teacher_page(Model model) {
+		List<String> studentList=new ArrayList<String>();
+		studentList.add("alice");
+		studentList.add("bob");
+		studentList.add("charlie");
+		model.addAttribute("students", studentList);
 		return "s/teacher";
 	}
 }
