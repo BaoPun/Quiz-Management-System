@@ -78,7 +78,7 @@ public class DBRepoImpl implements DBRepo {
 	}
 	
 	@Override
-	public List<User> getAllStudents(int id){
+	public List<User> getAllStudents(User teacher){
 		
 		// This goes in every single method
 		Session session = sf.openSession();
@@ -87,8 +87,8 @@ public class DBRepoImpl implements DBRepo {
 		try {
 			// "User" portion MUST match the Java object, NOT the table.
 			// :id is simply a ? variant
-			listOfStudents = session.createQuery("FROM User WHERE teacherId = :id AND role = :role")
-					.setParameter("id", id)
+			listOfStudents = session.createQuery("FROM User WHERE teacher = :id AND role = :role")
+					.setParameter("id", teacher)
 					.setParameter("role", UserType.STUDENT).getResultList();	
 		}
 		catch(HibernateException e) {
@@ -358,7 +358,7 @@ public class DBRepoImpl implements DBRepo {
 
 	@Override
 	public List<Answer> getAllAnswers(int id) {
-		// This goes in every single method
+		// Get all Answers registered by a particular user id
 		Session session = sf.openSession();
 		List<Answer> listOfAnswers = null;
 		
@@ -475,7 +475,6 @@ public class DBRepoImpl implements DBRepo {
 		}
 		return listOfProgress;
 
-				
 	}
 
 	@Override
@@ -559,8 +558,29 @@ public class DBRepoImpl implements DBRepo {
 	}
 
 	@Override
-	public List<Permission> getAllPermission() {
-		return sf.createEntityManager().createQuery("from Permissions").getResultList();
+	public List<Permission> getAllPermissions() {
+		return sf.createEntityManager().createQuery("from Permission").getResultList();
+	}
+	
+	@Override
+	public List<Permission> getAllPermissions(int id) {
+		// Get all Permissions by user id
+		Session session = sf.openSession();
+		List<Permission> listOfPermissions = null;
+		
+		try {
+			// "User" portion MUST match the Java object, NOT the table.
+			// :id is simply a ? variant
+			listOfPermissions = session.createQuery("FROM Permission WHERE userId = ?1")
+					.setParameter(1, id).getResultList();
+		}
+		catch(HibernateException e) {
+			e.printStackTrace();
+		}
+		finally {
+			session.close();
+		}
+		return listOfPermissions;
 	}
 
 	@Override

@@ -35,7 +35,7 @@ class UserTests {
 	void testAddStudent() {
 		
 		// Add a sample User student whose teacher has an id of 8
-		newlyCreatedId = userServiceTests.addUser(new User("Karen", Password.hash("test123"), UserType.STUDENT, 8));
+		newlyCreatedId = userServiceTests.addUser(new User("Karen", Password.hash("test123"), UserType.STUDENT, userServiceTests.getUser(8)));
 		
 		// Then see if we can find that user
 		User foundTestUser = userServiceTests.getUser(newlyCreatedId);
@@ -72,7 +72,7 @@ class UserTests {
 	void testGetAllStudents() {
 		
 		// Retrieve all students whose teacher has an id of 8
-		List<User> students = userServiceTests.getAllStudents(8);
+		List<User> students = userServiceTests.getAllStudents(userServiceTests.getUser(8));
 		System.out.println("BEGIN");
 		for(int i = 0; i < students.size(); i++)
 			System.out.println(students.get(i));

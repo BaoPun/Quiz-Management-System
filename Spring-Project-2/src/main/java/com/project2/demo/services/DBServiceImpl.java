@@ -39,8 +39,8 @@ public class DBServiceImpl implements DBService {
 		return dbRepo.getAllUsers();
 	}
 	
-	public List<User> getAllStudents(int id) {
-		return dbRepo.getAllStudents(id);
+	public List<User> getAllStudents(User teacher) {
+		return dbRepo.getAllStudents(teacher);
 	}
 	
 	public boolean updateUser(User change) {
@@ -144,29 +144,29 @@ public class DBServiceImpl implements DBService {
 	
 	
 	
-	/*
 	//Permissions
-	int addPermission(Permission a) {
-		
+	public int addPermission(Permission a) {
+		return dbRepo.addPermission(a);
 	}
 	
-	Permission getPermission(int id) {
-		
+	public Permission getPermission(int id) {
+		return dbRepo.getPermission(id);
 	}
 	
-	List<Permission> getAllPermission() {
-		
+	public List<Permission> getAllPermissions() {
+		return dbRepo.getAllPermissions();
 	}
 	
-	Permission updatePermission(Permission change) {
-		
+	public List<Permission> getAllPermissions(int id){
+		return dbRepo.getAllPermissions(id);
 	}
 	
-	boolean deletePermission(int id) {
-		
+	public boolean updatePermission(Permission change) {
+		return dbRepo.updatePermission(change);
 	}
 	
+	public boolean deletePermission(int id) {
+		return dbRepo.deletePermission(id);
+	}
 	
-	
-	*/
 }

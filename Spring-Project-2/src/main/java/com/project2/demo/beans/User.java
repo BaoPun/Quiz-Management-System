@@ -38,8 +38,9 @@ public class User {
 	@Column(name="role")
 	private UserType role;
 	
-	@Column(name="teacher")
-	private int teacherId;
+	@ManyToOne(optional = true)
+	@JoinColumn(name="teacher", nullable = true)
+	private User teacher;
 	
 	/*
 	@OneToMany(mappedBy="teacher")
@@ -55,11 +56,11 @@ public class User {
 	}
 
 
-	public User(String username, String passwordHash, UserType role, int teacherId) {
+	public User(String username, String passwordHash, UserType role, User teacher) {
 		this.username = username;
 		this.passwordHash = passwordHash;
 		this.role = role;
-		this.teacherId = teacherId;
+		this.teacher = teacher;
 	}
 
 
@@ -105,12 +106,12 @@ public class User {
 		this.role = role;
 	}
 
-	public int getTeacherId() {
-		return teacherId;
+	public User getTeacher() {
+		return teacher;
 	}
 
-	public void setTeacherId(int teacherId) {
-		this.teacherId = teacherId;
+	public void setTeacherId(User teacher) {
+		this.teacher = teacher;
 	}
 	
 
@@ -144,12 +145,12 @@ public class User {
 			return false;
 		if (role != other.role)
 			return false;
-		/*if (teacher == null) {
+		if (teacher == null) {
 			if (other.teacher != null)
 				return false;
 		} else if (!teacher.equals(other.teacher))
 			return false;
-		*/if (username == null) {
+		if (username == null) {
 			if (other.username != null)
 				return false;
 		} else if (!username.equals(other.username))
@@ -160,7 +161,7 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + /*", passwordHash=" + passwordHash + */", role=" + role
-				+ ", teacherId=" + teacherId + "]";
+				+ ", teacher=" + teacher + "]";
 	}
 	
 }

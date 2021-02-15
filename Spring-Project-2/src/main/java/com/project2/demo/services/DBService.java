@@ -16,9 +16,10 @@ public interface DBService {
 	User getUser(int id);
 	User getUser(String user);
 	List<User> getAllUsers();
+	List<User> getAllStudents(User teacher);
 	boolean updateUser(User change);
 	boolean deleteUser(int id);
-	List<User> getAllStudents(int id);
+	
 	
 	//Quizzes 
 	int addQuiz(Quiz a);
@@ -51,15 +52,13 @@ public interface DBService {
 	boolean deleteProgress(int id);
 	
 	
-	/*
 	//Permissions
 	int addPermission(Permission a);
 	Permission getPermission(int id);
-	List<Permission> getAllPermission();
-	Permission updatePermission(Permission change);
+	List<Permission> getAllPermissions();
+	List<Permission> getAllPermissions(int id);
+	boolean updatePermission(Permission change);
 	boolean deletePermission(int id);
 	
-	
-	*/
 		
 }

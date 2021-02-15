@@ -16,9 +16,10 @@ public interface DBRepo{
 	User getUser(int id);
 	User getUser(String user);
 	List<User> getAllUsers();
+	List<User> getAllStudents(User teacher);
 	boolean updateUser(User change);
 	boolean deleteUser(int id);
-	List<User> getAllStudents(int id);
+	
 	
 	//Quizzes 
 	int addQuiz(Quiz a);
@@ -42,19 +43,19 @@ public interface DBRepo{
 	boolean updateAnswer(Answer change);
 	boolean deleteAnswer(int id);
 	
-	
-	//Permissions
-	int addPermission(Permission a);
-	Permission getPermission(int id);
-	List<Permission> getAllPermission();
-	boolean updatePermission(Permission change);
-	boolean deletePermission(int id);
-	
 	// Progress
 	int addProgress(Progress a);
 	Progress getProgress(int id);
 	List<Progress> getAllProgress(int id);
 	boolean updateProgress(Progress change);
 	boolean deleteProgress(int id);
+	
+	//Permissions
+	int addPermission(Permission a);
+	Permission getPermission(int id);
+	List<Permission> getAllPermissions();
+	List<Permission> getAllPermissions(int id);
+	boolean updatePermission(Permission change);
+	boolean deletePermission(int id);
 	
 }
