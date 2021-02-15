@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project2.demo.beans.User;
 import com.project2.demo.services.DBService;
-import com.project2.demo.DAO.UserRepository;
 import com.project2.demo.beans.Quiz;
 import com.project2.demo.beans.User;
 import com.project2.demo.entities.Engine;
@@ -30,8 +29,8 @@ public class SecondaryController {
 	@Autowired
 	private DBService services;
   
-  @Autowired
-	private UserRepository userRepo;
+  //@Autowired
+	//private UserRepository userRepo;
 	
 	public SecondaryController() {
 	}
