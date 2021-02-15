@@ -11,9 +11,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.project2.demo.DAO.DBRepoImpl;
 import com.project2.demo.beans.User;
+import com.project2.demo.services.DBService;
 
 @Controller
 public class MainController {
+	
+	@Autowired
+	private DBService services;
 
 	public MainController() {
 		// TODO Auto-generated constructor stub
