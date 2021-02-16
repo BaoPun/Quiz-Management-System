@@ -56,7 +56,8 @@ public class SecurityFilter implements Filter {
 			chain.doFilter(request, response);
 		} else {
 //			resp.sendError(403);
-			resp.sendRedirect("/");
+//			resp.sendRedirect("/");
+			chain.doFilter(request,response);
 		}
 		
 		
