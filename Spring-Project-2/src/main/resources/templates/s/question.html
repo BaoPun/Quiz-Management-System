@@ -1,16 +1,36 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+<<<<<<< HEAD
 	<div th:replace="/s/fragments.html :: headerfiles"></div>
 	<meta charset="ISO-8859-1">
 	<script src="/s/js/question.js"></script>
 	<link rel="stylesheet" href="/s/css/question.css">
 </head>
 
+=======
+<style>
+    .left {
+        position: absolute;
+        left: 0px;
+    }
+    .right {
+        position: absolute;
+        right: 0px;
+    }
+    .center {
+        display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column
+    }
+</style>
+>>>>>>> refs/remotes/origin/et_question
 <meta charset="ISO-8859-1">
 <title>Quiz [TITLEHERE]</title>
 </head>
 <body>
+<<<<<<< HEAD
 <div th:insert="/s/fragments.html :: navbar"></div>
 Quiz [TITLEHERE]
 <div class="center" id="questiondiv">
@@ -25,6 +45,21 @@ Quiz [TITLEHERE]
 <div>
 <button id="previous" class="left" onclick="movePage()">PREVIOUS</button><br>
 <button id="next" class="right" onclick="movePage()">NEXT</button>
+=======
+Quiz [TITLEHERE]
+<div class="center" id="questiondiv">
+    <h2>QUESTION TEXT</h2><br>
+    <div class="center" id="answerdiv">
+    <button>ANSWER 1</button><br>
+    <button>ANSWER 2</button><br>
+    <button>ANSWER 2</button><br>
+    <button>ANSWER 3</button><br>
+</div>
+</div>
+<div>
+<button class="left">PREVIOUS</button><br>
+<button class="right">NEXT</button>
+>>>>>>> refs/remotes/origin/et_question
 </div>
 </body>
 </html>
