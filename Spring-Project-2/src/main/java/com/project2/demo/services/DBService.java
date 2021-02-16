@@ -19,15 +19,17 @@ public interface DBService {
 	List<User> getAllStudents(User teacher);
 	boolean updateUser(User change);
 	boolean deleteUser(int id);
+	List<User> getAllTeachers();
 	
 	
 	//Quizzes 
 	int addQuiz(Quiz a);
 	Quiz getQuiz(int id);
-	Quiz getQuiz(String name);
+	List<Quiz> getQuizzes(String name);
 	List<Quiz> getAllQuizzes();
 	boolean updateQuiz(Quiz change);
 	boolean deleteQuiz(int id);
+	List<Quiz> getQuizzesFromUser(int id);
 	
 	//Questions
 	int addQuestion(Question a);

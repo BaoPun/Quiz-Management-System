@@ -14,6 +14,7 @@
 <div class="main-container">
 
 	<div class="student-list">
+		<div class="list-item">Your Students:</div>
 		<div class="list-group" th:each="student: ${students}">
 		<div class="list-item student-list-item" th:attr="student=${student}" >
 			<a th:text="${student}" href="#" class="list-group-item list-group-item-action"></a>
@@ -22,6 +23,7 @@
 	</div>
 	
 	<div class="quiz-list">
+		<div id="tests-label" class="list-item">Tests</div>
 		<div class="list-group" id="quizListGroup">
 		</div>
 	</div>

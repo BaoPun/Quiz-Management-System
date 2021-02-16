@@ -24,13 +24,7 @@ import com.project2.demo.services.DBService;
 
 @RestController
 public class SecondaryController {
-
-	@Autowired
-	private DBService services;
-  
-  //@Autowired
-	//private UserRepository userRepo;
-	
+ 
 	public SecondaryController() {
 	}
 	
@@ -45,30 +39,24 @@ public class SecondaryController {
 		String password=paramMap.getFirst("password");
 		HttpHeaders headers=new HttpHeaders();
 		
-//		return new ResponseEntity<String>(headers,HttpStatus.FOUND);
 		if (engine.login(session.getId(),username,password)) {
-			headers.setLocation(URI.create("/bar"));
+			headers.setLocation(URI.create("/s/teacher"));
 			return new ResponseEntity<String>(headers,HttpStatus.FOUND);
 		} else {
-			headers.setLocation(URI.create("/baz"));
+			headers.setLocation(URI.create("/"));
 			return new ResponseEntity<String>(headers,HttpStatus.FOUND);
 		}
     }
 	
+	@GetMapping(value="/s/getMyQuizzes", produces="application/json")
+	public List<Quiz> getMyQuizzes(HttpSession session) {
+		User teacher=engine.getLoggedInUser(session.getId());
+		return engine.getQuizzesFromUser(teacher);
+	}
+	
 	@GetMapping(value="/s/getQuizzes", produces="application/json")
-	public List<Quiz> getQuizzes(@RequestParam String student) {
-		List<Quiz> retval = new ArrayList<Quiz>();
-		Quiz foo = new Quiz();
-		foo.setId(3);
-		foo.setName("Quiz A");
-		foo.setUser(null);
-		Quiz foo2 = new Quiz();
-		foo2.setId(3);
-		foo2.setName("Quiz B");
-		foo2.setUser(null);
-		retval.add(foo);
-		retval.add(foo2);
-		return retval;
+	public List<Quiz> getQuizzes(@RequestParam String teacher) {
+		return engine.getQuizzesFromUser(engine.getUserByName(teacher));
 	}
 
 

@@ -8,9 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import com.project2.demo.services.DBService;
+import com.project2.demo.beans.User;
+import com.project2.demo.entities.Engine;
 
 
 //@RestController
@@ -19,7 +19,7 @@ import com.project2.demo.services.DBService;
 public class SecureController {
 	
 	@Autowired
-	private DBService services;
+	private Engine engine;
 
 	public SecureController() {
 		// TODO Auto-generated constructor stub
@@ -42,11 +42,12 @@ public class SecureController {
 
 	@GetMapping("/teacher")
 	public String teacher_page(Model model) {
-		List<String> studentList=new ArrayList<String>();
-		studentList.add("alice");
-		studentList.add("bob");
-		studentList.add("charlie");
-		model.addAttribute("students", studentList);
+		List<User> users = engine.getAllUsers();
+		List<String> userNames = new ArrayList<String>();
+		for (User u: users) {
+			userNames.add(u.getUsername());
+		}
+		model.addAttribute("students",userNames);
 		return "s/teacher";
 	}
 }

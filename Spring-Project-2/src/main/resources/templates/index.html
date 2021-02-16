@@ -18,25 +18,4 @@
 	  
 	  
 </body>
-<script>
-	function getLogin(){
-		let username1= document.getElementById("username").value;
-		let password1=document.getElementById("password").value;
-		let xhttp=new XMLHttpRequest();
-		
-		xhttp.onreadystatechange=function(){
-			if(this.readyState==4) {
-				if (this.status==200) {
-					alert("Yay");
-				} else {
-					alert("Boo");
-				}
-			}
-		}
-		
-		xhttp.open("POST","http://localhost:8080/login");
-		xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		xhttp.send("username="+username1+"&password="+password1);
-	}
-</script>
 </html>

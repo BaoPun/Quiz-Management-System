@@ -11,6 +11,9 @@ function updateScores() {
 }
 
 function updateQuizList() {
+	let testsLabel = document.getElementById("tests-label")
+	testsLabel.hidden=false;
+
 	let quizListGroup=document.getElementById("quizListGroup");
 	quizListGroup.innerHTML="";
 	for (let i=0;i<quizList.length;++i) {
@@ -43,7 +46,7 @@ function studentListItemClick() {
 			}
 		}
 	};
-	let uri = "/s/getQuizzes?student="+student;
+	let uri = "/s/getMyQuizzes";
 	xhttp.open("GET", uri);
 	xhttp.send();
 }

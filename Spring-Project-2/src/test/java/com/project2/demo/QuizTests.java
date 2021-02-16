@@ -73,7 +73,7 @@ class QuizTests {
 			fail("Oh no the update failed!");
 		
 		// Finally, attempt to retrieve it
-		Assertions.assertNotNull(quizServiceTests.getQuiz("Imagine imagining"));
+		Assertions.assertTrue(quizServiceTests.getQuizzes("Imagine imagining").size()>0);
 	}
 	
 	@AfterAll

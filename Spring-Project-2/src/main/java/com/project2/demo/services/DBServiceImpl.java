@@ -61,8 +61,8 @@ public class DBServiceImpl implements DBService {
 		return dbRepo.getQuiz(id);
 	}
 	
-	public Quiz getQuiz(String name) {
-		return dbRepo.getQuiz(name);
+	public List<Quiz> getQuizzes(String name) {
+		return dbRepo.getQuizzes(name);
 	}
 	
 	public List<Quiz> getAllQuizzes() {
@@ -167,6 +167,16 @@ public class DBServiceImpl implements DBService {
 	
 	public boolean deletePermission(int id) {
 		return dbRepo.deletePermission(id);
+	}
+
+	@Override
+	public List<User> getAllTeachers() {
+		return dbRepo.getAllTeachers();
+	}
+
+	@Override
+	public List<Quiz> getQuizzesFromUser(int id) {
+		return dbRepo.getQuizzesFromUser(id);
 	}
 	
 }

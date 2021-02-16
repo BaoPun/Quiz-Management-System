@@ -64,8 +64,8 @@ public class DBRepoImpl implements DBRepo {
 	@Override
 	public User getUser(String name) {
 		try {
-			TypedQuery<User> tq = sf.createEntityManager().createQuery("from User WHERE lower(username)=?1",User.class);
-			return tq.setParameter(1, name.toLowerCase()).getSingleResult();
+			TypedQuery<User> tq = sf.createEntityManager().createQuery("from User WHERE username=?1",User.class);
+			return tq.setParameter(1, name).getSingleResult();
 		}
 		catch(Exception e) {
 			return null;
@@ -180,14 +180,9 @@ public class DBRepoImpl implements DBRepo {
 	}
 	
 	@Override
-	public Quiz getQuiz(String name) {
-		try {
-			TypedQuery<Quiz> tq = sf.createEntityManager().createQuery("from Quiz WHERE lower(name)=?1",Quiz.class);
-			return tq.setParameter(1, name.toLowerCase()).getSingleResult();
-		}
-		catch(Exception e) {
-			return null;
-		}
+	public List<Quiz> getQuizzes(String name) {
+		TypedQuery<Quiz> tq = sf.createEntityManager().createQuery("from Quiz WHERE name=?1",Quiz.class);
+		return tq.setParameter(1, name).getResultList();
 	}
 
 	@Override
@@ -624,6 +619,19 @@ public class DBRepoImpl implements DBRepo {
 		}
 		
 		return false;
+	}
+
+	@Override
+	public List<User> getAllTeachers() {
+		return sf.createEntityManager().
+				createQuery("from User where role='teacher'").getResultList();
+	}
+
+	@Override
+	public List<Quiz> getQuizzesFromUser(int id) {
+		return sf.createEntityManager().
+				createQuery("from Quiz where userid=?1").
+				setParameter(1, id).getResultList();
 	}
 	
 

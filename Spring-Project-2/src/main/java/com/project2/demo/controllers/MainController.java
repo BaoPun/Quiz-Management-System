@@ -15,21 +15,9 @@ import com.project2.demo.services.DBService;
 
 @Controller
 public class MainController {
-	
-	@Autowired
-	private DBService services;
 
 	public MainController() {
 		// TODO Auto-generated constructor stub
-	}
-	
-//	@Autowired
-//	private UserRepository userRepo;
-	
-	@GetMapping("/greeting")
-	public String greeting(@RequestParam(name="name", required=false, defaultValue="Bar") String name, Model model) {
-		model.addAttribute("name", name);
-		return "greeting";
 	}
 	
 	@GetMapping("/")
