@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<div th:replace="/s/fragments.html :: headerfiles"></div>
+	<meta charset="ISO-8859-1">
+	<title>Teacher Administration Page</title>
+	<script src="/s/js/quiz_generator.js"></script>
+	<link rel="stylesheet" href="/s/css/quiz_generator.css">
+</head>
+<body>
+
+<div th:insert="/s/fragments.html :: navbar"></div>
+
+<div class="main-container">
+
+<button type="button" class="btn btn-primary">Add Question</button>
+
+<div id="questions-block">
+</div>
+
+</div>
+
+</body>
+</html>
