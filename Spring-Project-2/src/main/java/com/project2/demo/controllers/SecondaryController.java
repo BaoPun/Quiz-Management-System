@@ -77,5 +77,9 @@ public class SecondaryController {
 	public List<Question> getQuizQuestions(@RequestParam String quizid) {
 		return engine.getQuizQuestions(Integer.parseInt(quizid));
 	}
-
+	
+	@GetMapping(value="/s/getPossibleAnswers", produces="application/json")
+	public List<Answer> getPossibleAnswers(@RequestParam String questionid) {
+		return engine.getQuestionAnswers(Integer.parseInt(questionid));
+	}
 }

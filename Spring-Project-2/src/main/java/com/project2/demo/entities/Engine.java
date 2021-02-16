@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.project2.demo.DAO.DBRepo;
+import com.project2.demo.beans.Answer;
 import com.project2.demo.beans.Progress;
 import com.project2.demo.beans.Question;
 import com.project2.demo.beans.Quiz;
@@ -48,6 +49,10 @@ public class Engine {
 	
 	public List<Question> getQuizQuestions(int quizid) {
 		return services.getQuizQuestions(quizid);
+	}
+	
+	public List<Answer> getQuestionAnswers(int questionid) {
+		return services.getQuestionAnswers(questionid);
 	}
 	
 	public boolean login(String sessionID, String username, String password) {

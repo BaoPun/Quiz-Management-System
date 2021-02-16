@@ -662,6 +662,15 @@ public class DBRepoImpl implements DBRepo {
 				setParameter(1, quizid).
 				getResultList();
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Answer> getQuestionAnswers(int questionid) {
+		return sf.createEntityManager().
+				createQuery("from Answer a where a.question.id=?1 order by a.ordering").
+				setParameter(1, questionid).
+				getResultList();
+	}
 	
 	
 	
