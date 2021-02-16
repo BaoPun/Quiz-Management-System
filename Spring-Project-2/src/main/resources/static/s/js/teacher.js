@@ -7,19 +7,20 @@ $(function () {
 })
 
 function updateScores() {
-	alert(this.id);
+	let id=this.getAttribute("quizid");
+	alert(id);
 }
 
 function updateQuizList() {
-	let testsLabel = document.getElementById("tests-label")
-	testsLabel.hidden=false;
+	let testsLabel = document.getElementById("tests-label");
+	testsLabel.style.visibility="visible";
 
 	let quizListGroup=document.getElementById("quizListGroup");
 	quizListGroup.innerHTML="";
 	for (let i=0;i<quizList.length;++i) {
 		let div=document.createElement("div");
 		div.classList.add("list-item");
-		div.setAttribute("id",quizList[i]['id'])
+		div.setAttribute("quizid",quizList[i]['id'])
 		div.onclick=updateScores;
 		let link=document.createElement("a");
 		link.setAttribute("href","#");
