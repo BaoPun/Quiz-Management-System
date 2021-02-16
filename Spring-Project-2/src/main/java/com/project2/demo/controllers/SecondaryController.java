@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project2.demo.beans.Answer;
 import com.project2.demo.beans.Progress;
+import com.project2.demo.beans.Question;
 import com.project2.demo.beans.Quiz;
 import com.project2.demo.beans.User;
 import com.project2.demo.entities.Engine;
@@ -63,8 +64,8 @@ public class SecondaryController {
 	@GetMapping(value="/s/getUserQuizResults", produces="application/json")
 	public List<Answer> getUserQuizResults(@RequestParam String user, @RequestParam String quiz) {
 		int userID = Integer.parseInt(user);
-		int quizzID = Integer.parseInt(quiz);
-		List<Progress> results = engine.getProgressForUserAndQuiz(userID, quizzID);
+		int quizID = Integer.parseInt(quiz);
+		List<Progress> results = engine.getProgressForUserAndQuiz(userID, quizID);
 		List<Answer> retval = new ArrayList<Answer>();
 		for (Progress p : results) {
 			retval.add(p.getAnswer());
@@ -72,6 +73,9 @@ public class SecondaryController {
 		return retval;
 	}
 
-
+	@GetMapping(value="/s/getQuestions", produces="application/json")
+	public List<Question> getQuizQuestions(@RequestParam String quizid) {
+		return engine.getQuizQuestions(Integer.parseInt(quizid));
+	}
 
 }

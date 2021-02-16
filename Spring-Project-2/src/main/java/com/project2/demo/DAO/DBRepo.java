@@ -37,6 +37,7 @@ public interface DBRepo{
 	List<Question> getAllQuestions();
 	boolean updateQuestion(Question change);
 	boolean deleteQuestion(int id);
+	List<Question> getQuizQuestions(int quizid);
 	
 	//Answers
 	int addAnswer(Answer a);

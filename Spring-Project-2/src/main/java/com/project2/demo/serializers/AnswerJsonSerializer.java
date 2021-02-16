@@ -1,4 +1,4 @@
-package com.project2.demo.beans;
+package com.project2.demo.serializers;
 
 import java.io.IOException;
 
@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.project2.demo.beans.Answer;
 
 @JsonComponent
 public class AnswerJsonSerializer extends JsonSerializer<Answer> {

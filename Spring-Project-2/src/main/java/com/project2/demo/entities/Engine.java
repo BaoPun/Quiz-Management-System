@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.project2.demo.DAO.DBRepo;
 import com.project2.demo.beans.Progress;
+import com.project2.demo.beans.Question;
 import com.project2.demo.beans.Quiz;
 import com.project2.demo.beans.User;
 import com.project2.demo.util.Password;
@@ -43,6 +44,10 @@ public class Engine {
 	
 	public List<Progress> getProgressForUserAndQuiz(int userID,int quizID) {
 		return services.getProgressForUserAndQuiz(userID, quizID);
+	}
+	
+	public List<Question> getQuizQuestions(int quizid) {
+		return services.getQuizQuestions(quizid);
 	}
 	
 	public boolean login(String sessionID, String username, String password) {
