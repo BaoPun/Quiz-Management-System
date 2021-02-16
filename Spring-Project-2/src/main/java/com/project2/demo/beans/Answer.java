@@ -34,7 +34,7 @@ public class Answer implements Comparable<Answer> {
 	
 	
 	@Column(name = "iscorrect")
-	private int isCorrect;
+	private boolean isCorrect;
 	
 	
 	@Column(name = "ordering")
@@ -46,7 +46,7 @@ public class Answer implements Comparable<Answer> {
 	public Answer() {}
 
 
-	public Answer(int id, Question question, String answerText, int isCorrect, int ordering) {
+	public Answer(int id, Question question, String answerText, boolean isCorrect, int ordering) {
 		this.id = id;
 		this.question = question;
 		this.answerText = answerText;
@@ -56,7 +56,7 @@ public class Answer implements Comparable<Answer> {
 	
 	
 
-	public Answer(Question question, String answerText, int isCorrect, int ordering) {
+	public Answer(Question question, String answerText, boolean isCorrect, int ordering) {
 		this.question = question;
 		this.answerText = answerText;
 		this.isCorrect = isCorrect;
@@ -93,12 +93,12 @@ public class Answer implements Comparable<Answer> {
 	}
 
 
-	public int getIsCorrect() {
+	public boolean getIsCorrect() {
 		return isCorrect;
 	}
 
 
-	public void setIsCorrect(int isCorrect) {
+	public void setIsCorrect(boolean isCorrect) {
 		this.isCorrect = isCorrect;
 	}
 

@@ -1,6 +1,7 @@
 package com.project2.demo.controllers;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project2.demo.beans.Answer;
+import com.project2.demo.beans.Progress;
 import com.project2.demo.beans.Quiz;
 import com.project2.demo.beans.User;
 import com.project2.demo.entities.Engine;
@@ -55,6 +58,18 @@ public class SecondaryController {
 	@GetMapping(value="/s/getQuizzes", produces="application/json")
 	public List<Quiz> getQuizzes(@RequestParam String teacher) {
 		return engine.getQuizzesFromUser(engine.getUserByName(teacher));
+	}
+	
+	@GetMapping(value="/s/getUserQuizResults", produces="application/json")
+	public List<Answer> getUserQuizResults(@RequestParam String user, @RequestParam String quiz) {
+		int userID = Integer.parseInt(user);
+		int quizzID = Integer.parseInt(quiz);
+		List<Progress> results = engine.getProgressForUserAndQuiz(userID, quizzID);
+		List<Answer> retval = new ArrayList<Answer>();
+		for (Progress p : results) {
+			retval.add(p.getAnswer());
+		}
+		return retval;
 	}
 
 

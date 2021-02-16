@@ -51,6 +51,8 @@ public interface DBRepo{
 	List<Progress> getAllProgress(int id);
 	boolean updateProgress(Progress change);
 	boolean deleteProgress(int id);
+	List<Progress> getProgressForUserAndQuiz(int quizid, int userid);
+	
 	
 	//Permissions
 	int addPermission(Permission a);
