@@ -1,39 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<style>
-    .left {
-        position: absolute;
-        left: 0px;
-    }
-    .right {
-        position: absolute;
-        right: 0px;
-    }
-    .center {
-        display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column
-    }
-</style>
+	<div th:replace="/s/fragments.html :: headerfiles"></div>
+	<meta charset="ISO-8859-1">
+	<script src="/s/js/question.js"></script>
+	<link rel="stylesheet" href="/s/css/question.css">
+</head>
+
 <meta charset="ISO-8859-1">
 <title>Quiz [TITLEHERE]</title>
 </head>
 <body>
+<div th:insert="/s/fragments.html :: navbar"></div>
 Quiz [TITLEHERE]
 <div class="center" id="questiondiv">
     <h2>QUESTION TEXT</h2><br>
     <div class="center" id="answerdiv">
-    <button>ANSWER 1</button><br>
-    <button>ANSWER 2</button><br>
-    <button>ANSWER 2</button><br>
-    <button>ANSWER 3</button><br>
+    <button id="answer1" onclick="updateProgress(this)">ANSWER 1</button><br>
+    <button id="answer2" onclick="updateProgress(this)">ANSWER 2</button><br>
+    <button id="answer3" onclick="updateProgress(this)">ANSWER 3</button><br>
+    <button id="answer4" onclick="updateProgress(this)">ANSWER 4</button><br>
 </div>
 </div>
 <div>
-<button class="left">PREVIOUS</button><br>
-<button class="right">NEXT</button>
+<button id="previous" class="left" onclick="movePage()">PREVIOUS</button><br>
+<button id="next" class="right" onclick="movePage()">NEXT</button>
 </div>
 </body>
 </html>
