@@ -13,8 +13,8 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.project2.demo.DAO.DBRepo;
 import com.project2.demo.beans.Answer;
-import com.project2.demo.services.DBService;
 
 @SpringBootTest
 @TestInstance(Lifecycle.PER_CLASS)
@@ -23,7 +23,7 @@ import com.project2.demo.services.DBService;
 class AnswerTests {
 	
 	@Autowired
-	private DBService answerServiceTests;
+	private DBRepo answerServiceTests;
 	
 	private int newlyCreatedId;
 

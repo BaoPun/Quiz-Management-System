@@ -1,7 +1,6 @@
 package com.project2.demo.controllers;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project2.demo.beans.Quiz;
 import com.project2.demo.beans.User;
 import com.project2.demo.entities.Engine;
-import com.project2.demo.services.DBService;
 
 @RestController
 public class SecondaryController {

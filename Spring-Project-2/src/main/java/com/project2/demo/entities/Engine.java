@@ -7,9 +7,9 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.project2.demo.DAO.DBRepo;
 import com.project2.demo.beans.Quiz;
 import com.project2.demo.beans.User;
-import com.project2.demo.services.DBService;
 import com.project2.demo.util.Password;
 
 public class Engine {
@@ -17,7 +17,7 @@ public class Engine {
 	private Map<String,User> loggedInUsers;
 
 	@Autowired
-	private DBService services;
+	private DBRepo services;
 	
 	public Engine() {
 		super();
