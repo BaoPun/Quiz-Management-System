@@ -41,14 +41,11 @@ public class SecondaryController {
 		String password=paramMap.getFirst("password");
 		HttpHeaders headers=new HttpHeaders();
       
-    System.out.println("Attempting to log in");
+		System.out.println("Attempting to log in");
       
-    // Register User
-		if(username.equals("register") && password.equals(""))
-			headers.setLocation(URI.create("/register"));
-		// Log in as some User
-		else if (engine.login(session.getId(),username,password)) {
-			if(engine.isTeacherLoggedIn())
+		// If login was successful
+    	if (engine.login(session.getId(),username,password)) {
+			if(engine.isTeacherLoggedIn(session.getId()))
 				headers.setLocation(URI.create("/s/teacher"));
 			else
 				headers.setLocation(URI.create("/s/student"));
@@ -56,6 +53,7 @@ public class SecondaryController {
 		// Invalid login
 		else 
 			headers.setLocation(URI.create("/"));
+    	
 		return new ResponseEntity<String>(headers, HttpStatus.FOUND);
     }
 	

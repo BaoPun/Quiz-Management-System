@@ -20,42 +20,7 @@ import com.project2.demo.util.Password;
 
 public class Engine {
 	
-	// Nested class to contain a description of what type of User has logged in.
-	// Contains 2 fields: their id and their role type.
-	private class LoggedInType{
-		private int loggedId;
-		private UserType role;
-		
-		public LoggedInType() {
-			this.loggedId = 0;
-			this.role = null;
-		}
-
-		public int getLoggedId() {
-			return loggedId;
-		}
-
-		private void setLoggedId(int loggedId) {
-			this.loggedId = loggedId;
-		}
-
-		public UserType getRole() {
-			return role;
-		}
-
-		private void setRole(UserType role) {
-			this.role = role;
-		}
-		
-		public void setFields(int loggedId, UserType role) {
-			this.setLoggedId(loggedId);
-			this.setRole(role);
-		}
-		
-	}
-	
 	private Map<String,User> loggedInUsers;
-	private LoggedInType userType;
 	
 	@Autowired
 	private DBRepo services;
@@ -64,21 +29,15 @@ public class Engine {
 	public Engine() {
 		super();
 		loggedInUsers = new HashMap<String,User>();
-		userType = new LoggedInType();
 	}
 	
 	// Is the current logged in user a teacher?
-	public boolean isTeacherLoggedIn() {
-		return (this.userType.role == UserType.TEACHER ? true : false);
+	public boolean isTeacherLoggedIn(String sessionID) {
+		return (this.loggedInUsers.get(sessionID).getRole() == UserType.TEACHER ? true : false);
 	}
 	
 	public List<User> getAllUsers() {
 		return services.getAllUsers();
-	}
-	
-	public List<User> getAllStudents(){
-		// Only return a list if the current User is a teacher.  
-		return (userType.getRole() == UserType.TEACHER ? services.getAllStudents(services.getUser(userType.getLoggedId())) : null);
 	}
 	
 	public List<User> getAllTeachers() {
@@ -112,15 +71,8 @@ public class Engine {
 			return false;
 		String hash = Password.hash(password);
 		boolean matches=user.getPasswordHash().equals(hash);
-		if (matches) {
+		if (matches) 
 			loggedInUsers.put(sessionID, user);
-			if(user.getRole() == UserType.TEACHER) 
-				this.userType.setFields(user.getId(), UserType.TEACHER);
-			else if(user.getRole() == UserType.STUDENT)
-				this.userType.setFields(user.getId(), UserType.STUDENT);
-			else
-				this.userType.setFields(user.getId(), UserType.ADMIN);
-		}
 		return matches;
 	}
 	

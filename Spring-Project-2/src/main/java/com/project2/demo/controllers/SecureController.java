@@ -42,23 +42,22 @@ public class SecureController {
 		return "s/quiz_selector";
 	}
   
-  @GetMapping("/quiz_generator")
+	@GetMapping("/quiz_generator")
 	public String quiz_generator_page(Model model) {
 		return "s/quiz_generator";
 	}
   
-  @GetMapping("/student")
+	@GetMapping("/student")
 	public String student_page(Model model) {
 		return "s/student";
 	}
 
-  @GetMapping("/teacher")
+	@GetMapping("/teacher")
 	public String teacher_page(Model model, HttpSession session) {
     
-    String sessionID = session.getId();
+		String sessionID = session.getId();
 		List<User> users = engine.getMyStudents(sessionID);
     
-		//List<User> users = engine.getAllStudents();
 		List<String> userNames = new ArrayList<String>();
 		for (User u: users) 
 			userNames.add(u.getUsername());
