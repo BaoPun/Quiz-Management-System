@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/styles_register.css">
+	<title>Registration Page</title>
+</head>
+<title>Register</title>
+</head>
+<body>
+
+    <div class="register">
+		<h1>Register</h1>
+		  <form class="form-register" method="post" action="/register">
+			<input id="username" type="text" class="form-control"  placeholder="Username" name="username" required autofocus />
+			<input id="password" type="password" class="form-control" placeholder="Password" name="password" required />
+			<br><br>
+			<label for="teacher"><b style="font-size: 20px; padding: 5px;">Select a Teacher: </b></label>
+	      	<select class="teacherList" name="teacher">
+	        	<option class="teacher" th:each="teacher: ${teachers}" th:value="${teacher}" th:text="${teacher}" th:selected="${teacher==teachers[0]}"></option>
+	      	</select>
+	      	<br><br>
+			<button id="registerUser" type="submit" class="btn btn-primary btn-block btn-large">Submit New Account</button>
+		  </form>
+	</div>
+
+</body>
+</html>
