@@ -87,6 +87,15 @@ public class Engine {
 		return loggedInUsers.containsKey(sessionID);
 	}
 	
+	public List<User> getMyStudents(String sessionID) {
+		int teacherID = loggedInUsers.get(sessionID).getId();
+		return getUserStudents(teacherID);
+	}
+	
+	public List<User> getUserStudents(int teacherID) {
+		return services.getUserStudents(teacherID);
+	}
+	
 	public boolean isPermittedPage(String sessionID, URI uri) {
 		User user = loggedInUsers.get(sessionID);
 		String uriStr = uri.normalize().toASCIIString();

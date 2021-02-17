@@ -3,6 +3,8 @@ package com.project2.demo.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,8 +48,9 @@ public class SecureController {
 	}
 
 	@GetMapping("/teacher")
-	public String teacher_page(Model model) {
-		List<User> users = engine.getAllUsers();
+	public String teacher_page(Model model,HttpSession session) {
+		String sessionID = session.getId();
+		List<User> users = engine.getMyStudents(sessionID);
 		List<String> userNames = new ArrayList<String>();
 		for (User u: users) {
 			userNames.add(u.getUsername());

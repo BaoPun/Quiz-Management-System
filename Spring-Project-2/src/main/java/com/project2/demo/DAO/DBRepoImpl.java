@@ -674,6 +674,15 @@ public class DBRepoImpl implements DBRepo {
 				setParameter(1, questionid).
 				getResultList();
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<User> getUserStudents(int teacherid) {
+		return sf.createEntityManager().
+				createQuery("from User u where u.teacher.id=?1").
+				setParameter(1, teacherid).
+				getResultList();
+	}
 	
 	
 	
