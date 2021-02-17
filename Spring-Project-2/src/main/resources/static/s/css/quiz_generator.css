@@ -1,1 +1,14 @@
 @charset "ISO-8859-1";
+
+.main-container {
+	width: 800px;
+}
+
+.question-block {
+	padding: 20px;
+	border-style: solid;
+}
+
+#quiz-name-input {
+	width: 400px;
+}

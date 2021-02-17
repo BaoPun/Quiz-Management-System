@@ -14,10 +14,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project2.demo.beans.Answer;
+import com.project2.demo.beans.NewQuiz;
 import com.project2.demo.beans.Progress;
 import com.project2.demo.beans.Question;
 import com.project2.demo.beans.Quiz;
@@ -81,5 +83,11 @@ public class SecondaryController {
 	@GetMapping(value="/s/getPossibleAnswers", produces="application/json")
 	public List<Answer> getPossibleAnswers(@RequestParam String questionid) {
 		return engine.getQuestionAnswers(Integer.parseInt(questionid));
+	}
+	
+	@PostMapping(path="/s/submitNewQuiz", consumes= "application/json")
+	public String login_page(@RequestBody NewQuiz quiz) {
+		System.out.println(quiz);
+		return "success";
 	}
 }

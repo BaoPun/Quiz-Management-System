@@ -39,6 +39,11 @@ public class SecureController {
 	public String quiz_selector_page(Model model) {
 		return "s/quiz_selector";
 	}
+	
+	@GetMapping("/quiz_generator")
+	public String quiz_generator_page(Model model) {
+		return "s/quiz_generator";
+	}
 
 	@GetMapping("/teacher")
 	public String teacher_page(Model model) {
