@@ -88,6 +88,7 @@ public class DBRepoImpl implements DBRepo {
 				.getResultList();
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<User> getAllStudents(User teacher){
 		
@@ -97,7 +98,6 @@ public class DBRepoImpl implements DBRepo {
 		
 		try {
 			// "User" portion MUST match the Java object, NOT the table.
-			// :id is simply a ? variant
 			listOfStudents = session.createQuery("FROM User WHERE teacher = :id AND role = :role")
 					.setParameter("id", teacher)
 					.setParameter("role", UserType.STUDENT).getResultList();	
@@ -196,6 +196,7 @@ public class DBRepoImpl implements DBRepo {
 		return tq.setParameter(1, name).getResultList();
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Quiz> getQuizzesFromUser(int id) {
 		return sf.createEntityManager().

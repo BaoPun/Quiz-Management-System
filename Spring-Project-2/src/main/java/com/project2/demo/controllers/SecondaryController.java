@@ -42,12 +42,19 @@ public class SecondaryController {
 		String password=paramMap.getFirst("password");
 		HttpHeaders headers=new HttpHeaders();
 		
-		System.out.println("Attempting to login");
+		System.out.println("Attempting to log in");
 		
+		// Register User
 		if(username.equals("register") && password.equals(""))
 			headers.setLocation(URI.create("/register"));
-		else if (engine.login(session.getId(),username,password)) 
-			headers.setLocation(URI.create("/s/teacher"));
+		// Log in as some User
+		else if (engine.login(session.getId(),username,password)) {
+			if(engine.isTeacherLoggedIn())
+				headers.setLocation(URI.create("/s/teacher"));
+			else
+				headers.setLocation(URI.create("/s/student"));
+		}
+		// Invalid login
 		else 
 			headers.setLocation(URI.create("/"));
 		return new ResponseEntity<String>(headers, HttpStatus.FOUND);
