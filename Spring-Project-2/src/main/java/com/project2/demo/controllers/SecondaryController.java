@@ -41,11 +41,7 @@ public class SecondaryController {
 		String password=paramMap.getFirst("password");
 		HttpHeaders headers=new HttpHeaders();
 		
-		System.out.println("Attempting to login");
-		
-		if(username.equals("register") && password.equals(""))
-			headers.setLocation(URI.create("/register"));
-		else if (engine.login(session.getId(),username,password)) 
+		if (engine.login(session.getId(),username,password)) 
 			headers.setLocation(URI.create("/s/teacher"));
 		else 
 			headers.setLocation(URI.create("/"));
@@ -59,9 +55,6 @@ public class SecondaryController {
 		String password = paramMap.getFirst("password");
 		String teacher = paramMap.getFirst("teacher");
 		HttpHeaders headers=new HttpHeaders();
-		
-		System.out.println(paramMap);
-		System.out.println("Attempting to register: " + teacher);
 		
 		// Attempt to register 
 		if(engine.register(username, password, Integer.parseInt(teacher.split(" ")[0])))
@@ -109,7 +102,6 @@ public class SecondaryController {
 	
 	@PostMapping(path="/s/submitNewQuiz", consumes= "application/json")
 	public String login_page(@RequestBody NewQuiz quiz) {
-		System.out.println(quiz);
 		return "success";
 	}
 }

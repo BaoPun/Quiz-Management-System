@@ -34,7 +34,6 @@ public class MainController {
 		for(int i = 0; i < listOfTeachers.size(); i++)
 			teachers.add(Integer.toString(listOfTeachers.get(i).getId())+ " " + listOfTeachers.get(i).getUsername());
 		
-		System.out.println(teachers);
 		model.addAttribute("teachers", teachers);
 		
 		return "register";

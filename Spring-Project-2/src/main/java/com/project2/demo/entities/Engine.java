@@ -91,11 +91,6 @@ public class Engine {
 		User user = loggedInUsers.get(sessionID);
 		String uriStr = uri.normalize().toASCIIString();
 		
-		if (user != null) {
-			System.out.println(user.getUsername());
-			System.out.println(user.getRole());
-		}
-		System.out.println("uriStr: " + uriStr);
 		if (user == null) {
 			return !uriStr.matches("/s/.*");
 		}
