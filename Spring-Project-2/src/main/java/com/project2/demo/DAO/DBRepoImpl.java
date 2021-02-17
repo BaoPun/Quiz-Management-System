@@ -73,11 +73,13 @@ public class DBRepoImpl implements DBRepo {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<User> getAllUsers() {
 		return (List<User>)sf.createEntityManager().createQuery("from User").getResultList();
 	}
-	
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<User> getAllTeachers() {
 		return sf.createEntityManager().
@@ -201,6 +203,7 @@ public class DBRepoImpl implements DBRepo {
 				setParameter(1, id).getResultList();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Quiz> getAllQuizzes() {
 		// With CreateQuery, Quiz is the Java object, not the table
@@ -286,6 +289,7 @@ public class DBRepoImpl implements DBRepo {
 		return (Question) sf.createEntityManager().find(Question.class, id);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Question> getAllQuestions() {
 		return sf.createEntityManager().createQuery("from Question").getResultList();
@@ -367,6 +371,7 @@ public class DBRepoImpl implements DBRepo {
 		return (Answer) sf.createEntityManager().find(Answer.class, id);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Answer> getAllAnswers(int id) {
 		// Get all Answers registered by a particular user id
@@ -466,6 +471,7 @@ public class DBRepoImpl implements DBRepo {
 		return response;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Progress> getAllProgress(int id) {
 		// This goes in every single method
@@ -568,11 +574,13 @@ public class DBRepoImpl implements DBRepo {
 		return response;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Permission> getAllPermissions() {
 		return sf.createEntityManager().createQuery("from Permission").getResultList();
 	}
-	
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Permission> getAllPermissions(int id) {
 		// Get all Permissions by user id
@@ -636,8 +644,36 @@ public class DBRepoImpl implements DBRepo {
 		
 		return false;
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Progress> getProgressForUserAndQuiz(int quizid, int userid) {
+		return sf.createEntityManager().
+				createQuery("from Progress p where p.answer.question.quiz.id=?1 and p.user.id=?2 order by p.answer.ordering asc").
+				setParameter(1, quizid).
+				setParameter(2, userid).
+				getResultList();
+	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Question> getQuizQuestions(int quizid) {
+		return sf.createEntityManager().
+				createQuery("from Question q where q.quiz.id=?1 order by q.ordering").
+				setParameter(1, quizid).
+				getResultList();
+	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Answer> getQuestionAnswers(int questionid) {
+		return sf.createEntityManager().
+				createQuery("from Answer a where a.question.id=?1 order by a.ordering").
+				setParameter(1, questionid).
+				getResultList();
+	}
+	
+	
 	
 
 }

@@ -8,6 +8,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.project2.demo.DAO.DBRepo;
+import com.project2.demo.beans.Answer;
+import com.project2.demo.beans.Progress;
+import com.project2.demo.beans.Question;
 import com.project2.demo.beans.Quiz;
 import com.project2.demo.beans.User;
 import com.project2.demo.beans.UserType;
@@ -39,6 +42,18 @@ public class Engine {
 
 	public User getUserByName(String username) {
 		return services.getUser(username);
+	}
+  
+  public List<Progress> getProgressForUserAndQuiz(int userID,int quizID) {
+		return services.getProgressForUserAndQuiz(userID, quizID);
+	}
+	
+	public List<Question> getQuizQuestions(int quizid) {
+		return services.getQuizQuestions(quizid);
+	}
+	
+	public List<Answer> getQuestionAnswers(int questionid) {
+		return services.getQuestionAnswers(questionid);
 	}
 	
 	

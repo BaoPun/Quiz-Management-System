@@ -37,6 +37,7 @@ public interface DBRepo{
 	List<Question> getAllQuestions();
 	boolean updateQuestion(Question change);
 	boolean deleteQuestion(int id);
+	List<Question> getQuizQuestions(int quizid);
 	
 	//Answers
 	int addAnswer(Answer a);
@@ -44,6 +45,7 @@ public interface DBRepo{
 	List<Answer> getAllAnswers(int id);
 	boolean updateAnswer(Answer change);
 	boolean deleteAnswer(int id);
+	List<Answer> getQuestionAnswers(int questionid);
 	
 	// Progress
 	int addProgress(Progress a);
@@ -51,6 +53,8 @@ public interface DBRepo{
 	List<Progress> getAllProgress(int id);
 	boolean updateProgress(Progress change);
 	boolean deleteProgress(int id);
+	List<Progress> getProgressForUserAndQuiz(int quizid, int userid);
+	
 	
 	//Permissions
 	int addPermission(Permission a);

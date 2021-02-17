@@ -130,6 +130,22 @@ public class Question implements Comparable<Question> {
 		}
 	}
 
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public int getOrdering() {
+		return ordering;
+	}
+
+	public void setOrdering(int ordering) {
+		this.ordering = ordering;
+	}
+
 	
 	
 	
