@@ -30,6 +30,7 @@ public interface DBRepo{
 	boolean updateQuiz(Quiz change);
 	boolean deleteQuiz(int id);
 	List<Quiz> getQuizzesFromUser(int id);
+	List<Quiz> getQuizzesStartedByStudent(int studentid);
 	
 	//Questions
 	int addQuestion(Question a);

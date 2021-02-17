@@ -52,10 +52,13 @@ public class SecureController {
 		String sessionID = session.getId();
 		List<User> users = engine.getMyStudents(sessionID);
 		List<String> userNames = new ArrayList<String>();
+		List<Integer> userIDs= new ArrayList<Integer>();
 		for (User u: users) {
 			userNames.add(u.getUsername());
+			userIDs.add(u.getId());
 		}
 		model.addAttribute("students", userNames);
+		model.addAttribute("studentIDs", userIDs);
 		return "s/teacher";
 	}
 }

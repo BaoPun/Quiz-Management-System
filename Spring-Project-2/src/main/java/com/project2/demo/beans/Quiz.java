@@ -55,7 +55,7 @@ public class Quiz {
 		this.id = id;
 	}
 
-	public User getUserid() {
+	public User getUser() {
 		return user;
 	}
 

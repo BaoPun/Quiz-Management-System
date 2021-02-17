@@ -67,6 +67,11 @@ public class SecondaryController {
 		
 	}
 	
+	@GetMapping(value="/s/getQuizzesStartedByStudent", produces="application/json")
+	public List<Quiz> getQuizzesStartedByStudent(@RequestParam String userid) {
+		return engine.getQuizzesStartedByStudent(Integer.parseInt(userid));
+	}
+	
 	@GetMapping(value="/s/getMyQuizzes", produces="application/json")
 	public List<Quiz> getMyQuizzes(HttpSession session) {
 		User teacher=engine.getLoggedInUser(session.getId());

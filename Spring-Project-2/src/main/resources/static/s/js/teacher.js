@@ -7,8 +7,19 @@ $(function () {
 })
 
 function updateScores() {
-	let id=this.getAttribute("quizid");
-	alert(id);
+	let quizid=this.getAttribute("quizid");
+	let xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function () {
+		if (this.readyState == 4) {
+			if (this.status == 200) {
+				console.log(this.responseText);
+			} else {
+				console.log("error");
+			}
+		}
+	}
+	xhttp.open("GET","/s/getUserQuizResults?quiz="+quizid+"&user="+studentid);
+	xhttp.send();
 }
 
 function updateQuizList() {
@@ -33,9 +44,10 @@ function updateQuizList() {
 }
 
 var quizList=[];
+var studentid="";
 
 function studentListItemClick() {
-	let student=this.getAttribute("student");
+	studentid=this.getAttribute("studentid");
 	let xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function () {
 		if (this.readyState == 4) {
@@ -47,7 +59,7 @@ function studentListItemClick() {
 			}
 		}
 	};
-	let uri = "/s/getMyQuizzes";
+	let uri = "/s/getQuizzesStartedByStudent?userid="+studentid;
 	xhttp.open("GET", uri);
 	xhttp.send();
 }

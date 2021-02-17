@@ -39,12 +39,16 @@ public class Engine {
 	public List<Quiz> getQuizzesFromUser(User user) {
 		return services.getQuizzesFromUser(user.getId());
 	}
+	
+	public List<Quiz> getQuizzesStartedByStudent(int studentid) {
+		return services.getQuizzesStartedByStudent(studentid);
+	}
 
 	public User getUserByName(String username) {
 		return services.getUser(username);
 	}
   
-  public List<Progress> getProgressForUserAndQuiz(int userID,int quizID) {
+	public List<Progress> getProgressForUserAndQuiz(int userID,int quizID) {
 		return services.getProgressForUserAndQuiz(userID, quizID);
 	}
 	
