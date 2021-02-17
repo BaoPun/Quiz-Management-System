@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.project2.demo.DAO.DBRepo;
 import com.project2.demo.beans.Quiz;
 import com.project2.demo.beans.User;
+import com.project2.demo.beans.UserType;
 import com.project2.demo.util.Password;
 
 public class Engine {
@@ -40,17 +41,27 @@ public class Engine {
 		return services.getUser(username);
 	}
 	
+	
 	public boolean login(String sessionID, String username, String password) {
 		User user = services.getUser(username);
-		if (user == null) {
+		if (user == null) 
 			return false;
-		}
 		String hash = Password.hash(password);
 		boolean matches=user.getPasswordHash().equals(hash);
 		if (matches) {
 			loggedInUsers.put(sessionID, user);
 		}
 		return matches;
+	}
+	
+	public boolean register(String username, String password, int teacherId) {
+		User newStudent = new User(username, Password.hash(password), UserType.STUDENT, services.getUser(teacherId));
+		boolean success = services.addUser(newStudent) > -1;
+		if(success)
+			System.out.println("Successfully added student: " + newStudent);
+		else
+			System.out.println("FAILURE");
+		return success;
 	}
 	
 	public User getLoggedInUser(String sessionID) {
@@ -69,7 +80,7 @@ public class Engine {
 			System.out.println(user.getUsername());
 			System.out.println(user.getRole());
 		}
-		System.out.println(uriStr);
+		System.out.println("uriStr: " + uriStr);
 		if (user == null) {
 			return !uriStr.matches("/s/.*");
 		}

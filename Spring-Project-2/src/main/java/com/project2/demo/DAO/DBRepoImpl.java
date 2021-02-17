@@ -46,6 +46,7 @@ public class DBRepoImpl implements DBRepo {
 		catch (HibernateException e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
+			id = -1;
 		} 
 		finally {
 			session.close();
@@ -75,6 +76,14 @@ public class DBRepoImpl implements DBRepo {
 	@Override
 	public List<User> getAllUsers() {
 		return (List<User>)sf.createEntityManager().createQuery("from User").getResultList();
+	}
+	
+	@Override
+	public List<User> getAllTeachers() {
+		return sf.createEntityManager().
+				createQuery("from User where role=:role")
+				.setParameter("role", UserType.TEACHER)
+				.getResultList();
 	}
 	
 	@Override
@@ -183,6 +192,13 @@ public class DBRepoImpl implements DBRepo {
 	public List<Quiz> getQuizzes(String name) {
 		TypedQuery<Quiz> tq = sf.createEntityManager().createQuery("from Quiz WHERE name=?1",Quiz.class);
 		return tq.setParameter(1, name).getResultList();
+	}
+	
+	@Override
+	public List<Quiz> getQuizzesFromUser(int id) {
+		return sf.createEntityManager().
+				createQuery("from Quiz where userid=?1").
+				setParameter(1, id).getResultList();
 	}
 
 	@Override
@@ -621,18 +637,7 @@ public class DBRepoImpl implements DBRepo {
 		return false;
 	}
 
-	@Override
-	public List<User> getAllTeachers() {
-		return sf.createEntityManager().
-				createQuery("from User where role='teacher'").getResultList();
-	}
 
-	@Override
-	public List<Quiz> getQuizzesFromUser(int id) {
-		return sf.createEntityManager().
-				createQuery("from Quiz where userid=?1").
-				setParameter(1, id).getResultList();
-	}
 	
 
 }
