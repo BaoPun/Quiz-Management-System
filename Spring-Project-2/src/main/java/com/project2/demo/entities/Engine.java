@@ -16,16 +16,24 @@ import com.project2.demo.beans.User;
 import com.project2.demo.beans.UserType;
 import com.project2.demo.util.Password;
 
+
+
 public class Engine {
 	
 	private Map<String,User> loggedInUsers;
-
+	
 	@Autowired
 	private DBRepo services;
+
 	
 	public Engine() {
 		super();
 		loggedInUsers = new HashMap<String,User>();
+	}
+	
+	// Is the current logged in user a teacher?
+	public boolean isTeacherLoggedIn(String sessionID) {
+		return (this.loggedInUsers.get(sessionID).getRole() == UserType.TEACHER ? true : false);
 	}
 	
 	public List<User> getAllUsers() {
@@ -67,9 +75,8 @@ public class Engine {
 			return false;
 		String hash = Password.hash(password);
 		boolean matches=user.getPasswordHash().equals(hash);
-		if (matches) {
+		if (matches) 
 			loggedInUsers.put(sessionID, user);
-		}
 		return matches;
 	}
 	
