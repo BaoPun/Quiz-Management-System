@@ -88,6 +88,7 @@ public class DBRepoImpl implements DBRepo {
 				.getResultList();
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<User> getAllStudents(User teacher){
 		
@@ -196,6 +197,7 @@ public class DBRepoImpl implements DBRepo {
 		return tq.setParameter(1, name).getResultList();
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Quiz> getQuizzesFromUser(int id) {
 		return sf.createEntityManager().
