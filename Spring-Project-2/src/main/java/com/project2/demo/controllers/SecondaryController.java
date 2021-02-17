@@ -1,11 +1,9 @@
 package com.project2.demo.controllers;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +11,15 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.ModelMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project2.demo.beans.Answer;
+import com.project2.demo.beans.NewQuiz;
 import com.project2.demo.beans.Progress;
 import com.project2.demo.beans.Question;
 import com.project2.demo.beans.Quiz;
@@ -41,10 +40,10 @@ public class SecondaryController {
 		String username=paramMap.getFirst("username");
 		String password=paramMap.getFirst("password");
 		HttpHeaders headers=new HttpHeaders();
-		
-		System.out.println("Attempting to log in");
-		
-		// Register User
+      
+    System.out.println("Attempting to log in");
+      
+    // Register User
 		if(username.equals("register") && password.equals(""))
 			headers.setLocation(URI.create("/register"));
 		// Log in as some User
@@ -67,9 +66,6 @@ public class SecondaryController {
 		String password = paramMap.getFirst("password");
 		String teacher = paramMap.getFirst("teacher");
 		HttpHeaders headers=new HttpHeaders();
-		
-		System.out.println(paramMap);
-		System.out.println("Attempting to register: " + teacher);
 		
 		// Attempt to register 
 		if(engine.register(username, password, Integer.parseInt(teacher.split(" ")[0])))
@@ -113,5 +109,10 @@ public class SecondaryController {
 	@GetMapping(value="/s/getPossibleAnswers", produces="application/json")
 	public List<Answer> getPossibleAnswers(@RequestParam String questionid) {
 		return engine.getQuestionAnswers(Integer.parseInt(questionid));
+	}
+	
+	@PostMapping(path="/s/submitNewQuiz", consumes= "application/json")
+	public String login_page(@RequestBody NewQuiz quiz) {
+		return "success";
 	}
 }

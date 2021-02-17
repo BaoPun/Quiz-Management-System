@@ -13,8 +13,8 @@
 			<input id="username" type="text" class="form-control"  placeholder="Username" name="username" required autofocus />
 			<input id="password" type="password" class="form-control" placeholder="Password" name="password" required />
 			<button id="loginButton" type="submit" class="btn btn-primary btn-block btn-large">Let me in.</button>
-			<button id="registerButton" type="submit" class="btn btn-primary btn-block btn-large">Register New Student.</button>
 		  </form>
+		  <button id="registerButton" type="submit" class="btn btn-primary btn-block btn-large" onclick="registerNewStudent()">Register New Student.</button>
 	</div>
 	  
 	  
@@ -22,22 +22,9 @@
 
 
 	<script>
-		let register = document.getElementById('registerButton')
-	
-		// Register a new user given a username and password
-		register.addEventListener('click', () => {
-			
-
-			// First, disable the required fields from the 2 inputs
-			document.getElementById('username').removeAttribute('required')
-			document.getElementById('password').removeAttribute('required')
-
-			// Second, set the username field to be register, and leave the password field blank
-			document.getElementById('username').value = 'register'
-			document.getElementById('password').value = ''
-
-
-		})
+		function registerNewStudent() {
+			location.href="/register";
+		}
 	</script>
 </body>
 

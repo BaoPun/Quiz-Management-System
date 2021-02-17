@@ -145,9 +145,5 @@ public class Question implements Comparable<Question> {
 	public void setOrdering(int ordering) {
 		this.ordering = ordering;
 	}
-
-	
-	
-	
 	
 }

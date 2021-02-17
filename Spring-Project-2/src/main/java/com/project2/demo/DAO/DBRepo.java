@@ -20,7 +20,7 @@ public interface DBRepo{
 	boolean updateUser(User change);
 	boolean deleteUser(int id);
 	List<User> getAllTeachers();
-	
+	List<User> getUserStudents(int teacherid);
 	
 	//Quizzes 
 	int addQuiz(Quiz a);
