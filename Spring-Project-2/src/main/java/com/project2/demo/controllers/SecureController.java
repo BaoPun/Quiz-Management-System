@@ -52,7 +52,7 @@ public class SecureController {
 		for (User u: users) {
 			userNames.add(u.getUsername());
 		}
-		model.addAttribute("students",userNames);
+		model.addAttribute("students", userNames);
 		return "s/teacher";
 	}
 }
