@@ -98,7 +98,6 @@ public class DBRepoImpl implements DBRepo {
 		
 		try {
 			// "User" portion MUST match the Java object, NOT the table.
-			// :id is simply a ? variant
 			listOfStudents = session.createQuery("FROM User WHERE teacher = :id AND role = :role")
 					.setParameter("id", teacher)
 					.setParameter("role", UserType.STUDENT).getResultList();	
