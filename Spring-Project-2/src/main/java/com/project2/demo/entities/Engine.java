@@ -56,8 +56,12 @@ public class Engine {
 		return services.getUser(username);
 	}
   
-	public List<Progress> getProgressForUserAndQuiz(int userID,int quizID) {
-		return services.getProgressForUserAndQuiz(userID, quizID);
+	public List<Progress> getProgressForUserAndQuiz(int quizid,int userid) {
+		return services.getProgressForUserAndQuiz(quizid,userid);
+	}
+	
+	public Question getQuestion(int questionid) {
+		return services.getQuestion(questionid);
 	}
 	
 	public List<Question> getQuizQuestions(int quizid) {

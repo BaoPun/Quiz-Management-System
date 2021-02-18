@@ -93,15 +93,10 @@ public class SecondaryController {
 	}
 	
 	@GetMapping(value="/s/getUserQuizResults", produces="application/json")
-	public List<Answer> getUserQuizResults(@RequestParam String user, @RequestParam String quiz) {
+	public List<Progress> getUserQuizResults(@RequestParam String user, @RequestParam String quiz) {
 		int userID = Integer.parseInt(user);
 		int quizID = Integer.parseInt(quiz);
-		List<Progress> results = engine.getProgressForUserAndQuiz(userID, quizID);
-		List<Answer> retval = new ArrayList<Answer>();
-		for (Progress p : results) {
-			retval.add(p.getAnswer());
-		}
-		return retval;
+		return engine.getProgressForUserAndQuiz(quizID,userID);
 	}
 
 	@GetMapping(value="/s/getQuestions", produces="application/json")
@@ -116,6 +111,25 @@ public class SecondaryController {
 	
 	@PostMapping(path="/s/submitNewQuiz", consumes= "application/json")
 	public String login_page(@RequestBody NewQuiz quiz) {
+		//TODO fill in
 		return "success";
+	}
+	
+	public class SingleQuestion {
+		public String description;
+		public List<Answer> answers;
+	}
+	
+	@GetMapping(value="/s/getSingleQuestion", produces="application/json")
+	public SingleQuestion getSingleQuestion(@RequestParam String questionid) {
+		SingleQuestion retval = new SingleQuestion();
+		int questionidNum = Integer.parseInt(questionid);
+		
+		List<Answer> questionAnswers = engine.getQuestionAnswers(questionidNum);
+		retval.answers=questionAnswers;
+		
+		Question question = engine.getQuestion(questionidNum);
+		retval.description=question.getDescription();
+		return retval;
 	}
 }

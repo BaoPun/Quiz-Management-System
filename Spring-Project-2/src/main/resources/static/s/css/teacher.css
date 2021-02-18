@@ -20,8 +20,22 @@
 	margin-bottom: 20px;
 }
 
+.red {
+	color: red;
+}
 
+.blue {
+	color: blue;
+}
 
-.quiz-table {
+.modal * {
+	color: black;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+#quiz-table {
 	width: 100%;
 }

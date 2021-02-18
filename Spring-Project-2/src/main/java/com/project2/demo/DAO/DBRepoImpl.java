@@ -2,6 +2,8 @@ package com.project2.demo.DAO;
 
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
@@ -34,7 +36,8 @@ public class DBRepoImpl implements DBRepo {
 	public int addUser(User a) {
 		
 		Session session = sf.openSession();
-		int id = sf.createEntityManager().createNativeQuery("SELECT user_id_generator.nextval FROM DUAL").getFirstResult();
+		EntityManager em=sf.createEntityManager();
+		int id = em.createNativeQuery("SELECT user_id_generator.nextval FROM DUAL").getFirstResult();
 		a.setId(id);
 		
 		//DML statements use transactions
@@ -49,6 +52,7 @@ public class DBRepoImpl implements DBRepo {
 			id = -1;
 		} 
 		finally {
+			em.close();
 			session.close();
 		}
 		
@@ -58,34 +62,50 @@ public class DBRepoImpl implements DBRepo {
 
 	@Override
 	public User getUser(int id) {
-		User response = (User) sf.createEntityManager().find(User.class, id);
-		return response;
+		EntityManager em=sf.createEntityManager();
+		try {
+			return em.find(User.class, id);
+		} finally {
+			em.close();
+		}
 	}
 	
 	@Override
 	public User getUser(String name) {
+		EntityManager em = sf.createEntityManager();
 		try {
-			TypedQuery<User> tq = sf.createEntityManager().createQuery("from User WHERE username=?1",User.class);
+			TypedQuery<User> tq = em.createQuery("from User WHERE username=?1",User.class);
 			return tq.setParameter(1, name).getSingleResult();
 		}
 		catch(Exception e) {
 			return null;
+		} finally {
+			em.close();
 		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<User> getAllUsers() {
-		return (List<User>)sf.createEntityManager().createQuery("from User").getResultList();
+		EntityManager em = sf.createEntityManager();
+		try {
+			return em.createQuery("from User").getResultList();
+		} finally {
+			em.close();
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<User> getAllTeachers() {
-		return sf.createEntityManager().
-				createQuery("from User where role=:role")
-				.setParameter("role", UserType.TEACHER)
-				.getResultList();
+		EntityManager em = sf.createEntityManager();
+		try {
+			return em.createQuery("from User where role=:role")
+					 .setParameter("role", UserType.TEACHER)
+					 .getResultList();
+		} finally {
+			em.close();
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -165,7 +185,8 @@ public class DBRepoImpl implements DBRepo {
 		Session session = sf.openSession();
 		
 		// First, obtain the next unique id from the quiz id sequence generator
-		int id = sf.createEntityManager().createNativeQuery("SELECT quiz_id_generator.nextval FROM DUAL").getFirstResult();
+		EntityManager em = sf.createEntityManager();
+		int id = em.createNativeQuery("SELECT quiz_id_generator.nextval FROM DUAL").getFirstResult();
 		a.setId(id);
 		
 		//DML statements use transactions
@@ -179,6 +200,7 @@ public class DBRepoImpl implements DBRepo {
 			session.getTransaction().rollback();
 		} 
 		finally {
+			em.close();
 			session.close();
 		}
 		
@@ -187,28 +209,46 @@ public class DBRepoImpl implements DBRepo {
 
 	@Override
 	public Quiz getQuiz(int id) {
-		return (Quiz) sf.createEntityManager().find(Quiz.class, id);
+		EntityManager em = sf.createEntityManager();
+		try {
+			return em.find(Quiz.class, id);
+		} finally {
+			em.close();
+		}
 	}
 	
 	@Override
 	public List<Quiz> getQuizzes(String name) {
-		TypedQuery<Quiz> tq = sf.createEntityManager().createQuery("from Quiz WHERE name=?1",Quiz.class);
-		return tq.setParameter(1, name).getResultList();
+		EntityManager em = sf.createEntityManager();
+		try {
+			return em.createQuery("from Quiz WHERE name=?1",Quiz.class).
+					setParameter(1, name).getResultList();
+		} finally {
+			em.close();
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Quiz> getQuizzesFromUser(int id) {
-		return sf.createEntityManager().
-				createQuery("from Quiz where userid=?1").
-				setParameter(1, id).getResultList();
+		EntityManager em = sf.createEntityManager();
+		try {
+			return em.createQuery("from Quiz where userid=?1").
+					setParameter(1, id).getResultList();
+		} finally {
+			em.close();
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Quiz> getAllQuizzes() {
-		// With CreateQuery, Quiz is the Java object, not the table
-		return sf.createEntityManager().createQuery("from Quiz").getResultList();
+		EntityManager em = sf.createEntityManager();
+		try {
+			return em.createQuery("from Quiz").getResultList();
+		} finally {
+			em.close();
+		}
 	}
 
 	@Override
@@ -265,35 +305,47 @@ public class DBRepoImpl implements DBRepo {
 		Session session = sf.openSession();
 		
 		// First, obtain the next unique id from the quiz id sequence generator
-		int id = sf.createEntityManager().createNativeQuery("SELECT question_id_generator.nextval FROM DUAL").getFirstResult();
-		a.setId(id);
+		EntityManager em = sf.createEntityManager();
 		
 		//DML statements use transactions
 		try {
+			int id = em.createNativeQuery("SELECT question_id_generator.nextval FROM DUAL").getFirstResult();
+			a.setId(id);
 			session.beginTransaction();
 			id = Integer.parseInt(session.save(a).toString());
 			session.getTransaction().commit();
+			return id;
 		} 
 		catch (HibernateException e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
+			throw e;
 		} 
 		finally {
+			em.close();
 			session.close();
 		}
-		
-		return id;
 	}
 
 	@Override
 	public Question getQuestion(int id) {
-		return (Question) sf.createEntityManager().find(Question.class, id);
+		EntityManager em = sf.createEntityManager();
+		try {
+			return em.find(Question.class, id);
+		} finally {
+			em.close();
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Question> getAllQuestions() {
-		return sf.createEntityManager().createQuery("from Question").getResultList();
+		EntityManager em = sf.createEntityManager();
+		try {
+			return em.createQuery("from Question").getResultList();
+		} finally {
+			em.close();
+		}
 	}
 
 	@Override
@@ -346,30 +398,38 @@ public class DBRepoImpl implements DBRepo {
 	public int addAnswer(Answer a) {
 		Session session = sf.openSession();
 		
+		EntityManager em = sf.createEntityManager();
 		// First, obtain the next unique id from the quiz id sequence generator
-		int id = sf.createEntityManager().createNativeQuery("SELECT answer_id_generator.nextval FROM DUAL").getFirstResult();
-		a.setId(id);
 		
 		//DML statements use transactions
 		try {
+			int id = em.createNativeQuery("SELECT answer_id_generator.nextval FROM DUAL").getFirstResult();
+			a.setId(id);
 			session.beginTransaction();
 			id = Integer.parseInt(session.save(a).toString());
 			session.getTransaction().commit();
+			return id;
 		} 
 		catch (HibernateException e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
+			throw e;
 		} 
 		finally {
 			session.close();
 		}
 		
-		return id;
+		
 	}
 
 	@Override
 	public Answer getAnswer(int id) {
-		return (Answer) sf.createEntityManager().find(Answer.class, id);
+		EntityManager em = sf.createEntityManager();
+		try {
+			return em.find(Answer.class, id);
+		} finally {
+			em.close();
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -444,32 +504,36 @@ public class DBRepoImpl implements DBRepo {
 	@Override
 	public int addProgress(Progress a) {
 		Session session = sf.openSession();
-		
-		// First, obtain the next unique id from the quiz id sequence generator
-		int id = sf.createEntityManager().createNativeQuery("SELECT progress_id_generator.nextval FROM DUAL").getFirstResult();
-		a.setId(id);
+		EntityManager em = sf.createEntityManager();
 		
 		//DML statements use transactions
 		try {
+			int id = sf.createEntityManager().createNativeQuery("SELECT progress_id_generator.nextval FROM DUAL").getFirstResult();
+			a.setId(id);
 			session.beginTransaction();
 			id = Integer.parseInt(session.save(a).toString());
 			session.getTransaction().commit();
+			return id;
 		} 
 		catch (HibernateException e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
+			throw e;
 		} 
 		finally {
 			session.close();
+			em.close();
 		}
-		
-		return id;
 	}
 
 	@Override
 	public Progress getProgress(int id) {
-		Progress response = (Progress) sf.createEntityManager().find(Progress.class, id);
-		return response;
+		EntityManager em = sf.createEntityManager();
+		try {
+			return em.find(Progress.class, id);
+		} finally {
+			em.close();
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -548,37 +612,49 @@ public class DBRepoImpl implements DBRepo {
 	public int addPermission(Permission a) {
 		Session session = sf.openSession();
 		
-		// First, obtain the next unique id from the quiz id sequence generator
-		int id = sf.createEntityManager().createNativeQuery("SELECT permission_id_generator.nextval FROM DUAL").getFirstResult();
-		a.setId(id);
+		EntityManager em = sf.createEntityManager();
 		
 		//DML statements use transactions
 		try {
+			int id = em.createNativeQuery("SELECT permission_id_generator.nextval FROM DUAL").getFirstResult();
+			a.setId(id);
 			session.beginTransaction();
 			id = Integer.parseInt(session.save(a).toString());
 			session.getTransaction().commit();
+			return id;
 		} 
 		catch (HibernateException e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
+			throw e;
 		} 
 		finally {
 			session.close();
+			em.close();
 		}
 		
-		return id;
+
 	}
 
 	@Override
 	public Permission getPermission(int id) {
-		Permission response = (Permission) sf.createEntityManager().find(Permission.class, id);
-		return response;
+		EntityManager em = sf.createEntityManager();
+		try {
+			return em.find(Permission.class, id);
+		} finally {
+			em.close();
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Permission> getAllPermissions() {
-		return sf.createEntityManager().createQuery("from Permission").getResultList();
+		EntityManager em = sf.createEntityManager();
+		try {
+			return em.createQuery("from Permission").getResultList();
+		} finally {
+			em.close();
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -649,47 +725,67 @@ public class DBRepoImpl implements DBRepo {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Progress> getProgressForUserAndQuiz(int quizid, int userid) {
-		return sf.createEntityManager().
-				createQuery("from Progress p where p.answer.question.quiz.id=?1 and p.user.id=?2 order by p.answer.ordering asc").
-				setParameter(1, quizid).
-				setParameter(2, userid).
-				getResultList();
+		EntityManager em = sf.createEntityManager();
+		try {
+			return em.createQuery("from Progress p where p.answer.question.quiz.id=?1 and p.user.id=?2 order by p.answer.ordering asc").
+					  setParameter(1, quizid).
+					  setParameter(2, userid).
+					  getResultList();
+		} finally {
+			em.close();
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Question> getQuizQuestions(int quizid) {
-		return sf.createEntityManager().
-				createQuery("from Question q where q.quiz.id=?1 order by q.ordering").
-				setParameter(1, quizid).
-				getResultList();
+		EntityManager em = sf.createEntityManager();
+		try {
+			return em.createQuery("from Question q where q.quiz.id=?1 order by q.ordering").
+					 setParameter(1, quizid).
+					 getResultList();
+		} finally {
+			em.close();
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Answer> getQuestionAnswers(int questionid) {
-		return sf.createEntityManager().
-				createQuery("from Answer a where a.question.id=?1 order by a.ordering").
-				setParameter(1, questionid).
-				getResultList();
+		EntityManager em = sf.createEntityManager();
+		try {
+			return  em.createQuery("from Answer a where a.question.id=?1 order by a.ordering").
+					setParameter(1, questionid).
+					getResultList();
+		} finally {
+			em.close();
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<User> getUserStudents(int teacherid) {
-		return sf.createEntityManager().
-				createQuery("from User u where u.teacher.id=?1").
-				setParameter(1, teacherid).
-				getResultList();
+		EntityManager em = sf.createEntityManager();
+		try {
+			return  em.createQuery("from User u where u.teacher.id=?1").
+					setParameter(1, teacherid).
+					getResultList();
+		} finally {
+			em.close();
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Quiz> getQuizzesStartedByStudent(int studentid) {
-		return sf.createEntityManager().
-				createQuery("select distinct p.answer.question.quiz from Progress p where p.user.id=?1").
-				setParameter(1, studentid).
-				getResultList();
+		EntityManager em = sf.createEntityManager();
+		try {
+			return  em.createQuery("select distinct p.answer.question.quiz from Progress p where p.user.id=?1").
+					setParameter(1, studentid).
+					getResultList();
+		} finally {
+			em.close();
+		}
 	}
 	
 	

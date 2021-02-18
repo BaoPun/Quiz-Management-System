@@ -44,6 +44,17 @@ public class Answer implements Comparable<Answer> {
 	public Answer() {}
 
 
+	
+	public Answer(String answerText, Question question, boolean isCorrect, int ordering) {
+		super();
+		this.answerText = answerText;
+		this.question = question;
+		this.isCorrect = isCorrect;
+		this.ordering = ordering;
+	}
+
+
+
 	public Answer(int id, Question question, String answerText, boolean isCorrect, int ordering) {
 		this.id = id;
 		this.question = question;

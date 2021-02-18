@@ -20,6 +20,7 @@ public class AnswerJsonSerializer extends JsonSerializer<Answer> {
         jsonGenerator.writeStringField("answerText", answer.getAnswerText());
         jsonGenerator.writeNumberField("questionID", answer.getQuestion().getId());
         jsonGenerator.writeBooleanField("isCorrect", answer.getIsCorrect());
+        jsonGenerator.writeNumberField("ordering", answer.getOrdering());
         jsonGenerator.writeEndObject();
     }
 }
