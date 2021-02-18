@@ -105,13 +105,13 @@ public class SecondaryController {
 	}
 
 	@GetMapping(value="/s/getQuestions", produces="application/json")
-	public List<Question> getQuizQuestions(@RequestParam String quizid) {
-		return engine.getQuizQuestions(Integer.parseInt(quizid));
+	public List<Question> getQuizQuestions(@RequestParam String quizId) {
+		return engine.getQuizQuestions(Integer.parseInt(quizId));
 	}
 	
 	@GetMapping(value="/s/getPossibleAnswers", produces="application/json")
-	public List<Answer> getPossibleAnswers(@RequestParam String questionid) {
-		return engine.getQuestionAnswers(Integer.parseInt(questionid));
+	public List<Answer> getPossibleAnswers(@RequestParam String questionId) {
+		return engine.getQuestionAnswers(Integer.parseInt(questionId));
 	}
 	
 	@PostMapping(path="/s/submitNewQuiz", consumes= "application/json")

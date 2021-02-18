@@ -111,6 +111,15 @@ public class DBRepoImpl implements DBRepo {
 		
 		return listOfStudents;
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<User> getUserStudents(int teacherid) {
+		return sf.createEntityManager().
+				createQuery("from User u where u.teacher.id=?1").
+				setParameter(1, teacherid).
+				getResultList();
+	}
 
 	@Override
 	public boolean updateUser(User change) {
@@ -210,6 +219,15 @@ public class DBRepoImpl implements DBRepo {
 		// With CreateQuery, Quiz is the Java object, not the table
 		return sf.createEntityManager().createQuery("from Quiz").getResultList();
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Quiz> getQuizzesStartedByStudent(int studentid) {
+		return sf.createEntityManager().
+				createQuery("select distinct p.answer.question.quiz from Progress p where p.user.id=?1").
+				setParameter(1, studentid).
+				getResultList();
+	}
 
 	@Override
 	public boolean updateQuiz(Quiz change) {
@@ -294,6 +312,15 @@ public class DBRepoImpl implements DBRepo {
 	@Override
 	public List<Question> getAllQuestions() {
 		return sf.createEntityManager().createQuery("from Question").getResultList();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Question> getQuizQuestions(int quizid) {
+		return sf.createEntityManager().
+				createQuery("from Question q where q.quiz.id=?1 order by q.ordering").
+				setParameter(1, quizid).
+				getResultList();
 	}
 
 	@Override
@@ -394,6 +421,15 @@ public class DBRepoImpl implements DBRepo {
 		return listOfAnswers;
 		
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Answer> getQuestionAnswers(int questionid) {
+		return sf.createEntityManager().
+				createQuery("from Answer a where a.question.id=?1 order by a.ordering").
+				setParameter(1, questionid).
+				getResultList();
+	}
 
 	@Override
 	public boolean updateAnswer(Answer change) {
@@ -493,6 +529,16 @@ public class DBRepoImpl implements DBRepo {
 		}
 		return listOfProgress;
 
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Progress> getProgressForUserAndQuiz(int quizid, int userid) {
+		return sf.createEntityManager().
+				createQuery("from Progress p where p.answer.question.quiz.id=?1 and p.user.id=?2 order by p.answer.ordering asc").
+				setParameter(1, quizid).
+				setParameter(2, userid).
+				getResultList();
 	}
 
 	@Override
@@ -646,51 +692,15 @@ public class DBRepoImpl implements DBRepo {
 		return false;
 	}
 	
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Progress> getProgressForUserAndQuiz(int quizid, int userid) {
-		return sf.createEntityManager().
-				createQuery("from Progress p where p.answer.question.quiz.id=?1 and p.user.id=?2 order by p.answer.ordering asc").
-				setParameter(1, quizid).
-				setParameter(2, userid).
-				getResultList();
-	}
+	
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Question> getQuizQuestions(int quizid) {
-		return sf.createEntityManager().
-				createQuery("from Question q where q.quiz.id=?1 order by q.ordering").
-				setParameter(1, quizid).
-				getResultList();
-	}
+	
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Answer> getQuestionAnswers(int questionid) {
-		return sf.createEntityManager().
-				createQuery("from Answer a where a.question.id=?1 order by a.ordering").
-				setParameter(1, questionid).
-				getResultList();
-	}
+	
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<User> getUserStudents(int teacherid) {
-		return sf.createEntityManager().
-				createQuery("from User u where u.teacher.id=?1").
-				setParameter(1, teacherid).
-				getResultList();
-	}
+	
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Quiz> getQuizzesStartedByStudent(int studentid) {
-		return sf.createEntityManager().
-				createQuery("select distinct p.answer.question.quiz from Progress p where p.user.id=?1").
-				setParameter(1, studentid).
-				getResultList();
-	}
+	
 	
 	
 	

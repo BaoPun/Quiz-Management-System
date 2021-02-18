@@ -48,7 +48,12 @@ public class SecureController {
 	}
   
 	@GetMapping("/student")
-	public String student_page(Model model) {
+	public String student_page(Model model, HttpSession session) {
+		User loggedStudent = engine.getLoggedInUser(session.getId());
+		if(loggedStudent != null)
+			model.addAttribute("student", loggedStudent.getUsername());
+		else
+			model.addAttribute("student", null);
 		return "s/student";
 	}
 

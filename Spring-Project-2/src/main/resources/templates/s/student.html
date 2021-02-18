@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<div th:replace="/s/fragments.html :: headerfiles"></div>
+	<meta charset="ISO-8859-1">
+	<title>Student Page</title>
+	<link rel="stylesheet" href="/s/css/student.css">
+</head>
+<body>
+
+<div th:id="${student}" th:insert="/s/fragments.html :: navbar"></div>
+
+
+
+<div id='main-menu-student'>
+	<h1 id='main-menu-student-display'>Welcome ?.<br>Please choose to either take a quiz, view a graded quiz, or log out.</h1>
+</div>
+
+</body>
+<script src="/s/js/student.js"></script>
+</html>

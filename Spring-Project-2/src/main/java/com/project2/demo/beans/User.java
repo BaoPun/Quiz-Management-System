@@ -37,10 +37,6 @@ public class User {
 	@JoinColumn(name="teacher", nullable = true)
 	private User teacher;
 	
-	/*
-	@OneToMany(mappedBy="teacher")
-	private Set<User> students;
-	*/
 	
 	public User() {}
 
@@ -117,7 +113,7 @@ public class User {
 		result = prime * result + id;
 		result = prime * result + ((passwordHash == null) ? 0 : passwordHash.hashCode());
 		result = prime * result + ((role == null) ? 0 : role.hashCode());
-    result = prime * result + ((teacher == null) ? 0 : teacher.hashCode());
+		result = prime * result + ((teacher == null) ? 0 : teacher.hashCode());
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
