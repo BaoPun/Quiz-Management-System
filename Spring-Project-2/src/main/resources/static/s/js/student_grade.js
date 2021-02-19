@@ -81,6 +81,8 @@ window.addEventListener('load', () => {
 		
 	}
 })
+
+/*
 // Detect navigation arrows if we're already logged out but trying to get in via outside means.
 window.addEventListener('DOMContentLoaded', () => {
     if(String(window.performance.getEntriesByType("navigation")[0].type) === "back_forward" && localStorage.getItem('closed') == 'normal'){
@@ -112,3 +114,4 @@ window.addEventListener('beforeunload', () => {
 document.getElementsByClassName('nav-item nav-link')[0].addEventListener('click', () => {
 	
 })
+*/

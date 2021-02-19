@@ -2,7 +2,7 @@ let history = null
 
 // Detect navigation arrows if we're already logged out but trying to get in via outside means.
 window.addEventListener('DOMContentLoaded', () => {
-    if(String(window.performance.getEntriesByType("navigation")[0].type) === "back_forward" && localStorage.getItem('closed') == 'normal'){
+    if(String(window.performance.getEntriesByType("navigation")[0].type) == "back_forward" && localStorage.getItem('closed') == 'normal'){
 		alert('Error, you are not logged in.  You will now be redirected to the login page.')
 		location.href = '/'
 	}
@@ -71,4 +71,5 @@ window.addEventListener('beforeunload', () => {
 // View all quiz results that were already taken
 document.getElementsByClassName('nav-item nav-link')[0].addEventListener('click', () => {
 	alert('Viewing all grades from quizzes taken')
+	location.href = '/s/studentGrades'
 })

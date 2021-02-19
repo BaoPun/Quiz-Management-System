@@ -101,4 +101,9 @@ public class SecureController {
 		model.addAttribute("studentIDs", userIDs);
 		return "s/teacher";
 	}
+	
+	@GetMapping("/studentGrades")
+	public String student_grade_page(Model model) {
+		return "s/student_grade";
+	}
 }
