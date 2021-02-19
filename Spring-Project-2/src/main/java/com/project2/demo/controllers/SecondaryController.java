@@ -116,21 +116,23 @@ public class SecondaryController {
 		return "success";
 	}
 	
-	public class SingleQuestion {
+	private class SingleQuestion {
 		public String description;
 		public List<Answer> answers;
+		
+		public SingleQuestion(List<Answer> answers, String description) {
+			this.answers = answers;
+			this.description = description;
+		}
 	}
 	
 	@GetMapping(value="/s/getSingleQuestion", produces="application/json")
 	public SingleQuestion getSingleQuestion(@RequestParam String questionid) {
-		SingleQuestion retval = new SingleQuestion();
 		int questionidNum = Integer.parseInt(questionid);
 		
 		List<Answer> questionAnswers = engine.getQuestionAnswers(questionidNum);
-		retval.answers=questionAnswers;
-		
 		Question question = engine.getQuestion(questionidNum);
-		retval.description=question.getDescription();
-		return retval;
+		
+		return new SingleQuestion(questionAnswers, question.getDescription());
 	}
 }
