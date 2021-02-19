@@ -136,7 +136,6 @@ function studentListItemClick() {
 
 
 
-
 let history = null
 
 // Detect navigation arrows if we're already logged out but trying to get in via outside means.
@@ -169,6 +168,16 @@ window.addEventListener('load', () => {
 	else{
 		// Mark the logged in User as a teacher
 		localStorage.setItem('type', 'TEACHER')
+
+		// Change the name from Quiz Manager to "Teacher view"
+		document.getElementsByClassName('navbar-brand')[0].textContent = `${history}`
+
+		// Hide most items in the navbar, they're pointless
+		document.getElementsByClassName('nav-item nav-link')[1].style.display = 'none'
+		document.getElementsByClassName('nav-item nav-link')[2].style.display = 'none'
+
+		// Reserve 1 item in the navbar for creating a brand new quiz
+		document.getElementsByClassName('nav-item nav-link')[0].textContent = 'Create New Quiz'
 	}
 })
 

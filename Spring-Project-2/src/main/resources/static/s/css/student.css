@@ -7,7 +7,22 @@
     margin: 5%;
 }
 
-#student-choose-quiz-menu, #student-choose-grade-menu{
+#student-choose-quiz-menu{
     margin: 3%;
+}
+
+#student-choose-grade-menu{
     display: none;
+}
+
+.list-item {
+	margin-bottom: 20px;
+}
+
+#label-quiz {
+    text-align: center;
+}
+
+.list-item.quiz-list-item{
+    background-color: #092756;
 }

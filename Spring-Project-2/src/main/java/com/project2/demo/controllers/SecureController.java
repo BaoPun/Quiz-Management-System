@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.project2.demo.beans.Quiz;
 import com.project2.demo.beans.User;
 import com.project2.demo.entities.Engine;
 
@@ -49,11 +50,30 @@ public class SecureController {
   
 	@GetMapping("/student")
 	public String student_page(Model model, HttpSession session) {
+		
+		// Map out the first div id
 		User loggedStudent = engine.getLoggedInUser(session.getId());
 		if(loggedStudent != null)
 			model.addAttribute("student", loggedStudent.getUsername());
 		else
 			model.addAttribute("student", null);
+		
+		// Map out the list of quizzes
+		List<Quiz> listOfQuizzes = engine.getQuizzesFromUser(loggedStudent.getTeacher());
+	 
+		List<String> quizNames = new ArrayList<String>();
+		List<Integer> quizIDs = new ArrayList<Integer>();
+		
+		if(listOfQuizzes != null) {
+			for(Quiz q : listOfQuizzes) {
+				quizNames.add(q.getName());
+				quizIDs.add(q.getId());
+			}
+		}
+		
+		model.addAttribute("quizzes", quizNames);
+		model.addAttribute("quizIDs", quizIDs);
+		
 		return "s/student";
 	}
 

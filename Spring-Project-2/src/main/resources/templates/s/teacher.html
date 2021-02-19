@@ -37,8 +37,7 @@
 
 	<div class="student-list">
 		<div class="list-item">Your Students:</div>
-		<div class="list-group"
-			th:each="student,iter: ${students}">
+		<div class="list-group" th:each="student,iter: ${students}">
 		<div 
 			class="list-item student-list-item" 
 			th:attr="studentid=${studentIDs[iter.index]},student=${student}">
