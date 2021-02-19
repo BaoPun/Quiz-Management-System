@@ -15,7 +15,7 @@ import com.project2.demo.entities.Engine;
 
 @Controller
 public class MainController {
-	
+
 	@Autowired
 	private Engine engine;
 
@@ -35,7 +35,7 @@ public class MainController {
 		List<String> teachers = new ArrayList<String>();
 		
 		for(int i = 0; i < listOfTeachers.size(); i++)
-			teachers.add(Integer.toString(listOfTeachers.get(i).getId())+ " " + listOfTeachers.get(i).getUsername());
+			teachers.add(Integer.toString(listOfTeachers.get(i).getId()) + " " + listOfTeachers.get(i).getUsername());
 		
 		model.addAttribute("teachers", teachers);
 		

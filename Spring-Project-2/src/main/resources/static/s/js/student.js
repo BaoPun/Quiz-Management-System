@@ -1,20 +1,33 @@
 let history = null
 
+// Detect back arrows
+window.addEventListener('DOMContentLoaded', () => {
+    if(String(window.performance.getEntriesByType("navigation")[0].type) === "back_forward" && localStorage.getItem('closed') == 'normal'){
+		alert('Retrieved via back arrows, but have to go back to the login page')
+		//localStorage.removeItem('closed')
+		location.href = '/'
+	}
+	else if(localStorage.getItem('closed') == 'forced')
+		history = localStorage.getItem('user')
+
+})
+
 // The moment the Student window is loaded, perform this function.
-window.onload = function(){
+window.addEventListener('load', () => {
 
 	// First, check if the id field is set.
 	let getFirstDiv = document.getElementsByTagName('div')[0]
 	history = getFirstDiv.getAttribute('id')
 	console.log(history)
+	
 
 	// If not, redirect back to the login page.
-	if(!getFirstDiv.hasAttribute('id') || localStorage.getItem('user') != null){
+	if(!getFirstDiv.hasAttribute('id')){
 		alert('Error, you are not logged in.  You will now be redirected to the login page.')
 		location.href = '/'
 	}
 
-	// Otherwise, create the POV
+	// Otherwise, create the Student View
 	else{
 
 		// Remember the retrieved id. 
@@ -26,7 +39,7 @@ window.onload = function(){
 
 		// Also change the display name
 		document.getElementById('main-menu-student-display').textContent = ''
-		document.getElementById('main-menu-student-display').insertAdjacentHTML('afterbegin', `Welcome ${getFirstDiv.id}.<br>Please choose to either take a quiz, view a graded quiz, or log out.`)
+		document.getElementById('main-menu-student-display').insertAdjacentHTML('afterbegin', `Welcome ${history}.<br>Please choose to either take a quiz, view a graded quiz, or log out.`)
 	
 		// Move the logout button on the nav bar to the right
 		document.getElementsByClassName('navbar-nav')[0].style.float = 'right'
@@ -39,16 +52,20 @@ window.onload = function(){
 		document.getElementsByClassName('nav-item nav-link')[1].textContent = 'View Grades of Completed Quizzes'
 
 	}
-}
+})
 
-window.onbeforeunload = function () {
-    localStorage.removeItem('user')
-};
-
-// Do stuff before logging out
+// Do stuff before logging out via the log out button
 document.getElementsByClassName('nav-item nav-link')[3].addEventListener('click', () => {
-	alert(`Logging out, see you next time ${history}`)
-	localStorage.setItem('user', history)
+	localStorage.setItem('closed', 'normal')
+	alert(`Logging out, see you next time ${history}`) 
+})
+
+// Do stuff before the page closes
+window.addEventListener('beforeunload', () => {
+	if(localStorage.getItem('closed') != null && localStorage.getItem('closed') != 'normal'){
+		localStorage.setItem('closed', 'forced')
+		localStorage.setItem('user', history)
+	}
 })
 
 // View all quizzes that the User still needs to take
