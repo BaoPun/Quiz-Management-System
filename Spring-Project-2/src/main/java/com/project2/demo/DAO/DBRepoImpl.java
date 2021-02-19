@@ -1,6 +1,7 @@
 package com.project2.demo.DAO;
 
 import java.util.List;
+import java.math.BigDecimal;
 
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
@@ -9,6 +10,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,8 +32,39 @@ public class DBRepoImpl implements DBRepo {
 	
 	// User
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	// Helper function for addUser: check if the username is unique, case insensitive
+	// Converting from BigDecimal to Integer is such a pain in the arse...
+	public boolean isUniqueUser(String user) {
+		Session session = sf.openSession();
+		int count = Integer.MIN_VALUE;
+		try {
+			List<BigDecimal> counts = sf.createEntityManager().createNativeQuery("SELECT COUNT(username) FROM Users WHERE LOWER(username) = :username")
+					.setParameter("username", user.toLowerCase())
+					.getResultList();
+			count = counts.get(0).intValueExact();
+			System.out.println("Is this unique: " + (count == 0 ? "yes" : "no"));
+			
+		}
+		catch(ConstraintViolationException e) {
+			return true;
+		}
+		catch(HibernateException e) {
+			
+		}
+		finally {
+			session.close();
+		}
+		return count == 0;	// if the user is unique, then the count should be 0
+		
+	}
+	
 	@Override
 	public int addUser(User a) {
+		
+		// If the username is not unique, then return -1 immediately.
+		if(!isUniqueUser(a.getUsername()))
+			return -1;
 		
 		Session session = sf.openSession();
 		int id = sf.createEntityManager().createNativeQuery("SELECT user_id_generator.nextval FROM DUAL").getFirstResult();
@@ -43,11 +76,16 @@ public class DBRepoImpl implements DBRepo {
 			id = Integer.parseInt(session.save(a).toString());
 			session.getTransaction().commit();
 		} 
-		catch (HibernateException e) {
+		catch (ConstraintViolationException e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
 			id = -1;
 		} 
+		catch(HibernateException e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+			id = -1;
+		}
 		finally {
 			session.close();
 		}
@@ -65,8 +103,8 @@ public class DBRepoImpl implements DBRepo {
 	@Override
 	public User getUser(String name) {
 		try {
-			TypedQuery<User> tq = sf.createEntityManager().createQuery("from User WHERE username=?1",User.class);
-			return tq.setParameter(1, name).getSingleResult();
+			TypedQuery<User> tq = sf.createEntityManager().createQuery("from User WHERE LOWER(username)=?1",User.class);
+			return tq.setParameter(1, name.toLowerCase()).getSingleResult();
 		}
 		catch(Exception e) {
 			return null;
@@ -201,8 +239,8 @@ public class DBRepoImpl implements DBRepo {
 	
 	@Override
 	public List<Quiz> getQuizzes(String name) {
-		TypedQuery<Quiz> tq = sf.createEntityManager().createQuery("from Quiz WHERE name=?1",Quiz.class);
-		return tq.setParameter(1, name).getResultList();
+		TypedQuery<Quiz> tq = sf.createEntityManager().createQuery("from Quiz WHERE LOWER(name)=?1",Quiz.class);
+		return tq.setParameter(1, name.toLowerCase()).getResultList();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -691,19 +729,6 @@ public class DBRepoImpl implements DBRepo {
 		
 		return false;
 	}
-	
-	
-
-	
-
-	
-
-	
-
-	
-	
-	
-	
 	
 
 }

@@ -3,6 +3,8 @@ package com.project2.demo.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +24,8 @@ public class MainController {
 	}
 	
 	@GetMapping("/")
-	public String login_page(Model model) {
+	public String login_page(Model model, HttpSession session) {
+		engine.removeLoggedUser(session.getId());
 		return "index";
 	}
 	

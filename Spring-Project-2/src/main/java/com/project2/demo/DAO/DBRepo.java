@@ -13,6 +13,7 @@ public interface DBRepo{
 	
 	//Users
 	int addUser(User a);
+	boolean isUniqueUser(String user);
 	User getUser(int id);
 	User getUser(String user);
 	List<User> getAllUsers();
