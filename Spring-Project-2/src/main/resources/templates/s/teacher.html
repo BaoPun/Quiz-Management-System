@@ -11,6 +11,29 @@
 
 <div th:insert="/s/fragments.html :: navbar"></div>
 
+<div class="modal fade" id="rowClickModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="rowClickModalTitle">Blank</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="rowClickModalBody">
+        <div class="question" id="question-label"></div>
+        <div class="answers">
+        <ul id="answer-list">
+        </ul>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="main-container">
 
 	<div class="student-list">
@@ -26,28 +49,21 @@
 	</div>
 	
 	<div class="quiz-list">
-		<div id="tests-label" class="list-item">Tests</div>
+		<div id="tests-label" class="list-item">Quizzes</div>
 		<div class="list-group" id="quizListGroup">
 		</div>
 	</div>
 	
 	<div class="quiz-results">
-		<table class="quiz-table">
-			<thead>
-				<tr>
-					<th scope="col">Attempt #</th>
-					<th scope="col">Score</th>
-					<th scope="col">Time spent</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>1</td>
-					<td>50%</td>
-					<td>3:00.00</td>
-				</tr>
-			</tbody>
-		
+		<div id="quiz-score"></div>
+		<table id="quiz-table" class="table-striped table-dark">
+		<thead>
+		<tr>
+			<th scope="col">Question #</th>
+			<th scope="col">Answer Chosen</th>
+		</tr>
+		</thead>
+		<tbody id="quiz-body"></tbody>
 		</table>
 	</div>
 
