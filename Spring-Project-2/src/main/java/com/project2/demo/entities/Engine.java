@@ -1,6 +1,8 @@
 package com.project2.demo.entities;
 
 import java.net.URI;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +14,7 @@ import com.project2.demo.beans.Answer;
 import com.project2.demo.beans.Progress;
 import com.project2.demo.beans.Question;
 import com.project2.demo.beans.Quiz;
+import com.project2.demo.beans.Timetable;
 import com.project2.demo.beans.User;
 import com.project2.demo.beans.UserType;
 import com.project2.demo.util.Password;
@@ -62,6 +65,28 @@ public class Engine {
 	
 	public Question getQuestion(int questionid) {
 		return services.getQuestion(questionid);
+	}
+	
+	public Timetable getTimetable(int quizID, int userID) {
+		return services.getTimetables(quizID, userID).get(0);
+	}
+	
+	public int startQuiz(int quizID, int userID) {
+		Timetable table = new Timetable();
+		table.setQuizStartTime(Timestamp.valueOf(LocalDateTime.now()));
+		table.setQuizID(quizID);
+		table.setUserID(userID);
+		return services.addTimetable(table);
+	}
+	
+	public Timetable endQuiz(int quizID, int userID) {
+		Timetable table = this.getTimetable(quizID, userID);
+		if (table == null) {
+			return null;
+		}
+		table.setQuizEndTime(Timestamp.valueOf(LocalDateTime.now()));
+		services.updateTimetable(table);
+		return table;
 	}
 	
 	public List<Question> getQuizQuestions(int quizid) {

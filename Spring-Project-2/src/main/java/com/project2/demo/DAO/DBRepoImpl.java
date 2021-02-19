@@ -1,8 +1,8 @@
 package com.project2.demo.DAO;
 
+import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
@@ -19,6 +19,7 @@ import com.project2.demo.beans.Permission;
 import com.project2.demo.beans.Progress;
 import com.project2.demo.beans.Question;
 import com.project2.demo.beans.Quiz;
+import com.project2.demo.beans.Timetable;
 import com.project2.demo.beans.User;
 import com.project2.demo.beans.UserType;
 
@@ -787,6 +788,79 @@ public class DBRepoImpl implements DBRepo {
 			em.close();
 		}
 	}
+
+	@Override
+	public Integer addTimetable(Timetable table) {
+		Session session = sf.openSession();
+		session.beginTransaction();
+		
+		try {
+			Serializable id=session.save(table);
+			session.getTransaction().commit();
+			return (Integer)id;
+		} catch (HibernateException e) {
+			session.getTransaction().rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public Timetable getTimetable(int id) {
+		EntityManager em = sf.createEntityManager();
+		try {
+			return em.find(Timetable.class, id);
+		} finally {
+			em.close();
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Timetable> getAllTimetables() {
+		EntityManager em = sf.createEntityManager();
+		try {
+			return em.createQuery("from Timetable").getResultList();
+		} finally {
+			em.close();
+		}
+	}
+
+	@Override
+	public boolean updateTimetable(Timetable change) {
+		Session session = sf.openSession();
+		Transaction transaction = null;
+		try {
+			transaction = session.beginTransaction();
+			session.update(change);
+			transaction.commit();
+			return true;
+		}
+		catch(Exception e) {
+			transaction.rollback();
+			throw e;
+		}
+		finally {
+			session.close();
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Timetable> getTimetables(int quizID, int userID) {
+		EntityManager em = sf.createEntityManager();
+		try {
+			return em.createQuery("from Timetable where quizID=?1 and userID=?2").
+					setParameter(1, quizID).
+					setParameter(2, userID).
+					getResultList();
+		} finally {
+			em.close();
+		}
+	}
+	
+	
 	
 	
 	

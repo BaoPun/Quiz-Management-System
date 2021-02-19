@@ -1,5 +1,6 @@
 package com.project2.demo.DAO;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.project2.demo.beans.Answer;
@@ -7,6 +8,7 @@ import com.project2.demo.beans.Permission;
 import com.project2.demo.beans.Progress;
 import com.project2.demo.beans.Question;
 import com.project2.demo.beans.Quiz;
+import com.project2.demo.beans.Timetable;
 import com.project2.demo.beans.User;
 
 public interface DBRepo{
@@ -64,5 +66,13 @@ public interface DBRepo{
 	List<Permission> getAllPermissions(int id);
 	boolean updatePermission(Permission change);
 	boolean deletePermission(int id);
+	
+	//Timetable
+	Integer addTimetable(Timetable table);
+	Timetable getTimetable(int id);
+	List<Timetable> getAllTimetables();
+	boolean updateTimetable(Timetable change);
+	List<Timetable> getTimetables(int quizID,int userID);
+	
 	
 }

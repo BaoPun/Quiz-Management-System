@@ -1,7 +1,6 @@
 package com.project2.demo.controllers;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -23,6 +22,7 @@ import com.project2.demo.beans.NewQuiz;
 import com.project2.demo.beans.Progress;
 import com.project2.demo.beans.Question;
 import com.project2.demo.beans.Quiz;
+import com.project2.demo.beans.Timetable;
 import com.project2.demo.beans.User;
 import com.project2.demo.entities.Engine;
 
@@ -131,5 +131,30 @@ public class SecondaryController {
 		Question question = engine.getQuestion(questionidNum);
 		retval.description=question.getDescription();
 		return retval;
+	}
+	
+	@GetMapping(value="/s/getQuizTimetable", produces="application/json")
+	public Timetable getQuizTimetable(@RequestParam String quizid, @RequestParam String userid) {
+		int quizidNum = Integer.parseInt(quizid);
+		int useridNum = Integer.parseInt(userid);
+		return engine.getTimetable(quizidNum, useridNum);
+	}
+	
+	@PostMapping(value="/s/beginQuiz",
+			consumes= {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+	public String beginQuiz(HttpSession session, @RequestParam MultiValueMap<String,String> paramMap) {
+		int quizID = Integer.parseInt(paramMap.getFirst("quizID"));
+		int userID = engine.getLoggedInUser(session.getId()).getId();
+		engine.startQuiz(quizID, userID);
+		return "OK";
+	}
+	
+	@PostMapping(value="/s/endQuiz",
+			consumes= {MediaType.APPLICATION_FORM_URLENCODED_VALUE},
+			produces="application/json")
+	public Timetable endQuiz(HttpSession session, @RequestParam MultiValueMap<String,String> paramMap) {
+		int quizID = Integer.parseInt(paramMap.getFirst("quizID"));
+		int userID = engine.getLoggedInUser(session.getId()).getId();
+		return engine.endQuiz(quizID, userID);
 	}
 }
