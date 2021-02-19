@@ -5,6 +5,33 @@
 var questionNum=0;
 var questionNumAnswers={}
 
+function addAnswerBox(thisQuestionNum,answerNum) {
+	let questionDiv=document.getElementById("question-number-"+thisQuestionNum);
+	let answerDiv=document.createElement("div");
+	answerDiv.classList.add("answerDiv");
+	questionDiv.appendChild(answerDiv);
+
+	let checkBoxDiv = document.createElement("div");
+	checkBoxDiv.classList.add("form-check");
+	checkBoxDiv.classList.add("form-switch");
+	let checkBox=document.createElement("input");
+	checkBox.setAttribute("type","checkbox");
+	checkBox.setAttribute("id","checkbox-"+thisQuestionNum+"-"+answerNum);
+	checkBox.classList.add("form-check-input");
+	checkBoxDiv.appendChild(checkBox);
+	answerDiv.appendChild(checkBoxDiv);
+
+	let textBox=document.createElement("input");
+	textBox.classList.add("form-control");
+	textBox.classList.add("text-box");
+	textBox.setAttribute("placeholder","answer");
+	textBox.setAttribute("id","text-box-"+thisQuestionNum+"-"+answerNum);
+	textBox.setAttribute("type","text");
+	textBox.onchange=textBoxChange;
+	answerDiv.appendChild(textBox);
+
+	questionNumAnswers[thisQuestionNum]++;
+}	
 
 function textBoxChange() {
 	if (this.classList && this.classList.contains("text-box")) {
@@ -12,16 +39,7 @@ function textBoxChange() {
 		let thisQuestionNum=parseInt(info[2]);
 		let answerNum=parseInt(info[3]);
 		if (answerNum+1 == questionNumAnswers[thisQuestionNum]) {
-			let questionDiv=document.getElementById("question-number-"+thisQuestionNum);
-			let textBox=document.createElement("input");
-			textBox.classList.add("form-control");
-			textBox.classList.add("text-box");
-			textBox.setAttribute("placeholder","answer");
-			textBox.setAttribute("id","text-box-"+thisQuestionNum+"-"+(1+answerNum));
-			textBox.setAttribute("type","text");
-			textBox.onchange=textBoxChange;
-			questionDiv.appendChild(textBox);
-			questionNumAnswers[thisQuestionNum]++;
+			addAnswerBox(thisQuestionNum,answerNum+1);
 		}
 	}
 }
@@ -29,17 +47,22 @@ function textBoxChange() {
 function submit() {
 	let submission={
 		"name":document.getElementById("quiz-name-input").value,
+		"answerCorrectness":[],
 		"answers":[],
 		"questions":[]};
 	for (i=0;i<questionNum;++i) {
 		let answerList=[];
+		var isCorrectList=[]
 		for (j=0;j<questionNumAnswers[i];++j) {
 			let textbox=document.getElementById("text-box-"+i+"-"+j);
+			let checkbox=document.getElementById("checkbox-"+i+"-"+j);
 			if (textbox.value != "") {
-				answerList.push(textbox.value)
+				answerList.push(textbox.value);
+				isCorrectList.push(checkbox.checked);
 			}
 		}
 		submission['answers'].push(answerList);
+		submission['answerCorrectness'].push(isCorrectList);
 		let questionBox=document.getElementById('question-box-'+i);
 		submission['questions'].push(questionBox.value);
 	}
@@ -64,6 +87,7 @@ function addQuestion() {
 	let thisQuestion=document.createElement("div");
 	thisQuestion.setAttribute("id","question-number-"+questionNum);
 	thisQuestion.classList.add("question-block");
+	questionDiv.appendChild(thisQuestion);
 	
 	let questionBox=document.createElement("input");
 	questionBox.classList.add("form-control");
@@ -73,15 +97,8 @@ function addQuestion() {
 	questionBox.setAttribute("type","text");
 	thisQuestion.appendChild(questionBox);
 	
-	let textBox=document.createElement("input");
-	textBox.classList.add("form-control");
-	textBox.classList.add("text-box");
-	textBox.setAttribute("id","text-box-"+questionNum+"-0");
-	textBox.setAttribute("type","text");
-	textBox.setAttribute("placeholder","Answer");
-	textBox.onchange=textBoxChange;
-	thisQuestion.appendChild(textBox);
-	questionDiv.appendChild(thisQuestion);
-	questionNumAnswers[questionNum]=1;
+	questionNumAnswers[questionNum]=0;
+	addAnswerBox(questionNum,0);
+	
 	++questionNum;
 }

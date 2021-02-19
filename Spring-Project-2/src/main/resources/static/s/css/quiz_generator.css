@@ -12,3 +12,11 @@
 #quiz-name-input {
 	width: 400px;
 }
+
+.answerDiv {
+	display: flex;
+}
+
+.form-check {
+	top: 6px;
+}

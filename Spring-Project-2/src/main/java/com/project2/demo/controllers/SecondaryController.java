@@ -111,19 +111,9 @@ public class SecondaryController {
 	}
 	
 	@PostMapping(path="/s/submitNewQuiz", consumes= "application/json")
-	public String login_page(@RequestBody NewQuiz quiz) {
-		//TODO fill in
+	public String login_page(HttpSession session, @RequestBody NewQuiz quiz) {
+		engine.makeNewQuiz(session.getId(), quiz);
 		return "success";
-	}
-	
-	private class SingleQuestion {
-		public String description;
-		public List<Answer> answers;
-		
-		public SingleQuestion(List<Answer> answers, String description) {
-			this.answers = answers;
-			this.description = description;
-		}
 	}
 	
 	@GetMapping(value="/s/getSingleQuestion", produces="application/json")

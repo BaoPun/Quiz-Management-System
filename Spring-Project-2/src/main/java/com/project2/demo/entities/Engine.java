@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.project2.demo.DAO.DBRepo;
 import com.project2.demo.beans.Answer;
+import com.project2.demo.beans.NewQuiz;
 import com.project2.demo.beans.Progress;
 import com.project2.demo.beans.Question;
 import com.project2.demo.beans.Quiz;
@@ -94,6 +95,37 @@ public class Engine {
 		table.setQuizEndTime(Timestamp.valueOf(LocalDateTime.now()));
 		services.updateTimetable(table);
 		return table;
+	}
+	
+	public Quiz makeNewQuiz(String sessionid, NewQuiz newQuiz) {
+		User currentUser = loggedInUsers.get(sessionid);
+		Quiz quiz = new Quiz();
+		quiz.setName(newQuiz.getName());
+		quiz.setUser(currentUser);
+		services.addQuiz(quiz);
+		
+		List<String> questionStrs = newQuiz.getQuestions();
+		List<List<String>> answerStrs = newQuiz.getAnswers();
+		List<List<Boolean>> answerCorrectness = newQuiz.getAnswerCorrectness();
+		for (int i=0;i<questionStrs.size();++i) {
+			Question question = new Question();
+			question.setDescription(questionStrs.get(i));
+			question.setOrdering(i);
+			question.setQuestionType("MULTIPLE CHOICE");
+			question.setQuiz(quiz);
+			services.addQuestion(question);
+			
+			for (int j=0;j<answerStrs.get(i).size();++j) {
+				Answer answer = new Answer();
+				answer.setAnswerText(answerStrs.get(i).get(j));
+				answer.setIsCorrect(answerCorrectness.get(i).get(j));
+				answer.setOrdering(j);
+				answer.setQuestion(question);
+				services.addAnswer(answer);
+			}
+		}
+		
+		return quiz;
 	}
 	
 	public List<Question> getQuizQuestions(int quizid) {

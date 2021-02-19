@@ -7,21 +7,16 @@ public class NewQuiz {
 	private List<List<String>> answers;
 	private List<String> questions;
 	private String name;
+	private List<List<Boolean>> answerCorrectness;
+	
+	
 
-	
-	
-	@Override
-	public String toString() {
-		final int maxLen = 10;
-		return "NewQuiz [answers=" + (answers != null ? answers.subList(0, Math.min(answers.size(), maxLen)) : null)
-				+ ", questions=" + (questions != null ? questions.subList(0, Math.min(questions.size(), maxLen)) : null)
-				+ ", name=" + name + "]";
-	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((answerCorrectness == null) ? 0 : answerCorrectness.hashCode());
 		result = prime * result + ((answers == null) ? 0 : answers.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((questions == null) ? 0 : questions.hashCode());
@@ -37,6 +32,11 @@ public class NewQuiz {
 		if (getClass() != obj.getClass())
 			return false;
 		NewQuiz other = (NewQuiz) obj;
+		if (answerCorrectness == null) {
+			if (other.answerCorrectness != null)
+				return false;
+		} else if (!answerCorrectness.equals(other.answerCorrectness))
+			return false;
 		if (answers == null) {
 			if (other.answers != null)
 				return false;
@@ -53,6 +53,20 @@ public class NewQuiz {
 		} else if (!questions.equals(other.questions))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "NewQuiz [answers=" + answers + ", questions=" + questions + ", name=" + name + ", answerCorrectness="
+				+ answerCorrectness + "]";
+	}
+
+	public List<List<Boolean>> getAnswerCorrectness() {
+		return answerCorrectness;
+	}
+
+	public void setAnswerCorrectness(List<List<Boolean>> answerCorrectness) {
+		this.answerCorrectness = answerCorrectness;
 	}
 
 	public List<List<String>> getAnswers() {
