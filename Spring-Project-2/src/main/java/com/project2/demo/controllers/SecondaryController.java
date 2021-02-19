@@ -42,6 +42,7 @@ public class SecondaryController {
 		HttpHeaders headers=new HttpHeaders();
       
 		System.out.println("Attempting to log in");
+		
       
 		// If login was successful
     	if (engine.login(session.getId(),username,password)) {

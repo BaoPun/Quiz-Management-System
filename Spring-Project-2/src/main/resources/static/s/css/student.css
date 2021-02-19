@@ -7,6 +7,7 @@
     margin: 5%;
 }
 
-#student-button-menu{
+#student-choose-quiz-menu, #student-choose-grade-menu{
     margin: 3%;
+    display: none;
 }

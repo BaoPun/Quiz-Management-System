@@ -110,8 +110,13 @@ public class Engine {
 	}
 	
 	public List<User> getMyStudents(String sessionID) {
-		int teacherID = loggedInUsers.get(sessionID).getId();
-		return getUserStudents(teacherID);
+		User getTeacher = loggedInUsers.get(sessionID);
+		int teacherID = Integer.MIN_VALUE;
+		if(getTeacher != null) {
+			teacherID = getTeacher.getId();
+			return getUserStudents(teacherID);
+		}
+		return null;
 	}
 	
 	public List<User> getUserStudents(int teacherID) {

@@ -1,26 +1,27 @@
 let history = null
 
-// Detect back arrows
+// Detect navigation arrows if we're already logged out but trying to get in via outside means.
 window.addEventListener('DOMContentLoaded', () => {
     if(String(window.performance.getEntriesByType("navigation")[0].type) === "back_forward" && localStorage.getItem('closed') == 'normal'){
-		alert('Retrieved via back arrows, but have to go back to the login page')
-		//localStorage.removeItem('closed')
+		alert('Error, you are not logged in.  You will now be redirected to the login page.')
 		location.href = '/'
 	}
+	else if(localStorage.getItem('type') == 'TEACHER'){
+		alert('Error, you are a teacher.  You will now be redirected to the Teacher page.')
+		location.href = '/s/teacher'
+	} 
 	else if(localStorage.getItem('closed') == 'forced')
 		history = localStorage.getItem('user')
-
 })
 
 // The moment the Student window is loaded, perform this function.
 window.addEventListener('load', () => {
 
 	// First, check if the id field is set.
-	let getFirstDiv = document.getElementsByTagName('div')[0]
+	let getFirstDiv = document.getElementsByTagName('div')[0]	
 	history = getFirstDiv.getAttribute('id')
 	console.log(history)
 	
-
 	// If not, redirect back to the login page.
 	if(!getFirstDiv.hasAttribute('id')){
 		alert('Error, you are not logged in.  You will now be redirected to the login page.')
@@ -29,10 +30,8 @@ window.addEventListener('load', () => {
 
 	// Otherwise, create the Student View
 	else{
-
-		// Remember the retrieved id. 
-		// Local storage basically prevents us from using the back arrow to access a User that was already logged out.
-		localStorage.removeItem('user')
+		// Mark the logged in User as a student
+		localStorage.setItem('type', 'STUDENT')
 
 		// Change the name from Quiz Manager to "Student View"
 		document.getElementsByClassName('navbar-brand')[0].textContent = 'Student View'
@@ -57,6 +56,7 @@ window.addEventListener('load', () => {
 // Do stuff before logging out via the log out button
 document.getElementsByClassName('nav-item nav-link')[3].addEventListener('click', () => {
 	localStorage.setItem('closed', 'normal')
+	localStorage.removeItem('type')
 	alert(`Logging out, see you next time ${history}`) 
 })
 

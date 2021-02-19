@@ -133,3 +133,56 @@ function studentListItemClick() {
 	xhttp.open("GET", uri);
 	xhttp.send();
 }
+
+
+
+
+let history = null
+
+// Detect navigation arrows if we're already logged out but trying to get in via outside means.
+window.addEventListener('DOMContentLoaded', () => {
+    if(String(window.performance.getEntriesByType("navigation")[0].type) === "back_forward" && localStorage.getItem('closed') == 'normal'){
+		alert('Error, you are not logged in.  You will now be redirected to the login page.')
+		location.href = '/'
+	}
+	else if(localStorage.getItem('type') == 'STUDENT'){
+		alert('Error, you are a student.  You will now be redirected to the Student page.')
+		location.href = '/s/student'
+	} 
+	else if(localStorage.getItem('closed') == 'forced')
+		history = localStorage.getItem('user')
+})
+
+// The moment the Teacher window loads, do stuff
+window.addEventListener('load', () => {
+
+	// First, check if the id field is set.
+	let getFirstDiv = document.getElementsByTagName('div')[0]	
+	history = getFirstDiv.getAttribute('id')
+	console.log(history)
+
+	// If not, redirect back to the login page.
+	if(!getFirstDiv.hasAttribute('id')){
+		alert('Error, you are not logged in.  You will now be redirected to the login page.')
+		location.href = '/'
+	}
+	else{
+		// Mark the logged in User as a teacher
+		localStorage.setItem('type', 'TEACHER')
+	}
+})
+
+// Do stuff before logging out via the log out button
+document.getElementsByClassName('nav-item nav-link')[3].addEventListener('click', () => {
+	localStorage.setItem('closed', 'normal')
+	localStorage.removeItem('type')
+	alert(`Logging out, see you next time ${history}`)
+})
+
+// Do stuff before the page closes
+window.addEventListener('beforeunload', () => {
+	if(localStorage.getItem('closed') != null && localStorage.getItem('closed') != 'normal'){
+		localStorage.setItem('closed', 'forced')
+		localStorage.setItem('user', history)
+	}
+})
