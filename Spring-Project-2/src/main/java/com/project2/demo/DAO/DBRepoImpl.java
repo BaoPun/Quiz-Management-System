@@ -825,6 +825,8 @@ public class DBRepoImpl implements DBRepo {
 		
 		return false;
 	}
+	
+	// Timetable
 
 	@Override
 	public Integer addTimetable(Timetable table) {

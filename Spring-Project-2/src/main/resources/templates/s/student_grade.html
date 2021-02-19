@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Grade</title>
+    <div th:replace="/s/fragments.html :: headerfiles"></div>
+    <meta charset="ISO-8859-1">
+    <title>Student Grades</title>
+    <link rel="stylesheet" href="/s/css/student_grade.css">
 </head>
 <body>
+
+    <div th:id="${student}" th:insert="/s/fragments.html :: navbar"></div>
+
     <div id='main-container'>
     
         <div class="quiz-list">
