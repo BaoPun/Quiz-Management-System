@@ -172,12 +172,17 @@ public class DBRepoImpl implements DBRepo {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<User> getUserStudents(int teacherid) {
-		return sf.createEntityManager().
-				createQuery("from User u where u.teacher.id=?1").
-				setParameter(1, teacherid).
-				getResultList();
+		EntityManager em = sf.createEntityManager();
+		try {
+			return  em.createQuery("from User u where u.teacher.id=?1").
+					setParameter(1, teacherid).
+					getResultList();
+		} finally {
+			em.close();
+		}
 	}
-
+	
+	
 	@Override
 	public boolean updateUser(User change) {
 		
@@ -300,10 +305,14 @@ public class DBRepoImpl implements DBRepo {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Quiz> getQuizzesStartedByStudent(int studentid) {
-		return sf.createEntityManager().
-				createQuery("select distinct p.answer.question.quiz from Progress p where p.user.id=?1").
-				setParameter(1, studentid).
-				getResultList();
+		EntityManager em = sf.createEntityManager();
+		try {
+			return  em.createQuery("select distinct p.answer.question.quiz from Progress p where p.user.id=?1").
+					setParameter(1, studentid).
+					getResultList();
+		} finally {
+			em.close();
+		}
 	}
 
 	@Override
@@ -406,10 +415,14 @@ public class DBRepoImpl implements DBRepo {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Question> getQuizQuestions(int quizid) {
-		return sf.createEntityManager().
-				createQuery("from Question q where q.quiz.id=?1 order by q.ordering").
-				setParameter(1, quizid).
-				getResultList();
+		EntityManager em = sf.createEntityManager();
+		try {
+			return em.createQuery("from Question q where q.quiz.id=?1 order by q.ordering").
+					 setParameter(1, quizid).
+					 getResultList();
+		} finally {
+			em.close();
+		}
 	}
 
 	@Override
@@ -522,10 +535,14 @@ public class DBRepoImpl implements DBRepo {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Answer> getQuestionAnswers(int questionid) {
-		return sf.createEntityManager().
-				createQuery("from Answer a where a.question.id=?1 order by a.ordering").
-				setParameter(1, questionid).
-				getResultList();
+		EntityManager em = sf.createEntityManager();
+		try {
+			return  em.createQuery("from Answer a where a.question.id=?1 order by a.ordering").
+					setParameter(1, questionid).
+					getResultList();
+		} finally {
+			em.close();
+		}
 	}
 
 	@Override
@@ -635,11 +652,15 @@ public class DBRepoImpl implements DBRepo {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Progress> getProgressForUserAndQuiz(int quizid, int userid) {
-		return sf.createEntityManager().
-				createQuery("from Progress p where p.answer.question.quiz.id=?1 and p.user.id=?2 order by p.answer.ordering asc").
-				setParameter(1, quizid).
-				setParameter(2, userid).
-				getResultList();
+		EntityManager em = sf.createEntityManager();
+		try {
+			return em.createQuery("from Progress p where p.answer.question.quiz.id=?1 and p.user.id=?2 order by p.answer.ordering asc").
+					  setParameter(1, quizid).
+					  setParameter(2, userid).
+					  getResultList();
+		} finally {
+			em.close();
+		}
 	}
 
 	@Override
@@ -804,71 +825,4 @@ public class DBRepoImpl implements DBRepo {
 		
 		return false;
 	}
-  
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Progress> getProgressForUserAndQuiz(int quizid, int userid) {
-		EntityManager em = sf.createEntityManager();
-		try {
-			return em.createQuery("from Progress p where p.answer.question.quiz.id=?1 and p.user.id=?2 order by p.answer.ordering asc").
-					  setParameter(1, quizid).
-					  setParameter(2, userid).
-					  getResultList();
-		} finally {
-			em.close();
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Question> getQuizQuestions(int quizid) {
-		EntityManager em = sf.createEntityManager();
-		try {
-			return em.createQuery("from Question q where q.quiz.id=?1 order by q.ordering").
-					 setParameter(1, quizid).
-					 getResultList();
-		} finally {
-			em.close();
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Answer> getQuestionAnswers(int questionid) {
-		EntityManager em = sf.createEntityManager();
-		try {
-			return  em.createQuery("from Answer a where a.question.id=?1 order by a.ordering").
-					setParameter(1, questionid).
-					getResultList();
-		} finally {
-			em.close();
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<User> getUserStudents(int teacherid) {
-		EntityManager em = sf.createEntityManager();
-		try {
-			return  em.createQuery("from User u where u.teacher.id=?1").
-					setParameter(1, teacherid).
-					getResultList();
-		} finally {
-			em.close();
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Quiz> getQuizzesStartedByStudent(int studentid) {
-		EntityManager em = sf.createEntityManager();
-		try {
-			return  em.createQuery("select distinct p.answer.question.quiz from Progress p where p.user.id=?1").
-					setParameter(1, studentid).
-					getResultList();
-		} finally {
-			em.close();
-		}
-	}
-
 }
