@@ -42,6 +42,12 @@ class UserTests {
 		Assertions.assertNotNull(foundTestUser);
 	}
 	
+	@Test
+	@Order(2)
+	void testAddNonUniqueStudent() {
+		Assertions.assertTrue(userServiceTests.addUser(new User("Alice", Password.hash("test123"), UserType.STUDENT, userServiceTests.getUser(8))) == -1);
+	}
+	
 	// Test out the retrieval of a User given their id
 	@Test
 	void testGetUser() {
@@ -53,7 +59,7 @@ class UserTests {
 	// Same as above, but with their name
 	@Test
 	void testGetUserByName() {
-		User userTest = userServiceTests.getUser("Karen");
+		User userTest = userServiceTests.getUser("kAREn");
 		if(userTest == null)
 			userTest = userServiceTests.getUser("AYAYA Clap");
 		System.out.println("Found user from testGetUser: " + userTest);

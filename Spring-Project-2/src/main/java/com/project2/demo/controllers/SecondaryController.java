@@ -30,7 +30,7 @@ import com.project2.demo.entities.Engine;
 public class SecondaryController {
  
 	public SecondaryController() {}
-	
+
 	@Autowired
 	private Engine engine;
 	
@@ -42,6 +42,7 @@ public class SecondaryController {
 		HttpHeaders headers=new HttpHeaders();
       
 		System.out.println("Attempting to log in");
+		
       
 		// If login was successful
     	if (engine.login(session.getId(),username,password)) {
@@ -100,13 +101,13 @@ public class SecondaryController {
 	}
 
 	@GetMapping(value="/s/getQuestions", produces="application/json")
-	public List<Question> getQuizQuestions(@RequestParam String quizid) {
-		return engine.getQuizQuestions(Integer.parseInt(quizid));
+	public List<Question> getQuizQuestions(@RequestParam String quizId) {
+		return engine.getQuizQuestions(Integer.parseInt(quizId));
 	}
 	
 	@GetMapping(value="/s/getPossibleAnswers", produces="application/json")
-	public List<Answer> getPossibleAnswers(@RequestParam String questionid) {
-		return engine.getQuestionAnswers(Integer.parseInt(questionid));
+	public List<Answer> getPossibleAnswers(@RequestParam String questionId) {
+		return engine.getQuestionAnswers(Integer.parseInt(questionId));
 	}
 	
 	@PostMapping(path="/s/submitNewQuiz", consumes= "application/json")
@@ -115,22 +116,24 @@ public class SecondaryController {
 		return "success";
 	}
 	
-	public class SingleQuestion {
+	private class SingleQuestion {
 		public String description;
 		public List<Answer> answers;
+		
+		public SingleQuestion(List<Answer> answers, String description) {
+			this.answers = answers;
+			this.description = description;
+		}
 	}
 	
 	@GetMapping(value="/s/getSingleQuestion", produces="application/json")
 	public SingleQuestion getSingleQuestion(@RequestParam String questionid) {
-		SingleQuestion retval = new SingleQuestion();
 		int questionidNum = Integer.parseInt(questionid);
 		
 		List<Answer> questionAnswers = engine.getQuestionAnswers(questionidNum);
-		retval.answers=questionAnswers;
-		
 		Question question = engine.getQuestion(questionidNum);
-		retval.description=question.getDescription();
-		return retval;
+		
+		return new SingleQuestion(questionAnswers, question.getDescription());
 	}
 	
 	@GetMapping(value="/s/getQuizTimetable", produces="application/json")

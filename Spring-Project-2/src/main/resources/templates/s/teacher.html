@@ -4,12 +4,11 @@
 	<div th:replace="/s/fragments.html :: headerfiles"></div>
 	<meta charset="ISO-8859-1">
 	<title>Teacher Administration Page</title>
-	<script src="/s/js/teacher.js"></script>
 	<link rel="stylesheet" href="/s/css/teacher.css">
 </head>
 <body>
 
-<div th:insert="/s/fragments.html :: navbar"></div>
+<div th:id="${teacher}" th:insert="/s/fragments.html :: navbar"></div>
 
 <div class="modal fade" id="rowClickModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -38,8 +37,7 @@
 
 	<div class="student-list">
 		<div class="list-item">Your Students:</div>
-		<div class="list-group"
-			th:each="student,iter: ${students}">
+		<div class="list-group" th:each="student,iter: ${students}">
 		<div 
 			class="list-item student-list-item" 
 			th:attr="studentid=${studentIDs[iter.index]},student=${student}">
@@ -71,4 +69,5 @@
 </div>
 
 </body>
+<script src="/s/js/teacher.js"></script>
 </html>
