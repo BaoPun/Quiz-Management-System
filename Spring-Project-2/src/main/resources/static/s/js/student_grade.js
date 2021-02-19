@@ -1,3 +1,4 @@
+var quizList=[]
 
 $(function () {
 	$('.student-list-item').on('click',studentListItemClick);
@@ -40,7 +41,9 @@ function updateQuizList() {
 	}
 }
 
-var quizList=[];
+
+// Below here is to keep track of user accounts!
+
 let history = null
 
 function studentListItemClick() {
@@ -73,16 +76,17 @@ window.addEventListener('load', () => {
 		alert('Error, you are not logged in.  You will now be redirected to the login page.')
 		location.href = '/'
 	}
-    //otherwise, 
 	else{
-		localStorage.setItem('type', 'STUDENT')
 
-        document.getElementsByClassName('navbar-nav')[0].style.float = 'right'
+		// Hide most items in the navbar, they're pointless
+		document.getElementsByClassName('nav-item nav-link')[1].style.display = 'none'
+		document.getElementsByClassName('nav-item nav-link')[2].style.display = 'none'
 		
+		// Reserve 1 item in the navbar for viewing grades on completed quizzes
+		document.getElementsByClassName('nav-item nav-link')[0].textContent = 'View Quizzes To Be Taken'
 	}
 })
 
-/*
 // Detect navigation arrows if we're already logged out but trying to get in via outside means.
 window.addEventListener('DOMContentLoaded', () => {
     if(String(window.performance.getEntriesByType("navigation")[0].type) === "back_forward" && localStorage.getItem('closed') == 'normal'){
@@ -111,7 +115,9 @@ window.addEventListener('beforeunload', () => {
 		localStorage.setItem('user', history)
 	}
 })
+
+// Go back to the home page, don't affect the localStorage stuff
 document.getElementsByClassName('nav-item nav-link')[0].addEventListener('click', () => {
-	
+	alert('Going back to the home page to view quizzes!')
+	location.href = '/s/student'
 })
-*/
