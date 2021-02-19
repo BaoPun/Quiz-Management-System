@@ -68,12 +68,7 @@ window.addEventListener('beforeunload', () => {
 	}
 })
 
-// View all quizzes that the User still needs to take
+// View all quiz results that were already taken
 document.getElementsByClassName('nav-item nav-link')[0].addEventListener('click', () => {
-	alert('Viewing all quizzes still required to be taken')
-})
-
-// View all grades of completed Quizzes that the User has taken
-document.getElementsByClassName('nav-item nav-link')[1].addEventListener('click', () => {
-	alert('Viewing past quiz results')
+	alert('Viewing all grades from quizzes taken')
 })
