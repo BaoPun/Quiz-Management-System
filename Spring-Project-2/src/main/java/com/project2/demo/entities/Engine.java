@@ -31,6 +31,12 @@ public class Engine {
 		loggedInUsers = new HashMap<String,User>();
 	}
 	
+	// Logging out of the user, remove the mapping
+	public void removeLoggedUser(String sessionID) {
+		if(loggedInUsers.size() > 0)
+			loggedInUsers.remove(sessionID);
+	}
+	
 	// Is the current logged in user a teacher?
 	public boolean isTeacherLoggedIn(String sessionID) {
 		return (this.loggedInUsers.get(sessionID).getRole() == UserType.TEACHER ? true : false);
@@ -51,7 +57,7 @@ public class Engine {
 	public List<Quiz> getQuizzesStartedByStudent(int studentid) {
 		return services.getQuizzesStartedByStudent(studentid);
 	}
-
+	
 	public User getUserByName(String username) {
 		return services.getUser(username);
 	}
