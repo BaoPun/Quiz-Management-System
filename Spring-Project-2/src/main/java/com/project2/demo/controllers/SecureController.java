@@ -103,7 +103,9 @@ public class SecureController {
 	}
 	
 	@GetMapping("/studentGrades")
-	public String student_grade_page(Model model) {
+	public String student_grade_page(Model model, HttpSession session) {
+		
+		model.addAttribute("student", engine.getLoggedInUser(session.getId()).getUsername());
 		return "s/student_grade";
 	}
 }
