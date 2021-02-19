@@ -37,6 +37,7 @@ public class Engine {
 			loggedInUsers.remove(sessionID);
 	}
 	
+	
 	// Is the current logged in user a teacher?
 	public boolean isTeacherLoggedIn(String sessionID) {
 		return (this.loggedInUsers.get(sessionID).getRole() == UserType.TEACHER ? true : false);

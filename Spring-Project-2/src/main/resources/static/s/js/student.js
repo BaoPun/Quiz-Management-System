@@ -1,18 +1,26 @@
+let history = null
+
 // The moment the Student window is loaded, perform this function.
 window.onload = function(){
 
 	// First, check if the id field is set.
 	let getFirstDiv = document.getElementsByTagName('div')[0]
-	console.log(getFirstDiv)
+	history = getFirstDiv.getAttribute('id')
+	console.log(history)
 
 	// If not, redirect back to the login page.
-	if(!getFirstDiv.hasAttribute('id')){
+	if(!getFirstDiv.hasAttribute('id') || localStorage.getItem('user') != null){
 		alert('Error, you are not logged in.  You will now be redirected to the login page.')
 		location.href = '/'
 	}
 
 	// Otherwise, create the POV
 	else{
+
+		// Remember the retrieved id. 
+		// Local storage basically prevents us from using the back arrow to access a User that was already logged out.
+		localStorage.removeItem('user')
+
 		// Change the name from Quiz Manager to "Student View"
 		document.getElementsByClassName('navbar-brand')[0].textContent = 'Student View'
 
@@ -33,7 +41,22 @@ window.onload = function(){
 	}
 }
 
+window.onbeforeunload = function () {
+    localStorage.removeItem('user')
+};
 
+// Do stuff before logging out
 document.getElementsByClassName('nav-item nav-link')[3].addEventListener('click', () => {
-	alert('Logged off')
+	alert(`Logging out, see you next time ${history}`)
+	localStorage.setItem('user', history)
+})
+
+// View all quizzes that the User still needs to take
+document.getElementsByClassName('nav-item nav-link')[0].addEventListener('click', () => {
+	alert('Viewing all quizzes still required to be taken')
+})
+
+// View all grades of completed Quizzes that the User has taken
+document.getElementsByClassName('nav-item nav-link')[1].addEventListener('click', () => {
+	alert('Viewing past quiz results')
 })
