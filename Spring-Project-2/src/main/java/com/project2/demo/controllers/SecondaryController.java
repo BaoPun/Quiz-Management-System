@@ -115,6 +115,16 @@ public class SecondaryController {
 		return "success";
 	}
 	
+	private class SingleQuestion {
+		public String description;
+		public List<Answer> answers;
+
+		public SingleQuestion(List<Answer> answers, String description) {
+			this.answers = answers;
+			this.description = description;
+		}
+	}
+	
 	@GetMapping(value="/s/getSingleQuestion", produces="application/json")
 	public SingleQuestion getSingleQuestion(@RequestParam String questionid) {
 		int questionidNum = Integer.parseInt(questionid);
