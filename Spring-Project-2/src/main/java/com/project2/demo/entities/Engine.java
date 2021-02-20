@@ -35,6 +35,24 @@ public class Engine {
 		loggedInUsers = new HashMap<String,User>();
 	}
 	
+	// Called once the User attempts to login
+	public boolean login(String sessionID, String username, String password) {
+		User user = services.getUser(username);
+		if (user == null) 
+			return false;
+		String hash = Password.hash(password);
+		boolean matches=user.getPasswordHash().equals(hash);
+		if (matches) 
+			loggedInUsers.put(sessionID, user);
+		return matches;
+	}
+	
+	// Called once the User attempts to register a new account
+	public boolean register(String username, String password, int teacherId) {
+		User newStudent = new User(username, Password.hash(password), UserType.STUDENT, services.getUser(teacherId));
+		return services.addUser(newStudent) > -1;
+	}
+	
 	// Logging out of the user, remove the mapping
 	public void removeLoggedUser(String sessionID) {
 		if(loggedInUsers.size() > 0)
@@ -47,26 +65,39 @@ public class Engine {
 		return (this.loggedInUsers.get(sessionID).getRole() == UserType.TEACHER ? true : false);
 	}
 	
+	/*
+	// Getting every single User from the DB.  Not sure if this is used.
 	public List<User> getAllUsers() {
 		return services.getAllUsers();
 	}
+	*/
 	
+	// Get all Teachers registered in the DB (for use with registering a new Student)
 	public List<User> getAllTeachers() {
 		return services.getAllTeachers();
 	}
 	
+	// Get all students that belong to a specific teacher.
+	public List<User> getUserStudents(int teacherID) {
+		return services.getUserStudents(teacherID);
+	}
+	
+	// Get a list of quizzes that belong to either a Student or a Teacher
 	public List<Quiz> getQuizzesFromUser(User user) {
 		return services.getQuizzesFromUser(user.getId());
 	}
 	
+	// Get a list of Quizzes that have been started by a specific student
 	public List<Quiz> getQuizzesStartedByStudent(int studentid) {
 		return services.getQuizzesStartedByStudent(studentid);
 	}
 	
+	// Retrieve a specific User by their name.
 	public User getUserByName(String username) {
 		return services.getUser(username);
 	}
   
+	
 	public List<Progress> getProgressForUserAndQuiz(int quizid,int userid) {
 		return services.getProgressForUserAndQuiz(quizid,userid);
 	}
@@ -137,26 +168,7 @@ public class Engine {
 	}
 	
 	
-	public boolean login(String sessionID, String username, String password) {
-		User user = services.getUser(username);
-		if (user == null) 
-			return false;
-		String hash = Password.hash(password);
-		boolean matches=user.getPasswordHash().equals(hash);
-		if (matches) 
-			loggedInUsers.put(sessionID, user);
-		return matches;
-	}
 	
-	public boolean register(String username, String password, int teacherId) {
-		User newStudent = new User(username, Password.hash(password), UserType.STUDENT, services.getUser(teacherId));
-		boolean success = services.addUser(newStudent) > -1;
-		if(success)
-			System.out.println("Successfully added student: " + newStudent);
-		else
-			System.out.println("FAILURE");
-		return success;
-	}
 	
 	public User getLoggedInUser(String sessionID) {
 		return loggedInUsers.get(sessionID);
@@ -176,9 +188,7 @@ public class Engine {
 		return null;
 	}
 	
-	public List<User> getUserStudents(int teacherID) {
-		return services.getUserStudents(teacherID);
-	}
+	
 	
 	public boolean isPermittedPage(String sessionID, URI uri) {
 		User user = loggedInUsers.get(sessionID);

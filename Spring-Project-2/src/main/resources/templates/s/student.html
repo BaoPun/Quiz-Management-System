@@ -14,7 +14,7 @@
 <div id='main-menu-student'>
 	<h1 id='main-menu-student-display'>Welcome ?</h1>
 	<div id='student-choose-quiz-menu'>
-		<div class='list-item'><h1 id='label-quiz'>Quizzes</h1></div>
+		<div class='list-item'><h1 id='label-quiz'>Quizzes To Be Taken</h1></div>
 		<div class="list-group" th:each="quiz, iter: ${quizzes}">
 			<div class="list-item quiz-list-item" th:attr="quizid=${quizIDs[iter.index]}, quiz=${quiz}">
 				<a th:text="${quiz}" href="#" class="list-group-item list-group-item-action"></a>

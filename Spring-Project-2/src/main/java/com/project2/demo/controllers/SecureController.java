@@ -16,7 +16,7 @@ import com.project2.demo.beans.User;
 import com.project2.demo.entities.Engine;
 
 
-//@RestController
+// No RestController annotation because our returning String would display an empty page in an HTML with that String
 @Controller
 @RequestMapping("/s")
 public class SecureController {
@@ -48,6 +48,7 @@ public class SecureController {
 		return "s/quiz_generator";
 	}
   
+	// Mapped to student.html located under src/main/resources/templates/s
 	@GetMapping("/student")
 	public String student_page(Model model, HttpSession session) {
 		
@@ -55,16 +56,22 @@ public class SecureController {
 		User loggedStudent = engine.getLoggedInUser(session.getId());
 		if(loggedStudent != null)
 			model.addAttribute("student", loggedStudent.getUsername());
-		else
+		else {
 			model.addAttribute("student", null);
-		
+			return "s/student";
+		}
+			
 		// Map out the list of quizzes
 		List<Quiz> listOfQuizzes = engine.getQuizzesFromUser(loggedStudent.getTeacher());
 	 
-		List<String> quizNames = new ArrayList<String>();
-		List<Integer> quizIDs = new ArrayList<Integer>();
+		List<String> quizNames = null;
+		List<Integer> quizIDs = null;
 		
 		if(listOfQuizzes != null) {
+			
+			quizNames = new ArrayList<String>();
+			quizIDs = new ArrayList<Integer>();
+			
 			for(Quiz q : listOfQuizzes) {
 				quizNames.add(q.getName());
 				quizIDs.add(q.getId());
@@ -77,6 +84,7 @@ public class SecureController {
 		return "s/student";
 	}
 
+	// Mapped to teacher.html located under src/main/resources/templates/s
 	@GetMapping("/teacher")
 	public String teacher_page(Model model, HttpSession session) {
     
@@ -102,6 +110,7 @@ public class SecureController {
 		return "s/teacher";
 	}
 	
+	// Mapped to student_grade.html located under src/main/resources/templates/s
 	@GetMapping("/studentGrades")
 	public String student_grade_page(Model model, HttpSession session) {
 		

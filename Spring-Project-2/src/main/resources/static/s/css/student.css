@@ -26,3 +26,7 @@
 .list-item.quiz-list-item{
     background-color: #092756;
 }
+
+.list-group-item.list-group-item-action{
+	text-align: center;
+}
