@@ -64,6 +64,20 @@ function studentListItemClick() {
 	xhttp.send();
 }
 
+// Detect navigation arrows if we're already logged out but trying to get in via outside means.
+window.addEventListener('DOMContentLoaded', () => {
+    if(String(window.performance.getEntriesByType("navigation")[0].type) === "back_forward" && localStorage.getItem('closed') == 'normal'){
+		alert('Error, you are not logged in.  You will now be redirected to the login page.')
+		location.href = '/'
+	}
+	else if(localStorage.getItem('type') == 'TEACHER'){
+		alert('Error, you are a teacher.  You will now be redirected to the Teacher page.')
+		location.href = '/s/teacher'
+	} 
+	else if(localStorage.getItem('closed') == 'forced')
+		history = localStorage.getItem('user')
+})
+
 window.addEventListener('load', () => {
 
 	// First, check if the id field is set.
@@ -84,21 +98,10 @@ window.addEventListener('load', () => {
 		
 		// Reserve 1 item in the navbar for viewing grades on completed quizzes
 		document.getElementsByClassName('nav-item nav-link')[0].textContent = 'View Quizzes To Be Taken'
-	}
-})
 
-// Detect navigation arrows if we're already logged out but trying to get in via outside means.
-window.addEventListener('DOMContentLoaded', () => {
-    if(String(window.performance.getEntriesByType("navigation")[0].type) === "back_forward" && localStorage.getItem('closed') == 'normal'){
-		alert('Error, you are not logged in.  You will now be redirected to the login page.')
-		location.href = '/'
+		// Change the name of the navbar brand
+		document.getElementsByClassName('navbar-brand')[0].textContent = `${history}`
 	}
-	else if(localStorage.getItem('type') == 'TEACHER'){
-		alert('Error, you are a teacher.  You will now be redirected to the Teacher page.')
-		location.href = '/s/teacher'
-	} 
-	else if(localStorage.getItem('closed') == 'forced')
-		history = localStorage.getItem('user')
 })
 
 // Do stuff before logging out via the log out button

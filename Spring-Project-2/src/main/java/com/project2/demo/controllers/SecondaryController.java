@@ -68,13 +68,12 @@ public class SecondaryController {
 		
 		// Attempt to register 
 		if(engine.register(username, password, Integer.parseInt(teacher.split(" ")[0])))
-			headers.setLocation(URI.create("/"));
+			headers.setLocation(URI.create("/registerSuccess"));
 		else
-			headers.setLocation(URI.create("/register"));
+			headers.setLocation(URI.create("/registerFailure"));
 		
 		
-		return new ResponseEntity<String>(headers,HttpStatus.FOUND);
-		
+		return new ResponseEntity<String>(headers, HttpStatus.FOUND);	
 	}
 	
 	@GetMapping(value="/s/getQuizzesStartedByStudent", produces="application/json")
