@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .left {
 	position: absolute;
 	left: 0px;
@@ -21,4 +22,21 @@
 
 .highlight {
 	background-color: #85006e;
+=======
+    .left {
+        position: absolute;
+        left: 0px;
+    }
+    .right {
+        position: absolute;
+        right: 0px;
+    }
+    .center {
+        display: flex;
+  justify-content: center;
+  align-items: center;
+    }
+.answer {
+	flex-direction: column
+>>>>>>> refs/remotes/origin/et_question
 }

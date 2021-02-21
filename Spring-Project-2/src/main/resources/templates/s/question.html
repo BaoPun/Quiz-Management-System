@@ -11,6 +11,7 @@
 <body>
 
 <div th:insert="/s/fragments.html :: navbar"></div>
+<<<<<<< HEAD
 <div class="center" id="questiondiv">
     <h2>QUESTION TEXT</h2><br><br>
     <div class="center" id="answerdiv">
@@ -23,6 +24,21 @@
 <div>
 <button id="previous" class="left">PREVIOUS</button><br>
 <button id="next" class="right">NEXT</button>
+=======
+Quiz [TITLEHERE]
+<div class="center" id="questiondiv">
+    <h2>QUESTION TEXT</h2><br>
+    <div class="center" id="answerdiv">
+    <button id="answer1" onclick="updateProgress(this)">ANSWER 1</button><br>
+    <button id="answer2" onclick="updateProgress(this)">ANSWER 2</button><br>
+    <button id="answer3" onclick="updateProgress(this)">ANSWER 3</button><br>
+    <button id="answer4" onclick="updateProgress(this)">ANSWER 4</button><br>
+</div>
+</div>
+<div>
+<button id="previous" class="left" onclick="movePage()">PREVIOUS</button><br>
+<button id="next" class="right" onclick="movePage()">NEXT</button>
+>>>>>>> refs/remotes/origin/et_question
 </div>
 </body> 
 </html>
