@@ -3,17 +3,22 @@ package com.project2.demo.entities;
 import java.net.URI;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.project2.demo.DAO.DBRepo;
 import com.project2.demo.beans.Answer;
+import com.project2.demo.beans.CompletedQuiz;
 import com.project2.demo.beans.NewQuiz;
 import com.project2.demo.beans.Progress;
 import com.project2.demo.beans.Question;
+import com.project2.demo.beans.QuestionAnswerPair;
 import com.project2.demo.beans.Quiz;
 import com.project2.demo.beans.Timetable;
 import com.project2.demo.beans.User;
@@ -98,8 +103,40 @@ public class Engine {
 	}
   
 	
-	public List<Progress> getProgressForUserAndQuiz(int quizid,int userid) {
-		return services.getProgressForUserAndQuiz(quizid,userid);
+	public CompletedQuiz getQuizResults(int quizid,int userid) {
+		List<Progress> progress = services.getProgressForUserAndQuiz(quizid, userid);
+		Set<Answer> chosenAnswers = new HashSet<Answer>();
+		for (Progress p : progress) {
+			chosenAnswers.add(p.getAnswer());
+		}
+		
+		Map<Question,QuestionAnswerPair> map = new HashMap<Question,QuestionAnswerPair>();
+		
+		Set<Question> wrongQuestions = new HashSet<Question>();
+		List<Answer> answers = services.getQuizAnswers(quizid);
+		for (Answer a : answers) {
+			System.out.println(a);
+			if (!map.containsKey(a.getQuestion())) {
+				QuestionAnswerPair pair = new QuestionAnswerPair(a.getQuestion(),new ArrayList<Answer>());
+				pair.getAnswers().add(a);
+				map.put(a.getQuestion(), pair);
+			} else {
+				QuestionAnswerPair pair = map.get(a.getQuestion());
+				pair.getAnswers().add(a);
+			}
+			if (a.getIsCorrect()) {
+				if (!chosenAnswers.contains(a)) {
+					wrongQuestions.add(a.getQuestion());
+				}
+			}
+		}
+		
+		List<Question> questions = services.getQuizQuestions(quizid);
+
+		
+		double score = (1-(((double)wrongQuestions.size()) / ((double)questions.size())))*100.0;
+		
+		return new CompletedQuiz(progress, score, new HashSet<QuestionAnswerPair>(map.values()));
 	}
 	
 	public Question getQuestion(int questionid) {

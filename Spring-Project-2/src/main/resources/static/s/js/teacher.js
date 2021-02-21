@@ -5,30 +5,74 @@ $(function () {
 })
 
 var progressData={};
+var orderedQuestions={};
 
+function areSetsEqual(seta,setb) {
+	areEqual=true;
+	seta.forEach(function (x) {
+		if (!setb.has(x)) {
+			areEqual=false;
+		}
+	});
+	
+	setb.forEach(function (x) {
+		if (!seta.has(x)) {
+			areEqual=false;
+		}
+	});
+	return areEqual;
+}
 
 function updateProgress() {
 	let score=document.getElementById("quiz-score");
-	let table=document.getElementById("quiz-table");
 	let tbody=document.getElementById("quiz-body");
 
-	let correctAnswers=0;
-	for (i=0;i<progressData.length;++i) {
-		if (progressData[i].answer.isCorrect) {
-			++correctAnswers;
+	let questionMap={};
+	let numQuestions = progressData.questions.length;
+	for (let i=0;i<numQuestions;++i) {
+		
+		let questionOrdering=progressData.questions[i].question.ordering;
+		let questionID = progressData.questions[i].question.id;
+		let thisQuestion=progressData.questions[i];
+		orderedQuestions[questionOrdering] = thisQuestion;
+		questionMap[questionID]=thisQuestion;
+		thisQuestion.chosenAnswers=new Set();
+		thisQuestion.correctAnswers=new Set();
+		thisQuestion.chosenAnswerOrdering=[];
+		for (let j=0;j<thisQuestion.answers.length;++j) {
+			if (thisQuestion.answers[j].isCorrect) {
+				thisQuestion.correctAnswers.add(thisQuestion.answers[j].id);
+			}
+		}
+		
+	}
+	
+	for (let i=0;i<progressData.answers.length;++i) {
+		let thisAnswer = progressData.answers[i].answer;
+		questionMap[thisAnswer.questionID].chosenAnswers.add(thisAnswer.id); 
+		questionMap[thisAnswer.questionID].chosenAnswerOrdering.push(thisAnswer.ordering);
+	}
+	
+	for (let i=0;i<numQuestions;++i) {
+		let thisQuestion=orderedQuestions[i];
+		if (areSetsEqual(thisQuestion.correctAnswers,thisQuestion.chosenAnswers)) {
+			thisQuestion.isCorrect=true;
+		} else {
+			thisQuestion.isCorrect=false;
 		}
 	}
-	let scorePercentage=100*correctAnswers*(1.0/progressData.length);
-	score.innerText="Score: "+scorePercentage+"%";
+
+	score.innerText="Score: "+progressData.score+"%";
 
 	tbody.innerHTML="";
-	for (i=0;i<progressData.length;++i) {
+	for (i=0;i<numQuestions;++i) {
+		let thisQuestion=orderedQuestions[i];
 		let trElt=document.createElement("tr");
 		let thQuestion=document.createElement("th");
 		let thAnswer=document.createElement("th");
 		thQuestion.setAttribute("scope","col");
 		thAnswer.setAttribute("scope","col");
-		if (progressData[i].answer.isCorrect) {
+		if (thisQuestion.isCorrect) {
 			thAnswer.classList.add("blue");
 		} else {
 			thAnswer.classList.add("red");
@@ -39,7 +83,7 @@ function updateProgress() {
 		trElt.onclick=rowClick;
 		trElt.setAttribute("trid",i);
 		thQuestion.innerText=i+1;
-		thAnswer.innerText=progressData[i].answer.ordering+1;
+		thAnswer.innerText=thisQuestion.chosenAnswerOrdering.join();
 	}
 }
 
@@ -48,30 +92,19 @@ function rowClick() {
 	document.getElementById("rowClickModalTitle").innerText="Question #"+(parseInt(trid)+1);
 	let questionLabel = document.getElementById("question-label");
 	let answerList=document.getElementById("answer-list");
-	let xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
-		if (xhttp.readyState==4) {
-			if (xhttp.status == 200) {
-				questionData = JSON.parse(xhttp.responseText);
-				questionLabel.innerText=questionData.description;
-				answerList.innerHTML="";
-				for (i=0;i<questionData.answers.length;++i) {
-					let listitem=document.createElement("li");
-					answerList.appendChild(listitem);
-					listitem.innerText=questionData.answers[i].answerText;
-					if (questionData.answers[i].isCorrect) {
-						listitem.classList.add("bold");
-					}
-				}
-				console.log(xhttp.responseText);
-				$("#rowClickModal").modal();
-			} else {
-				console.log("error in rowclick");
-			}
+	
+	let thisQuestion=progressData.questions[trid];
+	questionLabel.innerText=thisQuestion.question.description;
+	answerList.innerHTML="";
+	for (i=0;i<thisQuestion.answers.length;++i) {
+		let listitem=document.createElement("li");
+		answerList.appendChild(listitem);
+		listitem.innerText=thisQuestion.answers[i].answerText;
+		if (thisQuestion.answers[i].isCorrect) {
+			listitem.classList.add("bold");
 		}
 	}
-	xhttp.open("GET","/s/getSingleQuestion?questionid="+progressData[trid].answer.questionID);
-	xhttp.send();
+	$("#rowClickModal").modal();
 	
 }
 

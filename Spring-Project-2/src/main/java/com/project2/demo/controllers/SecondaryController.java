@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project2.demo.beans.Answer;
+import com.project2.demo.beans.CompletedQuiz;
 import com.project2.demo.beans.NewQuiz;
-import com.project2.demo.beans.Progress;
 import com.project2.demo.beans.Question;
 import com.project2.demo.beans.Quiz;
 import com.project2.demo.beans.Timetable;
@@ -93,10 +93,10 @@ public class SecondaryController {
 	}
 	
 	@GetMapping(value="/s/getUserQuizResults", produces="application/json")
-	public List<Progress> getUserQuizResults(@RequestParam String user, @RequestParam String quiz) {
+	public CompletedQuiz getUserQuizResults(@RequestParam String user, @RequestParam String quiz) {
 		int userID = Integer.parseInt(user);
 		int quizID = Integer.parseInt(quiz);
-		return engine.getProgressForUserAndQuiz(quizID,userID);
+		return engine.getQuizResults(quizID,userID);
 	}
 
 	@GetMapping(value="/s/getQuestions", produces="application/json")

@@ -898,4 +898,19 @@ public class DBRepoImpl implements DBRepo {
 			em.close();
 		}
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Answer> getQuizAnswers(int quizid) {
+		EntityManager em = sf.createEntityManager();
+		try {
+			return em.createQuery("select a from Answer a inner join a.question q where q.quiz.id=?1").
+					setParameter(1, quizid).
+					getResultList();
+		} finally {
+			em.close();
+		}
+	}
+	
+	
 }
