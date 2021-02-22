@@ -24,6 +24,17 @@ public class QuizTeacher {
 	@FindBy(id = "time")
 	public WebElement time;
 	
+	@FindBy(id = "student-number-1")
+	public WebElement student;
+	
+	@FindBy(id = "quiz-button-0")
+	public WebElement quiz;
+	
+	@FindBy(id = "createQuiz")
+	public WebElement createQuiz;
+	
+	
+	
 	public QuizTeacher(WebDriver driver) {
 		this.driver = driver;
 		PageFactory.initElements(driver, this);
