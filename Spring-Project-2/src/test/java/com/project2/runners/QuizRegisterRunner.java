@@ -27,7 +27,13 @@ public class QuizRegisterRunner {
 		System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
 
 		driver = new ChromeDriver();
-		quizlogin =new QuizLogin(driver);	
+		quizlogin =new QuizLogin(driver);
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	@AfterClass
