@@ -30,7 +30,7 @@ public class QuizTeacher {
 	@FindBy(id = "quiz-button-0")
 	public WebElement quiz;
 	
-	@FindBy(id = "createQuiz")
+	@FindBy(xpath = "/html/body/div[1]/nav/div/div[1]/a")
 	public WebElement createQuiz;
 	
 	
