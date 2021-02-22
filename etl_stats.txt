@@ -1,0 +1,3 @@
+Day points: 2582
+Night points: 62194
+Ttest: statistic=-35 pvalue=3.5e-268
