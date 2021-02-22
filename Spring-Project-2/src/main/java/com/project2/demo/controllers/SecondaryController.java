@@ -41,7 +41,7 @@ public class SecondaryController {
 		String password=paramMap.getFirst("password");
 		HttpHeaders headers=new HttpHeaders();
       
-		System.out.println("Attempting to log in");
+		System.out.println("Attempting to log in: {" + username + ", " + password + "}");
 		
       
 		// If login was successful
@@ -84,87 +84,5 @@ public class SecondaryController {
 		return new ResponseEntity<String>(headers, HttpStatus.FOUND);	
 	}
 	
-	@GetMapping(value="/s/getQuizzesStartedByStudent", produces="application/json")
-	public List<Quiz> getQuizzesStartedByStudent(@RequestParam String userid) {
-		return engine.getQuizzesStartedByStudent(Integer.parseInt(userid));
-	}
 	
-	@GetMapping(value="/s/getMyQuizzes", produces="application/json")
-	public List<Quiz> getMyQuizzes(HttpSession session) {
-		User teacher=engine.getLoggedInUser(session.getId());
-		return engine.getQuizzesFromUser(teacher);
-	}
-	
-	@GetMapping(value="/s/getQuizzes", produces="application/json")
-	public List<Quiz> getQuizzes(@RequestParam String teacher) {
-		return engine.getQuizzesFromUser(engine.getUserByName(teacher));
-	}
-	
-	@GetMapping(value="/s/getUserQuizResults", produces="application/json")
-	public CompletedQuiz getUserQuizResults(@RequestParam String user, @RequestParam String quiz) {
-		int userID = Integer.parseInt(user);
-		int quizID = Integer.parseInt(quiz);
-		return engine.getQuizResults(quizID,userID);
-	}
-
-	@GetMapping(value="/s/getQuestions", produces="application/json")
-	public List<Question> getQuizQuestions(@RequestParam String quizId) {
-		return engine.getQuizQuestions(Integer.parseInt(quizId));
-	}
-	
-	@GetMapping(value="/s/getPossibleAnswers", produces="application/json")
-	public List<Answer> getPossibleAnswers(@RequestParam String questionId) {
-		return engine.getQuestionAnswers(Integer.parseInt(questionId));
-	}
-	
-	@PostMapping(path="/s/submitNewQuiz", consumes= "application/json")
-	public String login_page(HttpSession session, @RequestBody NewQuiz quiz) {
-		engine.makeNewQuiz(session.getId(), quiz);
-		return "success";
-	}
-	
-	private class SingleQuestion {
-		public String description;
-		public List<Answer> answers;
-
-		public SingleQuestion(List<Answer> answers, String description) {
-			this.answers = answers;
-			this.description = description;
-		}
-	}
-	
-	@GetMapping(value="/s/getSingleQuestion", produces="application/json")
-	public SingleQuestion getSingleQuestion(@RequestParam String questionid) {
-		int questionidNum = Integer.parseInt(questionid);
-		
-		List<Answer> questionAnswers = engine.getQuestionAnswers(questionidNum);
-		Question question = engine.getQuestion(questionidNum);
-		
-		return new SingleQuestion(questionAnswers, question.getDescription());
-	}
-	
-	@GetMapping(value="/s/getQuizTimetable", produces="application/json")
-	public Timetable getQuizTimetable(@RequestParam String quizid, @RequestParam String userid) {
-		int quizidNum = Integer.parseInt(quizid);
-		int useridNum = Integer.parseInt(userid);
-		return engine.getTimetable(quizidNum, useridNum);
-	}
-	
-	@PostMapping(value="/s/beginQuiz",
-			consumes= {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
-	public String beginQuiz(HttpSession session, @RequestParam MultiValueMap<String,String> paramMap) {
-		int quizID = Integer.parseInt(paramMap.getFirst("quizID"));
-		int userID = engine.getLoggedInUser(session.getId()).getId();
-		engine.startQuiz(quizID, userID);
-		return "OK";
-	}
-	
-	@PostMapping(value="/s/endQuiz",
-			consumes= {MediaType.APPLICATION_FORM_URLENCODED_VALUE},
-			produces="application/json")
-	public Timetable endQuiz(HttpSession session, @RequestParam MultiValueMap<String,String> paramMap) {
-		int quizID = Integer.parseInt(paramMap.getFirst("quizID"));
-		int userID = engine.getLoggedInUser(session.getId()).getId();
-		return engine.endQuiz(quizID, userID);
-	}
 }

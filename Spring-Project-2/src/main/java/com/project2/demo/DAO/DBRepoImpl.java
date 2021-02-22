@@ -15,6 +15,7 @@ import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import com.project2.demo.beans.Answer;
 import com.project2.demo.beans.Permission;
@@ -28,6 +29,7 @@ import com.project2.demo.beans.UserType;
 
 @Component
 @Transactional
+@Repository
 public class DBRepoImpl implements DBRepo {
 	
 	@Autowired
@@ -50,7 +52,6 @@ public class DBRepoImpl implements DBRepo {
 			
 		}
 		catch(ConstraintViolationException e) {
-			return true;
 		}
 		catch(HibernateException e) {
 			
@@ -113,7 +114,7 @@ public class DBRepoImpl implements DBRepo {
 	public User getUser(String name) {
 		EntityManager em = sf.createEntityManager();
 		try {
-      return em.createQuery("from User WHERE LOWER(username)=?1",User.class).setParameter(1, name.toLowerCase()).getSingleResult();
+			return em.createQuery("from User WHERE LOWER(username)=?1",User.class).setParameter(1, name.toLowerCase()).getSingleResult();
 		}
 		catch(Exception e) {
 			return null;

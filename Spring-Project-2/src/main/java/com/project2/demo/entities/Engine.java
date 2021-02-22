@@ -26,7 +26,6 @@ import com.project2.demo.beans.UserType;
 import com.project2.demo.util.Password;
 
 
-
 public class Engine {
 	
 	private Map<String,User> loggedInUsers;
@@ -50,6 +49,16 @@ public class Engine {
 		if (matches) 
 			loggedInUsers.put(sessionID, user);
 		return matches;
+	}
+	
+	// Added for the purpose of testing with Mockito; difference is that this doesn't have a session.
+	public boolean login(String username, String password) {
+		User user = services.getUser(username);
+		if (user == null) 
+			return false;
+		String hash = Password.hash(password);
+		System.out.println(user.getPasswordHash() + " vs " + hash);
+		return Password.hash(user.getPasswordHash()).equals(hash);
 	}
 	
 	// Called once the User attempts to register a new account
