@@ -124,9 +124,9 @@ public class SecureController {
 		for (Quiz q : quizzes) {
 			CompletedQuiz cquiz = engine.getQuizResults(q.getId(), studentid);
 			quizNames.add(q.getName());
-			DecimalFormat df = new DecimalFormat("#.00"); 
+			DecimalFormat df = new DecimalFormat("00"); 
 			
-			quizScores.add(df.format(cquiz.getScore()));
+			quizScores.add("%"+df.format(cquiz.getScore()));
 		}
 		model.addAttribute("quizNames",quizNames);
 		model.addAttribute("quizScores",quizScores);

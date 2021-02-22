@@ -13,8 +13,14 @@ window.addEventListener('load', () => {
 	// Reserve 1 item in the navbar for viewing grades on completed quizzes
 	document.getElementsByClassName('nav-item nav-link')[0].textContent = 'View Quizzes To Be Taken'
 
-	// Change the name of the navbar brand
-	document.getElementsByClassName('navbar-brand')[0].textContent = `${history}`
+	let navbar=document.getElementById("main-navbar");
+	navbar.innerHTML="";
+	let newLink=document.createElement("a");
+	newLink.classList.add("nav-link");
+	newLink.classList.add("nav-item");
+	newLink.setAttribute("href","student");
+	navbar.appendChild(newLink);
+	newLink.innerText="View Quizzes";
 
 })
 
