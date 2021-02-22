@@ -145,6 +145,7 @@ function updateQuizList() {
 	for (let i=0;i<quizList.length;++i) {
 		let div=document.createElement("div");
 		div.classList.add("list-item");
+		div.setAttribute("id","quiz-button-"+i);
 		div.setAttribute("quizid",quizList[i]['id'])
 		div.onclick=updateScores;
 		let link=document.createElement("a");

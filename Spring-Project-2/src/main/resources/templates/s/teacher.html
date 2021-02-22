@@ -40,6 +40,7 @@
 		<div class="list-group" th:each="student,iter: ${students}">
 		<div 
 			class="list-item student-list-item" 
+			th:id="${'student-number-'+iter.index}"
 			th:attr="studentid=${studentIDs[iter.index]},student=${student}">
 			<a th:text="${student}" href="#" class="list-group-item list-group-item-action"></a>
 		</div>
