@@ -57,8 +57,7 @@ public class QuizRegisterStepImpl {
 	@When("^The student select option \"([^\"]*)\" from teacherList for register$")
 	public void the_student_select_option_from_teacherList_for_register(String teacher) throws Throwable {
 	    // Write code here that turns the phrase above into concrete actions
-		Select teacherDrp=new Select(driver.findElement(By.name("teacher")));
-		teacherDrp.selectByVisibleText("Test");
+		//
 		Thread.sleep(1000);
 	}
 
