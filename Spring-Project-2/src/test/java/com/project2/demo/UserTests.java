@@ -35,7 +35,7 @@ class UserTests {
 	void testAddStudent() {
 		
 		// Add a sample User student whose teacher has an id of 8
-		newlyCreatedId = userServiceTests.addUser(new User("Karen", Password.hash("test123"), UserType.STUDENT, userServiceTests.getUser(8)));
+		newlyCreatedId = userServiceTests.addUser(new User("POGGERS", Password.hash("test123"), UserType.STUDENT, userServiceTests.getUser(8)));
 		
 		// Then see if we can find that user
 		User foundTestUser = userServiceTests.getUser(newlyCreatedId);
@@ -45,7 +45,7 @@ class UserTests {
 	@Test
 	@Order(2)
 	void testAddNonUniqueStudent() {
-		Assertions.assertTrue(userServiceTests.addUser(new User("Alice", Password.hash("test123"), UserType.STUDENT, userServiceTests.getUser(8))) == -1);
+		Assertions.assertTrue(userServiceTests.addUser(new User("pOGGers", Password.hash("test123"), UserType.STUDENT, userServiceTests.getUser(8))) == -1);
 	}
 	
 	// Test out the retrieval of a User given their id
@@ -59,9 +59,9 @@ class UserTests {
 	// Same as above, but with their name
 	@Test
 	void testGetUserByName() {
-		User userTest = userServiceTests.getUser("kAREn");
+		User userTest = userServiceTests.getUser("POGGERS");
 		if(userTest == null)
-			userTest = userServiceTests.getUser("AYAYA Clap");
+			userTest = userServiceTests.getUser("3Head");
 		System.out.println("Found user from testGetUser: " + userTest);
 		Assertions.assertNotNull(userTest);
 	}
@@ -84,7 +84,7 @@ class UserTests {
 			System.out.println(students.get(i));
 		System.out.println("END");
 		
-		Assertions.assertTrue(students.size() > 0);
+		Assertions.assertNotEquals(students.size(), 0);
 	}
 	
 	// Update a User's information
@@ -95,12 +95,12 @@ class UserTests {
 		User userChangeTest = userServiceTests.getUser(newlyCreatedId);
 		
 		// Alter their information: change their username
-		userChangeTest.setUsername("AYAYA Clap");
+		userChangeTest.setUsername("3Heading");
 		
 		userServiceTests.updateUser(userChangeTest);
 		
 		// And then see if the update was successful
-		Assertions.assertTrue(userServiceTests.getUser("AYAYA Clap").getUsername().equals("AYAYA Clap"));
+		Assertions.assertTrue(userServiceTests.getUser("3Head").getUsername().equals("3Head"));
 	}
 	
 	// After every test passes, delete the User with the example id.
