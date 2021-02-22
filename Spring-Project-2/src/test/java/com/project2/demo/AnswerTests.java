@@ -33,7 +33,7 @@ class AnswerTests {
 		
 		// First, create a new Answer for a question (the question, the answer, is it correct?, answer order)
 		newlyCreatedId = answerServiceTests.addAnswer(new Answer(answerServiceTests.getQuestion(21), "21", false, 2));
-		
+				
 		// Afterwards, find that answer
 		Assertions.assertNotNull(answerServiceTests.getAnswer(newlyCreatedId));
 	}
