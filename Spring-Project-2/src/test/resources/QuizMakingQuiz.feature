@@ -8,7 +8,7 @@ Background: Teacher logs into the account
 	Then The teacher on the "Teacher Page" page for make quiz
 	
 Scenario: The teacher make a quiz
-	When The teacher click on the "Make Quiz" button 
+	When The teacher click on the "Create Quiz" button 
 	Then The teacher move to Make Quiz page
 	And The teacher fill in quiz Name with "Cucumber Quiz"
 	And The teacher fill in questionone with "question1"
@@ -29,9 +29,3 @@ Scenario: The teacher make a quiz
 	Then The teacher will move to Teacher page after complete making quiz.
 	
 	
-
-			
-			
-			
-			
-			
