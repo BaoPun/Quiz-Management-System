@@ -12,7 +12,7 @@ public class QuizLogin {
 	@FindBy(id="username")
 	public WebElement username;
 	
-	@FindBy(id="passwordhash")
+	@FindBy(id="password")
 	public WebElement password;
 	
 	@FindBy(id="loginButton")
