@@ -1,5 +1,6 @@
 package com.project2.demo.controllers;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.project2.demo.beans.CompletedQuiz;
 import com.project2.demo.beans.Quiz;
 import com.project2.demo.beans.User;
 import com.project2.demo.entities.Engine;
@@ -113,6 +115,21 @@ public class SecureController {
 	// Mapped to student_grade.html located under src/main/resources/templates/s
 	@GetMapping("/studentGrades")
 	public String student_grade_page(Model model, HttpSession session) {
+		
+		int studentid = engine.getLoggedInUser(session.getId()).getId();
+		List<Quiz> quizzes = engine.getQuizzesStartedByStudent(studentid);
+		
+		List<String> quizNames = new ArrayList<String>();
+		List<String> quizScores = new ArrayList<String>();
+		for (Quiz q : quizzes) {
+			CompletedQuiz cquiz = engine.getQuizResults(q.getId(), studentid);
+			quizNames.add(q.getName());
+			DecimalFormat df = new DecimalFormat("#.00"); 
+			
+			quizScores.add(df.format(cquiz.getScore()));
+		}
+		model.addAttribute("quizNames",quizNames);
+		model.addAttribute("quizScores",quizScores);
 		
 		User getUser = engine.getLoggedInUser(session.getId());
 		if(getUser != null)

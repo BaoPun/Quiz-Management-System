@@ -58,6 +58,14 @@ public class SecondaryController {
 		return new ResponseEntity<String>(headers, HttpStatus.FOUND);
     }
 	
+	@GetMapping(path="/logout")
+	public ResponseEntity<String> logout(HttpSession session) {
+		session.invalidate();
+		HttpHeaders headers=new HttpHeaders();
+		headers.setLocation(URI.create("/"));
+		return new ResponseEntity<String>(headers, HttpStatus.FOUND);
+	}
+	
 	@PostMapping(path="/register", consumes= {MediaType.APPLICATION_FORM_URLENCODED_VALUE}) 
 	public ResponseEntity<String> register(HttpSession session, @RequestParam MultiValueMap<String,String> paramMap) { 
 		

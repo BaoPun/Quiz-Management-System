@@ -105,17 +105,21 @@ public class Engine {
 	
 	public CompletedQuiz getQuizResults(int quizid,int userid) {
 		List<Progress> progress = services.getProgressForUserAndQuiz(quizid, userid);
-		Set<Answer> chosenAnswers = new HashSet<Answer>();
+		Set<Integer> chosenAnswers = new HashSet<Integer>();
+		Set<Question> wrongQuestions = new HashSet<Question>();
+		
 		for (Progress p : progress) {
-			chosenAnswers.add(p.getAnswer());
+			chosenAnswers.add(p.getAnswer().getId());
+			if (!p.getAnswer().getIsCorrect()) {
+				wrongQuestions.add(p.getAnswer().getQuestion());
+			}
 		}
 		
 		Map<Question,QuestionAnswerPair> map = new HashMap<Question,QuestionAnswerPair>();
 		
-		Set<Question> wrongQuestions = new HashSet<Question>();
+
 		List<Answer> answers = services.getQuizAnswers(quizid);
 		for (Answer a : answers) {
-			System.out.println(a);
 			if (!map.containsKey(a.getQuestion())) {
 				QuestionAnswerPair pair = new QuestionAnswerPair(a.getQuestion(),new ArrayList<Answer>());
 				pair.getAnswers().add(a);
@@ -125,7 +129,7 @@ public class Engine {
 				pair.getAnswers().add(a);
 			}
 			if (a.getIsCorrect()) {
-				if (!chosenAnswers.contains(a)) {
+				if (!chosenAnswers.contains(a.getId())) {
 					wrongQuestions.add(a.getQuestion());
 				}
 			}
