@@ -27,6 +27,12 @@ public class QuizTeacherRunner {
 
 		driver = new ChromeDriver();
 		quizLogin = new QuizLogin(driver);
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
