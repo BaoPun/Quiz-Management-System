@@ -142,6 +142,7 @@ public class SecureController {
 		return "s/teacher";
 	}
 	
+	/*
 	// Mapped to student_grade.html located under src/main/resources/templates/s
 	@GetMapping("/studentGrades")
 	public String student_grade_page(Model model, HttpSession session) {
@@ -252,4 +253,5 @@ public class SecureController {
 		int userID = engine.getLoggedInUser(session.getId()).getId();
 		return engine.endQuiz(quizID, userID);
 	}
+	*/
 }

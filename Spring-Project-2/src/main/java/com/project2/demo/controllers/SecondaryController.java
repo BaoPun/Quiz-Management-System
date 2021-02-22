@@ -1,6 +1,8 @@
 package com.project2.demo.controllers;
 
 import java.net.URI;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -10,12 +12,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.project2.demo.beans.Answer;
 import com.project2.demo.beans.CompletedQuiz;
@@ -26,7 +29,7 @@ import com.project2.demo.beans.Timetable;
 import com.project2.demo.beans.User;
 import com.project2.demo.entities.Engine;
 
-@RestController
+@Controller
 public class SecondaryController {
  
 	public SecondaryController() {}
@@ -82,6 +85,119 @@ public class SecondaryController {
 		
 		
 		return new ResponseEntity<String>(headers, HttpStatus.FOUND);	
+	}
+	
+	
+	// Reverted stuff
+	// Mapped to student_grade.html located under src/main/resources/templates/s
+	@GetMapping("/s/studentGrades")
+	public String student_grade_page(Model model, HttpSession session) {
+		
+		int studentid = engine.getLoggedInUser(session.getId()).getId();
+		List<Quiz> quizzes = engine.getQuizzesStartedByStudent(studentid);
+		
+		List<String> quizNames = new ArrayList<String>();
+		List<String> quizScores = new ArrayList<String>();
+		for (Quiz q : quizzes) {
+			CompletedQuiz cquiz = engine.getQuizResults(q.getId(), studentid);
+			quizNames.add(q.getName());
+			DecimalFormat df = new DecimalFormat("00"); 
+			
+			quizScores.add("%"+df.format(cquiz.getScore()));
+		}
+		model.addAttribute("quizNames",quizNames);
+		model.addAttribute("quizScores",quizScores);
+		
+		User getUser = engine.getLoggedInUser(session.getId());
+		if(getUser != null)
+			model.addAttribute("student", getUser.getUsername());
+		else
+			model.addAttribute("student", null);
+		return "s/student_grade";
+	}
+	
+	@GetMapping(value="/s/getQuizzesStartedByStudent", produces="application/json")
+	public List<Quiz> getQuizzesStartedByStudent(@RequestParam String userid) {
+		return engine.getQuizzesStartedByStudent(Integer.parseInt(userid));
+	}
+	
+	@GetMapping(value="/s/getMyQuizzes", produces="application/json")
+	public List<Quiz> getMyQuizzes(HttpSession session) {
+		User teacher=engine.getLoggedInUser(session.getId());
+		return engine.getQuizzesFromUser(teacher);
+	}
+	
+	@GetMapping(value="/s/getQuizzes", produces="application/json")
+	public List<Quiz> getQuizzes(@RequestParam String teacher) {
+		return engine.getQuizzesFromUser(engine.getUserByName(teacher));
+	}
+	
+	@GetMapping(value="/s/getUserQuizResults", produces="application/json")
+	public CompletedQuiz getUserQuizResults(@RequestParam String user, @RequestParam String quiz) {
+		int userID = Integer.parseInt(user);
+		int quizID = Integer.parseInt(quiz);
+		return engine.getQuizResults(quizID,userID);
+	}
+
+	@GetMapping(value="/s/getQuestions", produces="application/json")
+	public List<Question> getQuizQuestions(@RequestParam String quizId) {
+		return engine.getQuizQuestions(Integer.parseInt(quizId));
+	}
+	
+	@GetMapping(value="/s/getPossibleAnswers", produces="application/json")
+	public List<Answer> getPossibleAnswers(@RequestParam String questionId) {
+		return engine.getQuestionAnswers(Integer.parseInt(questionId));
+	}
+	
+	@PostMapping(path="/s/submitNewQuiz", consumes= "application/json")
+	public String login_page(HttpSession session, @RequestBody NewQuiz quiz) {
+		engine.makeNewQuiz(session.getId(), quiz);
+		return "success";
+	}
+	
+	private class SingleQuestion {
+		public String description;
+		public List<Answer> answers;
+
+		public SingleQuestion(List<Answer> answers, String description) {
+			this.answers = answers;
+			this.description = description;
+		}
+	}
+	
+	@GetMapping(value="/s/getSingleQuestion", produces="application/json")
+	public SingleQuestion getSingleQuestion(@RequestParam String questionid) {
+		int questionidNum = Integer.parseInt(questionid);
+		
+		List<Answer> questionAnswers = engine.getQuestionAnswers(questionidNum);
+		Question question = engine.getQuestion(questionidNum);
+		
+		return new SingleQuestion(questionAnswers, question.getDescription());
+	}
+	
+	@GetMapping(value="/s/getQuizTimetable", produces="application/json")
+	public Timetable getQuizTimetable(@RequestParam String quizid, @RequestParam String userid) {
+		int quizidNum = Integer.parseInt(quizid);
+		int useridNum = Integer.parseInt(userid);
+		return engine.getTimetable(quizidNum, useridNum);
+	}
+	
+	@PostMapping(value="/s/beginQuiz",
+			consumes= {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+	public String beginQuiz(HttpSession session, @RequestParam MultiValueMap<String,String> paramMap) {
+		int quizID = Integer.parseInt(paramMap.getFirst("quizID"));
+		int userID = engine.getLoggedInUser(session.getId()).getId();
+		engine.startQuiz(quizID, userID);
+		return "OK";
+	}
+	
+	@PostMapping(value="/s/endQuiz",
+			consumes= {MediaType.APPLICATION_FORM_URLENCODED_VALUE},
+			produces="application/json")
+	public Timetable endQuiz(HttpSession session, @RequestParam MultiValueMap<String,String> paramMap) {
+		int quizID = Integer.parseInt(paramMap.getFirst("quizID"));
+		int userID = engine.getLoggedInUser(session.getId()).getId();
+		return engine.endQuiz(quizID, userID);
 	}
 	
 	
