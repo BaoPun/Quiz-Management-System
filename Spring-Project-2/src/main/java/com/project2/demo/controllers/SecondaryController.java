@@ -12,13 +12,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.project2.demo.beans.Answer;
 import com.project2.demo.beans.CompletedQuiz;
@@ -30,7 +30,7 @@ import com.project2.demo.beans.User;
 import com.project2.demo.beans.UserSubmittedProgress;
 import com.project2.demo.entities.Engine;
 
-@Controller
+@RestController
 public class SecondaryController {
  
 	public SecondaryController() {}
@@ -89,33 +89,7 @@ public class SecondaryController {
 	}
 	
 	
-	// Reverted stuff
-	// Mapped to student_grade.html located under src/main/resources/templates/s
-	@GetMapping("/s/studentGrades")
-	public String student_grade_page(Model model, HttpSession session) {
-		
-		int studentid = engine.getLoggedInUser(session.getId()).getId();
-		List<Quiz> quizzes = engine.getQuizzesStartedByStudent(studentid);
-		
-		List<String> quizNames = new ArrayList<String>();
-		List<String> quizScores = new ArrayList<String>();
-		for (Quiz q : quizzes) {
-			CompletedQuiz cquiz = engine.getQuizResults(q.getId(), studentid);
-			quizNames.add(q.getName());
-			DecimalFormat df = new DecimalFormat("00"); 
-			
-			quizScores.add("%"+df.format(cquiz.getScore()));
-		}
-		model.addAttribute("quizNames",quizNames);
-		model.addAttribute("quizScores",quizScores);
-		
-		User getUser = engine.getLoggedInUser(session.getId());
-		if(getUser != null)
-			model.addAttribute("student", getUser.getUsername());
-		else
-			model.addAttribute("student", null);
-		return "s/student_grade";
-	}
+
 	
 	@GetMapping(value="/s/getQuizzesStartedByStudent", produces="application/json")
 	public List<Quiz> getQuizzesStartedByStudent(@RequestParam String userid) {

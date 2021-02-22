@@ -94,7 +94,7 @@ function submit() {
 			if (this.status == 200) {
 				const urlparams = new URLSearchParams(window.location.search);
 				quizid=urlparams.get("quizid")
-				window.location="/s/yourGrade?quizid="+quizid;
+				window.location="/s/studentGrades";
 			}
 		}
 	}
