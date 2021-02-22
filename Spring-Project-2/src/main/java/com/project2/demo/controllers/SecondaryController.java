@@ -24,6 +24,7 @@ import com.project2.demo.beans.Question;
 import com.project2.demo.beans.Quiz;
 import com.project2.demo.beans.Timetable;
 import com.project2.demo.beans.User;
+import com.project2.demo.beans.UserSubmittedProgress;
 import com.project2.demo.entities.Engine;
 
 @RestController
@@ -156,6 +157,12 @@ public class SecondaryController {
 		int quizID = Integer.parseInt(paramMap.getFirst("quizID"));
 		int userID = engine.getLoggedInUser(session.getId()).getId();
 		engine.startQuiz(quizID, userID);
+		return "OK";
+	}
+	
+	@PostMapping(value="/s/submitQuiz",consumes="application/json")
+	public String submitQuiz(HttpSession session, @RequestBody List<UserSubmittedProgress> answers) {
+		System.out.println(answers);
 		return "OK";
 	}
 	
