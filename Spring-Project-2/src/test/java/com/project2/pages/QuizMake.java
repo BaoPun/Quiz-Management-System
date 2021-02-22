@@ -49,10 +49,10 @@ public class QuizMake {
 	@FindBy(id="checkbox-1-0")
 	public WebElement correct2; 
 	
-	@FindBy(id = "addQuestion")
+	@FindBy(xpath = "/html/body/div[2]/button[1]")
 	public WebElement add_button;
 	
-	@FindBy(id = "submit_quiz")
+	@FindBy(xpath = "/html/body/div[2]/button[2]")
 	public WebElement submit_quiz;
 
 	public QuizMake(WebDriver driver) {
