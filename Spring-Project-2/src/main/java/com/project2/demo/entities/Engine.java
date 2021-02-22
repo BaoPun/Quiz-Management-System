@@ -208,8 +208,17 @@ public class Engine {
 		return services.getQuestionAnswers(questionid);
 	}
 	
-	
-	
+	public List<QuestionAnswerPair> getQuizPairs(int quizid) {
+		List<Question> questions = this.getQuizQuestions(quizid);
+		List<QuestionAnswerPair> results = new ArrayList<QuestionAnswerPair>();
+		for (int i=0;i<questions.size();++i) {
+			QuestionAnswerPair pair = new QuestionAnswerPair();
+			pair.setQuestion(questions.get(i));
+			pair.setAnswers(this.getQuestionAnswers(questions.get(i).getId()));
+			results.add(pair);
+		}
+		return results;
+	}
 	
 	public User getLoggedInUser(String sessionID) {
 		return loggedInUsers.get(sessionID);

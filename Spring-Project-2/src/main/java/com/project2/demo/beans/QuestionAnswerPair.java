@@ -1,6 +1,7 @@
 package com.project2.demo.beans;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class QuestionAnswerPair {
@@ -18,6 +19,10 @@ public class QuestionAnswerPair {
 	public QuestionAnswerPair() {
 		super();
 		this.answers = new ArrayList<Answer>();
+	}
+	
+	public void sortAnswers() {
+		Collections.sort(answers);
 	}
 
 	@Override

@@ -1,0 +1,25 @@
+@charset "ISO-8859-1";
+
+.hidden {
+	display: none;
+}
+
+.main-container {
+	width: 800px;
+	padding: 20px;
+}
+
+.question {
+	font-size: 1.5em;
+	border: solid;
+	padding-down: 20px;
+}
+
+.answer {
+	padding-left: 40px;
+}
+
+.form-check-input {
+	margin-left:20px;
+	
+}

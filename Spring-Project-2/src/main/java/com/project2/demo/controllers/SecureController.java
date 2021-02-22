@@ -11,8 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.project2.demo.beans.CompletedQuiz;
+import com.project2.demo.beans.QuestionAnswerPair;
 import com.project2.demo.beans.Quiz;
 import com.project2.demo.beans.User;
 import com.project2.demo.entities.Engine;
@@ -36,7 +38,27 @@ public class SecureController {
 	}
 
 	@GetMapping("/question")
-	public String question_page(Model model) {
+	public String question_page(Model model,@RequestParam int quizid) {
+		List<QuestionAnswerPair> pairs = engine.getQuizPairs(quizid);
+		System.out.println(quizid);
+		
+		List<List<String>> answers = new ArrayList<List<String>> ();
+		List<String> questions = new ArrayList<String>();
+		for (int i=0;i<pairs.size();++i) {
+			QuestionAnswerPair pair = pairs.get(i);
+			System.out.println(pair);
+			pair.sortAnswers();
+			List<String> answerRow = new ArrayList<String>();
+			for (int j=0;j<pair.getAnswers().size();++j) {
+				answerRow.add(pair.getAnswers().get(j).getAnswerText());
+			}
+			answers.add(answerRow);
+			questions.add(pair.getQuestion().getDescription());
+		}
+		
+		model.addAttribute("answers",answers);
+		model.addAttribute("questions",questions);
+		
 		return "s/question";
 	}
 
