@@ -1,5 +1,6 @@
 package com.project2.demo.controllers;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,13 +11,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.project2.demo.beans.CompletedQuiz;
+import com.project2.demo.beans.QuestionAnswerPair;
 import com.project2.demo.beans.Quiz;
 import com.project2.demo.beans.User;
 import com.project2.demo.entities.Engine;
 
 
-//@RestController
+// No RestController annotation because our returning String would display an empty page in an HTML with that String
 @Controller
 @RequestMapping("/s")
 public class SecureController {
@@ -34,7 +38,27 @@ public class SecureController {
 	}
 
 	@GetMapping("/question")
-	public String question_page(Model model) {
+	public String question_page(Model model,@RequestParam int quizid) {
+		List<QuestionAnswerPair> pairs = engine.getQuizPairs(quizid);
+		System.out.println(quizid);
+		
+		List<List<String>> answers = new ArrayList<List<String>> ();
+		List<String> questions = new ArrayList<String>();
+		for (int i=0;i<pairs.size();++i) {
+			QuestionAnswerPair pair = pairs.get(i);
+			System.out.println(pair);
+			pair.sortAnswers();
+			List<String> answerRow = new ArrayList<String>();
+			for (int j=0;j<pair.getAnswers().size();++j) {
+				answerRow.add(pair.getAnswers().get(j).getAnswerText());
+			}
+			answers.add(answerRow);
+			questions.add(pair.getQuestion().getDescription());
+		}
+		
+		model.addAttribute("answers",answers);
+		model.addAttribute("questions",questions);
+		
 		return "s/question";
 	}
 
@@ -48,6 +72,7 @@ public class SecureController {
 		return "s/quiz_generator";
 	}
   
+	// Mapped to student.html located under src/main/resources/templates/s
 	@GetMapping("/student")
 	public String student_page(Model model, HttpSession session) {
 		
@@ -55,16 +80,22 @@ public class SecureController {
 		User loggedStudent = engine.getLoggedInUser(session.getId());
 		if(loggedStudent != null)
 			model.addAttribute("student", loggedStudent.getUsername());
-		else
+		else {
 			model.addAttribute("student", null);
-		
+			return "s/student";
+		}
+			
 		// Map out the list of quizzes
 		List<Quiz> listOfQuizzes = engine.getQuizzesFromUser(loggedStudent.getTeacher());
 	 
-		List<String> quizNames = new ArrayList<String>();
-		List<Integer> quizIDs = new ArrayList<Integer>();
+		List<String> quizNames = null;
+		List<Integer> quizIDs = null;
 		
 		if(listOfQuizzes != null) {
+			
+			quizNames = new ArrayList<String>();
+			quizIDs = new ArrayList<Integer>();
+			
 			for(Quiz q : listOfQuizzes) {
 				quizNames.add(q.getName());
 				quizIDs.add(q.getId());
@@ -77,6 +108,7 @@ public class SecureController {
 		return "s/student";
 	}
 
+	// Mapped to teacher.html located under src/main/resources/templates/s
 	@GetMapping("/teacher")
 	public String teacher_page(Model model, HttpSession session) {
     
@@ -102,8 +134,24 @@ public class SecureController {
 		return "s/teacher";
 	}
 	
+	// Mapped to student_grade.html located under src/main/resources/templates/s
 	@GetMapping("/studentGrades")
 	public String student_grade_page(Model model, HttpSession session) {
+		
+		int studentid = engine.getLoggedInUser(session.getId()).getId();
+		List<Quiz> quizzes = engine.getQuizzesStartedByStudent(studentid);
+		
+		List<String> quizNames = new ArrayList<String>();
+		List<String> quizScores = new ArrayList<String>();
+		for (Quiz q : quizzes) {
+			CompletedQuiz cquiz = engine.getQuizResults(q.getId(), studentid);
+			quizNames.add(q.getName());
+			DecimalFormat df = new DecimalFormat("00"); 
+			
+			quizScores.add("%"+df.format(cquiz.getScore()));
+		}
+		model.addAttribute("quizNames",quizNames);
+		model.addAttribute("quizScores",quizScores);
 		
 		User getUser = engine.getLoggedInUser(session.getId());
 		if(getUser != null)

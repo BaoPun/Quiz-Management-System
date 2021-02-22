@@ -19,13 +19,9 @@
 	        	<option class="teacher" th:each="teacher: ${teachers}" th:value="${teacher}" th:text="${teacher}" th:selected="${teacher==teachers[0]}"></option>
 	      	</select>
 	      	<br><br>
-			<button onclick="giveInfo()" id="registerUser" type="submit" class="btn btn-primary btn-block btn-large">Submit New Account</button>
+			<button id="registerUser" type="submit" class="btn btn-primary btn-block btn-large">Submit New Account</button>
 		  </form>
 	</div>
 
 </body>
-<script>
-function giveInfo(){
-	alert("Succesfully registered!")
-}</script>
 </html>

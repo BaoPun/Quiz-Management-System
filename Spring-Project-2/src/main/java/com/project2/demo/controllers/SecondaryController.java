@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project2.demo.beans.Answer;
+import com.project2.demo.beans.CompletedQuiz;
 import com.project2.demo.beans.NewQuiz;
-import com.project2.demo.beans.Progress;
 import com.project2.demo.beans.Question;
 import com.project2.demo.beans.Quiz;
 import com.project2.demo.beans.Timetable;
@@ -58,6 +58,14 @@ public class SecondaryController {
 		return new ResponseEntity<String>(headers, HttpStatus.FOUND);
     }
 	
+	@GetMapping(path="/logout")
+	public ResponseEntity<String> logout(HttpSession session) {
+		session.invalidate();
+		HttpHeaders headers=new HttpHeaders();
+		headers.setLocation(URI.create("/"));
+		return new ResponseEntity<String>(headers, HttpStatus.FOUND);
+	}
+	
 	@PostMapping(path="/register", consumes= {MediaType.APPLICATION_FORM_URLENCODED_VALUE}) 
 	public ResponseEntity<String> register(HttpSession session, @RequestParam MultiValueMap<String,String> paramMap) { 
 		
@@ -68,13 +76,12 @@ public class SecondaryController {
 		
 		// Attempt to register 
 		if(engine.register(username, password, Integer.parseInt(teacher.split(" ")[0])))
-			headers.setLocation(URI.create("/"));
+			headers.setLocation(URI.create("/registerSuccess"));
 		else
-			headers.setLocation(URI.create("/register"));
+			headers.setLocation(URI.create("/registerFailure"));
 		
 		
-		return new ResponseEntity<String>(headers,HttpStatus.FOUND);
-		
+		return new ResponseEntity<String>(headers, HttpStatus.FOUND);	
 	}
 	
 	@GetMapping(value="/s/getQuizzesStartedByStudent", produces="application/json")
@@ -94,10 +101,10 @@ public class SecondaryController {
 	}
 	
 	@GetMapping(value="/s/getUserQuizResults", produces="application/json")
-	public List<Progress> getUserQuizResults(@RequestParam String user, @RequestParam String quiz) {
+	public CompletedQuiz getUserQuizResults(@RequestParam String user, @RequestParam String quiz) {
 		int userID = Integer.parseInt(user);
 		int quizID = Integer.parseInt(quiz);
-		return engine.getProgressForUserAndQuiz(quizID,userID);
+		return engine.getQuizResults(quizID,userID);
 	}
 
 	@GetMapping(value="/s/getQuestions", produces="application/json")
@@ -114,6 +121,16 @@ public class SecondaryController {
 	public String login_page(HttpSession session, @RequestBody NewQuiz quiz) {
 		engine.makeNewQuiz(session.getId(), quiz);
 		return "success";
+	}
+	
+	private class SingleQuestion {
+		public String description;
+		public List<Answer> answers;
+
+		public SingleQuestion(List<Answer> answers, String description) {
+			this.answers = answers;
+			this.description = description;
+		}
 	}
 	
 	@GetMapping(value="/s/getSingleQuestion", produces="application/json")

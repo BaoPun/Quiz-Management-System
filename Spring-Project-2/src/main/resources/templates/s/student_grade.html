@@ -21,7 +21,15 @@
                 <th scope="col">Result</th>
             </tr>
             </thead>
-            <tbody id="quiz-body"></tbody>
+            <tbody id="quiz-body">
+            
+           		<div class="list-group" th:each="quiz,iter: ${quizNames}">
+           		<tr>
+				<td th:text="${quiz}"></td>
+				<td th:text="${quizScores[iter.index]}"></td>
+				</tr>
+				</div>
+            </tbody>
             </table>
         </div>
 

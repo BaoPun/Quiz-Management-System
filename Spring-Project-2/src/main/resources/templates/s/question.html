@@ -1,10 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+	<div th:replace="/s/fragments.html :: headerfiles"></div>
+	<meta charset="ISO-8859-1">
+	<title>Taking a Quiz</title>
+	<link rel="stylesheet" href="/s/css/question.css">
+	<script src="/s/js/question.js"></script>
 </head>
 <body>
+<div class="hidden" id="hidden-block">
+<div th:id="'question-'+${iter.index}" th:each="elt,iter: ${answers}">
+<div class="question" th:text="${questions[iter.index]}"></div>
+<div th:each="answer,iter2: ${elt}">
+<div class="answer" th:id="'answer-'+${iter.index}+'-'+${iter2.index}" th:text="${answer}">
+</div>
+</div>
+</div>
+</div>
+
+<div class="main-container">
+
+<div id="question-block">
+
+</div>
+
+
+<button type="button" class="btn btn-secondary" onclick="prev()" disabled="true" id="prev-button">Previous Question</button>
+<button type="button" class="btn btn-primary" onclick="next()" id="next-button">Next Question</button>
+<button type="button" class="btn btn-success" onclick="submit()" disabled="true" id="next-button">Submit</button>
+</div>
 
 </body>
 </html>

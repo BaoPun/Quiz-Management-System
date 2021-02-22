@@ -50,6 +50,7 @@ public interface DBRepo{
 	boolean updateAnswer(Answer change);
 	boolean deleteAnswer(int id);
 	List<Answer> getQuestionAnswers(int questionid);
+	List<Answer> getQuizAnswers(int quizid);
 	
 	// Progress
 	int addProgress(Progress a);

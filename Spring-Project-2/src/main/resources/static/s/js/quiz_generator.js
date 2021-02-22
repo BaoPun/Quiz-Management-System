@@ -2,6 +2,17 @@
  * 
  */
 
+$(function () {
+	let navbar=document.getElementById("main-navbar");
+	navbar.innerHTML="";
+	let newLink=document.createElement("a");
+	newLink.classList.add("nav-link");
+	newLink.classList.add("nav-item");
+	newLink.setAttribute("href","teacher");
+	navbar.appendChild(newLink);
+	newLink.innerText="View Scores";
+})
+
 var questionNum=0;
 var questionNumAnswers={}
 
